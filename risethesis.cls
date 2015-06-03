@@ -522,8 +522,8 @@ requirements for the degree of \@degree\ in \@majorfielden.
   \else
     {\fontfamily{times}\selectfont \tiny \@universityen\\}
   \fi
-  {\fontfamily{times}\selectfont \tiny posgraduacao@cin.ufpe.br\\}
-  {\fontfamily{times}\selectfont \tiny \url{www.cin.ufpe.br/~posgraduacao}\\}
+  {\fontfamily{times}\selectfont \tiny secretaria@preg.ufrpe.br\\}
+  {\fontfamily{times}\selectfont \tiny \url{http://www.ufrpe.br/br/graduacao}\\}
   \vskip\baselineskip
   \vskip\baselineskip
   \@address
