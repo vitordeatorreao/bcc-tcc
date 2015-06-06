@@ -1,4 +1,4 @@
-\chapter{Introduction}
+\chapter{Introdução}
 \label{chp:introduction}
 
 % \begin{quotation}[]{Poul Anderson}
@@ -6,22 +6,62 @@
 % right way, did not become still more complicated.
 % \end{quotation}
 
-Many activities related to vigilance, inspection and control, which are currently 
-accomplished by humans, will possibly be executed by autonomous systems in the future 
-\citep{hernandez2013game}. Some examples of such tasks are patrolling a country’s borders 
-or walls of a civil area, watching a building’s corridors, monitoring maritime fleets and 
-inspecting areas subject to gas leakage or fires \citep{sampaiophd}.
+Atividades relacionadas à vigilância, inspeção e controle, que hoje são 
+realizadas por seres humanos, são candidatas a serem executadas por sistemas 
+autônomos no futuro \citep{hernandez2013game}. Alguns exemplos dessas tarefas 
+são: patrulhar fronteira de países ou muros de uma área civil, vigiar os 
+corredores de um prédio, monitorar frotas marítimas e inspecionar áreas sujeitas 
+a vazamentos de gás ou incêndios \citep{sampaiophd}.
 
-According to \citep{hernandez2013game}, these security systems, when operated by human 
-beings, are, in their majority, predictable and inflexible, because the operator’s performance 
-can be influenced by factors such as fatigue, boredom and distraction. Therefore, the authors 
-state that it is important to improve the elements of security in such systems to help the 
-human operators. A multiagent patrol system is a prominent candidate to play that role 
-\citep{Chevaleyre:2004:TAM:1018411.1019013}.
+Segundo a publicação \citep{hernandez2013game}, esses sistemas de segurança 
+quando operados por humanos são, em sua maioria, previsíveis e inflexíveis, pois 
+sua performance pode ser influenciada por fatores como o tédio, a distração ou a 
+fadiga. Dessa forma, os autores afirmam que é importante melhorar os elementos 
+de segurança desses sistemas para auxiliar seres humanos e destacam a Patrulha 
+Multiagente \citep{Chevaleyre:2004:TAM:1018411.1019013} como um dos sistemas que 
+pode fazer esse papel.
 
-The multiagent patrol can be defined as the task where a group of agents must perceive a 
-limited portion of the environment and detect events or anomalies \citep{6315145}. More 
-specifically, it is defined as the problem where a team of individuals (agents) visits as 
-frequently as possible points of interest contained in an area \citep{6495145}. Or it can 
-also be defined as a vigilance problem, where the agents must minimize the time between 
-visits on important locations inside a known environment \citep{Pippin:2013:PBT:2480362.2480378}.
+A Patrulha Multiagente pode ser definida como a tarefa de um agente que deve 
+perceber uma porção limitada do ambiente e detectar eventos ou anomalias 
+\citep{6315145}. Mais especificamente, pode ser definida como um problema no qual 
+um time de indivíduos (agentes), visita tão frequentemente quanto possível, 
+pontos de interesse contidos em uma área \citep{6495145}. Ou ainda como um 
+problema de vigilância, onde deve-se minimizar o tempo entre visitas dos agentes 
+aos locais importantes de um ambiente conhecido 
+\citep{Pippin:2013:PBT:2480362.2480378}.
+
+Existem algumas versões do problema que estendem essa definição, variando as 
+características dos agentes e do ambiente. Dentre elas destacam-se: problema da 
+patrulha em ambientes dinâmicos, isto é, o ambiente onde o agente se move muda 
+ao longo da execução do agente \citep{6615158}. Outra variação leva em 
+consideração que os agentes podem ter velocidades diferentes \citep{6900280}. 
+Alguns autores trabalharam com o problema da patrulha onde os agentes não tem a 
+mesma capacidade e operam em diferentes níveis de qualidade 
+\citep{Pippin:2013:PBT:2480362.2480378}. Outros trabalham com agentes que 
+possuem restrições de mobilidade \citep{6315145}. E há ainda uma variação onde a 
+quantidade de agentes muda ao longo da execução, isto é, um determinado agente 
+pode sair ou ser substituído por outro: são os chamados sistemas abertos 
+\citep{6495145}.
+
+Para estudar o problema, no entanto, esta pesquisa utilizará uma definição mais 
+formal, precisa e abrangente do problema, que auxilie o pesquisador a enxergar 
+a patrulha multiagente do ponto de vista matemático e a implementar soluções em 
+aplicações de software. Assim, a definição técnica empregada no decorrer deste 
+trabalho será a proposta por Sampaio \citep{sampaiophd}.
+
+Segundo o autor, uma instância da Patrulha Multiagente Temporal, do inglês 
+\ac{tmap}, é uma 7-tupla, $ \langle E, P, S, s_{0}, A, I, M \rangle $. O 
+ambiente que o agente percebe é representado por um grafo 
+\citep{Rosen:2002:DMA:579402}, $E$, onde os vértices representam os pontos de 
+interesse, $P$, a serem visitados e as arestas representam os caminhos entre 
+esses pontos. Na Figura 1, visualiza-se um exemplo de ambiente para o problema 
+da patrulha modelado como um grafo. O modelo demanda também o conjunto de 
+estados possíveis da sociedade de agentes, $S$, e um estado inicial, $ s_{0} $, 
+tal que $ s_{0} \in S $. É necessário ainda um conjunto de ações possíveis, $A$, 
+que alteram o estado da sociedade de agentes. Essas ações podem tanto ser 
+individuais (realizadas por um dado agente) quanto coletivas (realizada pela 
+sociedade inteira). Cada ação é descrita segundo uma lista de pré-condições, um 
+custo de tempo e as alterações que são aplicadas no estado após a ação concluir. 
+É preciso também explicitar o intervalo de medição, ou o intervalo de tempo, 
+$I$, em que os agentes terão seu desempenho mensurado. E, por fim, se faz 
+necessário um conjunto de métricas, $M$, para avaliar os agentes.
