@@ -60,3 +60,38 @@ classificando-as por seu escopo e métricas utilizadas na avaliação dos agente
 
 \section{Levantamento Bibliográfico}
 
+\subsection{Classificações para a \ac{tmap}}
+
+São notórios alguns trabalhos muito citados na literatura que visaram 
+classificar as soluções para a \ac{tmap}.
+
+Em \citep{Chevaleyre:2004:TAM:1018411.1019013}, as abordagens propostas até 
+então foram classificadas em \textbf{cíclicas} (ou de ciclo único) e \textbf{
+baseadas em particionamento}. As soluções de ciclo único são aquelas onde é 
+calculado um ciclo que cobre todos os vértices do grafo, e então, os agentes são 
+colocados para caminhar nesse ciclo indefinidamente. As abordagens baseadas em 
+particionamento são aquelas onde o território a ser patrulhado é dividido em 
+$r$ regiões, onde $r$ é o número de agentes. Os agentes devem, então, patrulhar 
+dentro de suas respectivas regiões.
+
+Já \citep{Machado:2002:MPE:1765317.1765332} fazem uma extensa classificação das 
+arquiteturas de soluções para a \ac{tmap}. Eles dividem os agentes em: \textbf{
+reativo} ou \textbf{cognitivo}; com comunicação \textbf{permitida} ou \textbf{
+proibida}; com coordenação \textbf{central} ou \textbf{descentralizada}; com 
+percepção \textbf{local} ou \textbf{global}; com tomada de decisão \textbf{
+aleatória} ou \textbf{orientada a objetivo}. Os agentes reativos são aqueles que 
+agem baseados apenas na sua percepção atual do território, enquanto que os 
+agentes cognitivos podem perseguir um determinado objetivo. Enquanto os agentes 
+cognitivos tem uma visão do grafo completo, os reativos só podem enxergar os nós 
+adjacentes ao que eles se encontram. A comunicação se refere a possibilidade dos 
+agentes trocarem informações. A percepção se refere ao quanto de informação o 
+agente pode acessar sobre o ambiente ao seu redor e sobre os outros agentes. 
+Finalmente, no esquema de coordenação centralizado, uma entidade central escolhe 
+nó-objetivo de cada agente, enquanto que no esquema descentralizado, a 
+coordenação emerge da interação entre os agentes.
+
+As abordagens propostas na presente pesquisa podem ser classificadas como 
+estratégias \textbf{baseadas em particionamento}, com agentes 
+\textbf{cognitivos}, de comunicação \textbf{proibida}, com coordenação 
+\textbf{centralizada}, de percepção \textbf{global}, e com tomada de decisão 
+\textbf{orientada a objetivo}.
