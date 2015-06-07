@@ -1,13 +1,62 @@
-\chapter{Levantamento Bibliográfico}
+\chapter{Trabalhos Relacionados}
 
-\section{Introduction}
+\section{Considerações Iniciais}
 
-\lipsum[1-4]
+Um dos grandes obstáculos para o estudo do Problema da Patrulha Multiagente é a 
+falta de concordância, dentre os pesquisadores, sobre nomenclatura, escopo e 
+critérios de avaliação para as soluções propostas. Isso pode se dever ao fato do 
+problema da patrulha estar presente em diferentes áreas como Inteligência 
+Artificial, Sistemas Multiagentes e até Robótica \citep{sampaiophd}.
 
-\section{Section}
+Há, na literatura, nomes diferentes para o problema da Patrulha Multiagente. Por 
+exemplo, alguns autores \citep{hernandez2013game} chamam o problema de “patrulha 
+multirobô” (ou Multi-Robot Patrolling, em inglês), outros \citep{6495145} se 
+referem ao problema pelo nome de “patrulha temporal” (tradução de timed 
+patrolling), já alguns pesquisadores \citep{Koenig:2001:TCA:375735.376463} 
+utilizam o termo “cobertura de terreno” (terrain coverage, em inglês). No 
+entanto, no decorrer do presente trabalho será utilizado o termo “Patrulha 
+Multiagente”, pois ele é considerado mais apropriado por diversos pesquisadores 
+\citep{6900280}, \citep{sampaiophd}, \citep{hernandez2013game} e \citep{6315145}.
 
-\lipsum[2-4]
+O escopo é outro fator que varia entre os trabalhos. \citep{6615158}, por 
+exemplo, faz uma análise do problema da patrulha onde o ambiente é dinâmico. 
+Isto é, o grafo onde os agentes patrulham sofre alterações ao longo da execução 
+do agente. Em um dado momento, o grafo pode ter vértices adicionados ou 
+removidos. Já \citep{6900280} trabalham levando em conta que agentes podem ter 
+velocidades diferentes. Os autores de \citep{Pippin:2013:PBT:2480362.2480378} 
+levam em consideração que agentes podem agir com eficiência abaixo do esperado, 
+isto é, o agente não pode ser confiado para realizar a tarefa que lhe foi 
+passada sem falhas. Em \citep{4209122}, os autores consideram restrições de 
+frequência, isso significa que cada nó tem a si designado um valor de frequência 
+com a qual o nó \textbf{deve} ser visitado. Outro exemplo seria o trabalho feito 
+em \citep{6495145} e \citep{Poulet:2012:b}, onde é feita uma análise do problema 
+em uma configuração de sistema aberto. Sistemas abertos foram definidos em 
+\citep{6040660} como aqueles agentes podem entrar e sair a qualquer momento da 
+execução.
 
-\subsection{Subsection}
+Na presente pesquisa, será utilizado o escopo para a Patrulha Multiagente 
+doravante referido como "padrão", onde os agentes possuem eficiência idêntica, 
+são confiáveis e não são retirados nem adicionados ao longo da patrulha. Quanto 
+ao ambiente, o objeto de estudo deste trabalho compreende apenas ambientes que 
+permanecem estáticos durante a execução dos agentes, e os pontos que devem ser 
+patrulhados não possuem restrições de frequência.
 
-\lipsum[2-4]
+Existem diversas métricas que podem ser utilizadas para medir a eficiência de 
+cada solução para a \ac{tmap}. Diferentes pesquisadores utilizam métricas 
+distintas. Em \citep{Machado:2002:MPE:1765317.1765332} foram propostas as 
+métricas mais utilizadas para a \ac{tmap}. São elas: ociosidade instantânea do 
+nó, ociosidade instantânea do grafo, ociosidade máxima e tempo de exploração. 
+Depois deste trabalho, \citep{sampaiophd} propôs uma nova família de métricas 
+baseadas nos intervalos entre visitas. As métricas utilizadas nos trabalhos mais 
+recentes variam: \citep{6900280} e \citep{Pippin:2013:PBT:2480362.2480378} 
+utilizam o intervalo máximo, já \citep{4209122} fazem uso da frequência mínima e 
+\citep{hernandez2013game} compara as frequências mínimas.
+
+Dessa forma, esta sessão visa, através de pesquisa bibliográfica, explorar os 
+trabalhos relacionados para construir a base de conhecimento necessária para 
+formular uma proposta compatível com o objetivo deste projeto. Serão discutidas 
+as soluções para o problema da patrulha presentes na literatura 
+classificando-as por seu escopo e métricas utilizadas na avaliação dos agentes.
+
+\section{Levantamento Bibliográfico}
+
