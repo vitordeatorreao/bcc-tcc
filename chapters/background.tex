@@ -1,4 +1,5 @@
 \chapter{Trabalhos Relacionados}
+\label{chp:background}
 
 \section{Considerações Iniciais}
 
@@ -60,6 +61,72 @@ classificando-as por seu escopo e métricas utilizadas na avaliação dos agente
 
 \section{Levantamento Bibliográfico}
 
+\subsection{Definições}
+
+O problema da Patrulha é tipicamente modelado por um Grafo 
+\citep{Rosen:2002:DMA:579402}. Segundo \citep{Almeida:2004:AAI}, isso se deve 
+ao fato de que representar o problema por meio de um grafo faz com que o 
+problema possa ser facilmente adaptado para um variedade de domínios desde 
+terrenos até redes de computadores. \citep{sampaiophd} também considera que os 
+grafos sejam o modelo preferencial para os ambientes da \ac{tmap}, pois são 
+suficientemente poderosos para capturar as características do terreno mais 
+relevantes para o problema. Essa capacidade do grafo pode ser confirmada por 
+estudos que adotam grafos como modelo e posteriormente aplicam suas soluções em 
+ambientes realistas contínuos \citep{Pippin:2013:PBT:2480362.2480378}.
+
+Em \citep{Chevaleyre:2004:TAM:1018411.1019013}, o problema é matematicamente 
+definido da seguinte forma:
+
+O território onde os agentes patrulham é representado por um grafo $G(V,E)$, 
+onde $V$ é o conjunto dos pontos de interesse que precisam ser patrulhados e 
+$E$ representa o conjunto de arestas, $E \in V^{2}$, de $G$. Para toda aresta 
+$(i,j) \in E$, onde $i,j \in V$, corresponde um peso $c_{i,j}$ representando a 
+distância entre o vértices $i$ e $j$ em $G$. 
+
+Nesse cenário, uma solução monoagente para o problema seria uma função 
+$ \pi : \mathbb{N} \longrightarrow V$, tal que $ \pi (j)$, para $j \in V$, é o 
+$j$-ésimo vértice visitado pelo agente. Analogamente, uma solução multiagente 
+seria um conjunto $ \Pi = \{ \pi_{1} ... \pi_{r} \}$, onde $r$ é o número de 
+agentes.
+
+Dessa forma, o problema seria encontrar o conjunto $ \Pi $ que obtivesse os 
+melhores resultados de acordo com um certo critério de avaliação.
+
+Já \citep{sampaiophd} contribuiu com uma definição mais abrangente da \ac{tmap}. 
+Ele aponta que uma instância da \ac{tmap} pode ser completamente definida pela 
+seguinte tupla: 
+
+$$ \langle E, P, S, s_{0}, A, I, M \rangle $$
+
+O elemento $E$ representa o ambiente (do inglês, \textit{environment} onde estão 
+os pontos de interesse a serem patrulhados, preferencialmente $E$ deve ser um 
+grafo $G(V,E)$. E o elemento $P$ é o conjunto dos pontos de interesse do ambiente. 
+No caso de um grafo, $P = V$.
+
+$S$ é um elemento um pouco mais complexo, pois ele 
+representa o conjunto de possíveis estados da sociedade de agentes. Cada estado 
+dentro desse conjunto pode conter informações tais como, quantos agentes estão 
+ativos, qual a posição atual de cada agente no ambiente $E$, o tempo decorrido 
+desde o início da patrulha, orientação e energia de cada agente e 
+características globais do conjunto de agentes. O estado inicial da sociedade é 
+representado em $s_{0}$, ou seja, $s_{0} \in S$. Esta modelagem para o grupo de 
+agentes permite ao modelo de \citep{sampaiophd} englobar diversas extensões para 
+a \ac{tmap}, como por exemplo as citadas no \chapref{chp:introduction}.
+
+O quinto elemento da tupla, $A$, é o conjunto de ações que alteram o estado da 
+sociedade, $S$. Essas ações podem ser individuais, de cada agente, ou coletivas, 
+da sociedade inteira. O autor afirma que $A$ deve conter, no mínimo, duas ações 
+individuais definidas para cada agente: movimentação entre os pontos de $P$ e 
+visitação aos elementos do conjunto.
+
+$I$ representa o intervalo de medição, dentro do qual o desempenho dos agentes 
+é mensurado através das métricas definidas no conjunto $M$, último elemento da 
+tupla.
+
+O problema da patrulha multiagente seria, então, definir um conjunto $A$ de 
+ações a serem tomadas pelos agentes, que estão inicialmente no estado $s_{0}$, 
+para minimizar as métricas presentes em $M$ durante o período de patrulha, $I$.
+
 \subsection{Classificações para a \ac{tmap}}
 
 São notórios alguns trabalhos muito citados na literatura que visaram 
@@ -95,3 +162,93 @@ estratégias \textbf{baseadas em particionamento}, com agentes
 \textbf{cognitivos}, de comunicação \textbf{proibida}, com coordenação 
 \textbf{centralizada}, de percepção \textbf{global}, e com tomada de decisão 
 \textbf{orientada a objetivo}.
+
+\subsection{Soluções já propostas}
+
+\citep{Chevaleyre:2004:TAM:1018411.1019013} propuseram uma solução para a 
+\ac{tmap} baseada no \ac{tsp}. Segundo os autores, a solução mais simples seria 
+encontrar um ciclo que percorresse todos os pontos de interesse do terreno 
+(de preferência sem repetição de pontos dentro do ciclo) e então fazer o agente 
+percorrer esse ciclo indefinidamente. Esta estratégia corresponde a encontrar um 
+ciclo que percorre todos os nós do grafo sem repeti-los, um Ciclo Hamiltoniano. 
+O trabalho demonstra que para um único agente a solução ótima, para a métrica da 
+ociosidade máxima, é esta estratégia cíclica baseada no \ac{tsp}. No entanto, 
+o \ac{tsp} é conhecidamente um problema NP-Completo. Dessa forma, os autores 
+propõem uma solução utilizando o algoritmo de Christofides 
+\citep{christofides1976worst} para obter uma aproximação do \ac{tsp} em tempo 
+polinomial. A pesquisa ainda aponta que, para o caso multiagente, a solução 
+seria calcular o ciclo, posicionar os agentes com um certo intervalo entre um e 
+outro e colocá-los para percorrer o ciclo indefinidamente. Os autores, no 
+entanto, não estudam a aplicação dessa solução ao problema com outras métricas 
+que não a da ociosidade máxima.
+
+Posteriormente, \citep{Almeida:2004:AAI} realizam um estudo comparativo entre 
+estratégias centralizadas e descentralizadas. Eles concluem que a solução 
+proposta por \citep{Chevaleyre:2004:TAM:1018411.1019013} é a mais eficiente 
+dentre as estudadas por eles. Os autores também chegam à conclusão de que as 
+estratégias centralizadas estudadas, apesar de terem obtido resultados melhores 
+nos experimentos, devem sofrer mais com problemas de escalabilidade a medida 
+que o grafo cresce.
+
+A partir das conclusões tiradas nesses estudos, \citep{4209122} propõem uma 
+solução centralizada e cíclica, onde ao invés de utilizar o algoritmo de 
+Christofides, se utiliza o método \textit{Spanning Tree Coverage}, introduzido 
+em \citep{Gabriely:2001}, para gerar um Ciclo Hamiltoniano em um grafo com 
+formato de \textit{grid}. Assim como a solução de 
+\citep{Chevaleyre:2004:TAM:1018411.1019013}, após o ciclo ser calculado, os 
+vários agentes são posicionados no grafo e colocados para percorrer o ciclo 
+indefinidamente.
+
+Além dessas soluções de ciclo único, também foram propostas, na literatura, 
+soluções baseadas em particionamento. Os autores 
+\citep{Pippin:2013:PBT:2480362.2480378} propõem uma solução, onde, na 
+inicialização, os nós do grafo são particionados entre os agentes e esses 
+calculam um ciclo fechado (\textit{closed cycle}) dentro da respectiva partição. 
+Uma entidade de monitoramento central fica responsável por verificar, ao longo 
+da execução, a performance dos agentes para a métrica de intervalo máximo entre 
+visitas e identificar agentes que estejam com baixo desempenho. Então, alguns 
+nós do agente de baixo rendimento são oferecidos aos outros agentes e 
+redesignados através de um protocolo baseado em leilão.
+
+Visando a escalabilidade apontada por \citep{Almeida:2004:AAI}, foram propostas 
+diversas soluções descentralizadas. Dentre elas, destacam-se as baseadas em 
+colônias de formigas \citep{Koenig:2001:TCA:375735.376463}, 
+\citep{Elor:2010:AMC:1884958.1884970}, \citep{6615158}. Nessas soluções, os 
+agentes não possuem uma visão completa do grafo, mas apenas das suas 
+vizinhanças. A coordenação dos agentes é emergente 
+\citep{Machado:2002:MPE:1765317.1765332}, pois cada agente pode deixar marcações 
+em nós do grafo que podem ser sentidas pelos outros agentes.
+
+\section{Considerações Finais}
+
+Uma vez apresentados, neste capítulo, os conceitos básicos dos trabalhos 
+relacionados, é possível fazer algumas observações sobre tendências dentre as 
+publicações. Há uma predileção pela Simulação como método de comparação e de 
+demonstração de soluções. É possível também perceber que muitos trabalhos 
+utilizam as métricas propostas por \citep{Machado:2002:MPE:1765317.1765332} e 
+\citep{sampaiophd}.
+
+A \tabref{tbl:comp_background} resume as soluções apresentadas nesta sessão de 
+acordo com o escopo do problema, o método de demonstração das soluções e as 
+métricas utilizadas.
+
+\begin{table}[tp]
+	\centering
+	\caption{Resumo dos trabalhos relacionados}
+	\label{tbl:comp_background}
+	\begin{tabularx}{\linewidth}{X X X X}
+		\toprule
+		\textbf{Trabalho} & \textbf{Escopo} & \textbf{Método} & \textbf{Métrica(s)} \\
+		\toprule
+		\citep{Chevaleyre:2004:TAM:1018411.1019013} & Patrulha Multiagente "Padrão" & Análise Matemática & Pior ociosidade (\textit{worst idleness}) \\
+		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		\citep{Almeida:2004:AAI} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade do grafo, Ociosidade média normalizada e Desvio padrão da ociosidade média \\
+		\citep{4209122} & Patrulha Multiagente com restrição de frequência & Análise Matemática & Frequência máxima uniforme \\
+		\citep{Pippin:2013:PBT:2480362.2480378} & Patrulha Multiagente com agentes que possuem performances distintas & Simulação e Experimentação com robôs reais & Intervalo Máximo entre visitas \\
+		\citep{6615158} & Patrulha Multiagente em ambientes dinâmicos & Simulação & Intervalo Máximo entre visitas \\
+		\citep{hernandez2013game} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade total \\
+		\citep{6495145} & Patrulha Multiagente como um sistema aberto & Simulação & Intervalo médio entre visitas, Intervalo quadrático médio, tempo de estabilização e amplitude das variações \\
+		\bottomrule
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
