@@ -84,10 +84,11 @@ $(i,j) \in E$, onde $i,j \in V$, corresponde um peso $c_{i,j}$ representando a
 distância entre o vértices $i$ e $j$ em $G$. 
 
 Nesse cenário, uma solução monoagente para o problema seria uma função 
-$ \pi : \mathbb{N} \longrightarrow V$, tal que $ \pi (j)$, para $j \in V$, é o 
-$j$-ésimo vértice visitado pelo agente. Analogamente, uma solução multiagente 
-seria um conjunto $ \Pi = \{ \pi_{1} ... \pi_{r} \}$, onde $r$ é o número de 
-agentes.
+$ \pi : \mathbb{N} \longrightarrow V$, tal que $ \pi(j)$ 
+é o $j$-ésimo vértice visitado pelo agente, desde que 
+$ \pi(j+1) = x $ se, e somente se, $ (\pi(j), x) \in E $. Analogamente, 
+uma solução multiagente seria um conjunto $ \Pi = \{ \pi_{1} ... \pi_{r} \}$, 
+onde $r$ é o número de agentes.
 
 Dessa forma, o problema seria encontrar o conjunto $ \Pi $ que obtivesse os 
 melhores resultados de acordo com um certo critério de avaliação.
