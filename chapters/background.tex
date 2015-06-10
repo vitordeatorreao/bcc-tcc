@@ -217,7 +217,20 @@ colônias de formigas \citep{Koenig:2001:TCA:375735.376463},
 agentes não possuem uma visão completa do grafo, mas apenas das suas 
 vizinhanças. A coordenação dos agentes é emergente 
 \citep{Machado:2002:MPE:1765317.1765332}, pois cada agente pode deixar marcações 
-em nós do grafo que podem ser sentidas pelos outros agentes.
+em nós do grafo que podem ser sentidas pelos outros agentes. Ao comparar as 
+soluções centralizadas com as descentralizadas, \citep{Almeida:2004:AAI} 
+encontra resultados melhores nas centralizadas.
+
+Apesar de serem amplamente utilizados na literatura para resolver problemas de 
+otimização, os Algoritmos Evolucionários \citep{Luke2013Metaheuristics} foram 
+pouco utilizados no problema da Patrulha. \citep{4630897} propõe uma solução 
+híbrida composta de dois passos: no primeiro, um algoritmo genético para 
+posicionar os agentes o mais distante possível dentro do território, e então, 
+utiliza \ac{aco} para calcular partições no grafo por onde os agentes irão 
+patrulhar durante a execução. Dessa forma, pode-se constatar que o algoritmo 
+evolucionário não está sendo usado para resolver o problema da patrulha em si, 
+mas para encontrar os $r$ nós mais distantes uns dos outros dentro do grafo, 
+onde $r$ é o número de agentes.
 
 \section{Considerações Finais}
 
@@ -228,6 +241,11 @@ demonstração de soluções. É possível também perceber que muitos trabalhos
 utilizam as métricas propostas por \citep{Machado:2002:MPE:1765317.1765332} e 
 \citep{sampaiophd}.
 
+
+Percebe-se que falta à literatura um trabalho que investigue uma solução para a 
+\ac{tmap} utilizando algoritmos evolucionários, tais como a \ac{es}, o \ac{ga} e 
+\ac{de}.
+
 A \tabref{tbl:comp_background} resume as soluções apresentadas nesta sessão de 
 acordo com o escopo do problema, o método de demonstração das soluções e as 
 métricas utilizadas.
@@ -236,19 +254,28 @@ métricas utilizadas.
 	\centering
 	\caption{Resumo dos trabalhos relacionados}
 	\label{tbl:comp_background}
-	\begin{tabularx}{\linewidth}{X X X X}
-		\toprule
+	\begin{tabularx}{\linewidth}{|X|X|X|X|}
+		\hline
 		\textbf{Trabalho} & \textbf{Escopo} & \textbf{Método} & \textbf{Métrica(s)} \\
-		\toprule
-		\citep{Chevaleyre:2004:TAM:1018411.1019013} & Patrulha Multiagente "Padrão" & Análise Matemática & Pior ociosidade (\textit{worst idleness}) \\
+		\hline
 		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		\hline
+		\citep{Chevaleyre:2004:TAM:1018411.1019013} & Patrulha Multiagente "Padrão" & Análise Matemática & Pior ociosidade (\textit{worst idleness}) \\
+		\hline
 		\citep{Almeida:2004:AAI} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade do grafo, Ociosidade média normalizada e Desvio padrão da ociosidade média \\
+		\hline
 		\citep{4209122} & Patrulha Multiagente com restrição de frequência & Análise Matemática & Frequência máxima uniforme \\
-		\citep{Pippin:2013:PBT:2480362.2480378} & Patrulha Multiagente com agentes que possuem performances distintas & Simulação e Experimentação com robôs reais & Intervalo Máximo entre visitas \\
-		\citep{6615158} & Patrulha Multiagente em ambientes dinâmicos & Simulação & Intervalo Máximo entre visitas \\
-		\citep{hernandez2013game} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade total \\
+		\hline
+		\citep{4630897} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade Máxima \\
+		\hline
 		\citep{6495145} & Patrulha Multiagente como um sistema aberto & Simulação & Intervalo médio entre visitas, Intervalo quadrático médio, tempo de estabilização e amplitude das variações \\
-		\bottomrule
+		\hline
+		\citep{Pippin:2013:PBT:2480362.2480378} & Patrulha Multiagente com agentes que possuem performances distintas & Simulação e Experimentação com robôs reais & Intervalo Máximo entre visitas \\
+		\hline
+		\citep{6615158} & Patrulha Multiagente em ambientes dinâmicos & Simulação & Intervalo Máximo entre visitas \\
+		\hline
+		\citep{hernandez2013game} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade total \\
+		\hline
 	\end{tabularx}
 	\caption*{Fonte: O autor}
 \end{table}
