@@ -82,10 +82,17 @@
 \usepackage{acronym}
 \usepackage{amsfonts}
 \usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\renewcommand{\listalgorithmname}{Lista de \ALG@name s}
+\makeatother
 
 \captionsetup[table]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=small}
 \captionsetup[lstlisting]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=small}
 \captionsetup[figure]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=small}
+
 
 %% Change the following pdf author attribute name to your name.
 \usepackage[linkcolor=black,
@@ -161,6 +168,9 @@ Not everything that counts can be counted, and not everything that can be counte
 
 % List of tables
 \listoftables
+
+% List of pseudocodes
+\listofalgorithms
 
 % List of acronyms
 % Acronyms manual: http://linorg.usp.br/CTAN/macros/latex/contrib/acronym/acronym.pdf
