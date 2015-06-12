@@ -1,13 +1,30 @@
-\chapter{Development Chapter}
+\chapter{Algoritmos Evolucionários}
 
-\section{Introduction}
+Segundo \citep{Back:1993:OEA:1326623.1326625}, várias pesquisas mostraram, ao 
+longo de três séculos, que modelar o processo de busca de forma similar à evolução 
+pelo qual os seres vivos passaram pode render algoritmos robustos, mesmo que 
+estes modelos sejam apenas representações imperfeitas do verdadeiro processo 
+biológico. O resultado desses modelos são chamados de Algoritmos Evolutivos ou 
+Evolucionários.
 
-\lipsum[1-4]
+Tais algoritmos são baseados no processo de aprendizado coletivo pelo qual passa 
+uma população de indivíduos. Cada indivíduo representa uma solução para um 
+problema, ou um ponto no espaço de possíveis soluções. O ambiente fornece 
+informações qualitativas sobre cada indivíduo. Essa informação pode ser 
+interpretada como a medida do quão ajustado o indivíduo está no ambiente. Na 
+analogia com algoritmos, essa é a medida de avaliação de uma solução 
+\citep{Back:1993:OEA:1326623.1326625}.
 
-\section{Section}
+Um algoritmo evolucionário funciona, genericamente, da seguinte forma: uma 
+população inicial é arbitrariamente inicializada; esse indivíduos têm sua 
+adaptação ao ambiente medida; eles são, posteriormente, recombinados para formar 
+uma nova população, podendo também sofrer mutação; finalmente, um subconjunto 
+dessas populações é selecionado de alguma forma definida pelo algoritmo e se 
+torna a população da próxima geração. Esse ciclo se repete tipicamente até que 
+parem de surgir melhores indivíduos que os já presentes na população, evento 
+chamado de convergência do algoritmo \citep{Back:1993:OEA:1326623.1326625}.
 
-\lipsum[2-4]
+O pseudocódigo abaixo exemplifica de forma genérica um algoritmo evolucionário.
 
-\subsection{Subsection}
-
-\lipsum[2-4]
+A \tabref{tbl:evo_dict} fornece um dicionário de termos comumente utilizados nos 
+\acp{ea}.
