@@ -87,7 +87,7 @@ $( \mu,\lambda )$ ou $( \mu + \lambda )$ e Geracional ou Estado Estável
 		\hline
 		Mutação & Realização de pequenas alterações em indivíduos. Também chamada de reprodução assexuada \\
 		\hline
-		Recombinação & Uma forma de alteração especial que recebe como parâmetro duas soluções pais e (normalmente) produz duas soluções filhas \\
+		Recombinação (em inglês, \textit{crossover}) & Uma forma de alteração especial que recebe como parâmetro duas soluções pais e (normalmente) produz duas soluções filhas \\
 		\hline
 		Reprodução & O ato de produzir uma ou mais soluções filhas a partir de uma solução pai \\
 		\hline
@@ -99,7 +99,7 @@ $( \mu,\lambda )$ ou $( \mu + \lambda )$ e Geracional ou Estado Estável
 	\caption*{Fonte: Adaptado de \citep{Luke2013Metaheuristics}}
 \end{table}
 
-\subsection{Estratégias Evolucionárias}
+\section{Estratégias Evolucionárias}
 
 As duas estratégias evolucionárias usadas no presente trabalho se diferem pela 
 forma como fazem a composição entre a população de pais e a população de filhos 
@@ -107,35 +107,158 @@ para construir a nova geração, que será utilizada na iteração seguinte do
 algoritmo.
 
 A primeira \ac{es} é conhecida como $( \mu, \lambda )$. Tipicamente, começa-se 
-com uma população de \lambda indivíduos gerados de forma arbitrária. Nessa 
-\ac{es}, o \mu representa o número de pais cujos filhos serão usados para compor 
-a próxima população que também deve ter \lambda indivíduos no total. Note que, 
-então, \lambda tem que ser um múltiplo de \mu. Então, os \mu indivíduos mais 
+com uma população de $\lambda$ indivíduos gerados de forma arbitrária. Nessa 
+\ac{es}, o $\mu$ representa o número de pais cujos filhos serão usados para compor 
+a próxima população que também deve ter $\lambda$ indivíduos no total. Note que 
+$\lambda$ tem que ser um múltiplo de $\mu$. Então, os $\mu$ indivíduos mais 
 aptos são escolhidos, processo chamado de Seleção por Truncamento (em inglês, 
-\textit{Truncate Selection}. Os indivíduos selecionados sofreram mutação para 
-gerar $ \lambda \/ \mu $ filhos. O que acarretará em uma nova população de 
-\lambda indivíduos que será a geração utilizada na próxima iteração do 
-algoritmo. O Pseudocódigo~\ref{mu_lambda_es} exemplifica a Estratégia 
-Evolucionária $( \mu, \lambda )$.
+\textit{Truncate Selection}). Os indivíduos selecionados sofrem mutação para 
+gerar $ \lambda / \mu $ filhos. O que acarretará em uma nova população de 
+$\lambda$ indivíduos que será a geração utilizada na próxima iteração do 
+algoritmo \citep{Luke2013Metaheuristics}.
+
+O Pseudocódigo~\ref{mu_lambda_es}, adaptado de \citep{Luke2013Metaheuristics}, 
+exemplifica a Estratégia Evolucionária $( \mu, \lambda )$.
 
 \begin{algorithm}                      % enter the algorithm environment
-	\caption{$( \mu, \lambda )$ Estratégia Evolucionária}          % give the algorithm a caption
+	\caption{Estratégia Evolucionária $( \mu, \lambda )$}          % give the algorithm a caption
 	\label{mu_lambda_es}                           % and a label for \ref{} commands later in the document
 	\begin{algorithmic}                    % enter the algorithmic environment
-		\Procedure{$( \mu, \lambda )$ ES}{$\lambda, \mu$}
+		\Procedure{$ \mu\_\lambda $\_ES}{$ \mu, \lambda $}
 		\State $P \gets \{\} $
-		\For{\lambda times}
-			\State $P \gets P \cup $ \{novo indivíduo gerado de forma arbitrária\}
+		\For{$1 ... \lambda$}
+			\State $p \gets$ \{novo indivíduo gerado de forma arbitrária\}
+			\State CalculaAptidão($p$)
+			\State $P \gets P \ \cup $ \{$p$\} 
 		\EndFor
-		\State $Melhor \get $ nulo
+		\State $Melhor \gets$ nulo
 		\Repeat
+			\State Ordena($P$) \Comment{Ordena a população de acordo com a aptidão}
+			\State $Q \gets P_{1...\mu}$ \Comment{Inicia $Q$ com os $\mu$ indivíduos mais aptos}
+			\State $P \gets \{\}$
+			\For{$Q_{j} \in Q$}
+				\For{$1... \lambda / \mu$}
+					\State $P \gets P \ \cup $ \{Aplica-Mutação($Q_{j}$)\}
+				\EndFor
+			\EndFor
 			\For{$P_{i} \in P$}
-				CalculaAptidão($P_{i}$)
-				\If{$Melhor = $ nulo ou Aptidão($P_{i}$) > Aptidão($Melhor$)}
-					$Melhor \gets P_{i}$
+				\State CalculaAptidão($P_{i}$)
+				\If{$Melhor = $ nulo \textbf{ou} Aptidão($P_{i}$) > Aptidão($Melhor$)}
+					\State $Melhor \gets P_{i}$
 				\EndIf
 			\EndFor
 		\Until{não termos mais tempo}
+		\State \textbf{return} $Melhor$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+A segunda \ac{es} utilizada nesta pesquisa é chamada de $( \mu + \lambda)$. 
+Enquanto que na estratégia $( \mu, \lambda )$ cada pai é substituído pelos seus 
+$ \lambda / \mu $ filhos, na estratégia $( \mu + \lambda )$, os $\mu$ pais 
+permanecem para competir com seus $ \lambda$ filhos na iteração seguinte. 
+\citep{Luke2013Metaheuristics} aponta que isso geralmente faz com que a 
+estratégia $( \mu + \lambda )$ explore mais os ótimos locais em comparação com 
+a estratégia $( \mu, \lambda )$, já que um pai suficientemente apto pode fazer 
+com que a \ac{es} fique "presa" em seus descendentes imediatos, causando uma 
+convergência das populações para o ótimo local ao redor do pai.
+
+O Pseudocódigo~\ref{mu+lambda_es}, também adaptado de 
+\citep{Luke2013Metaheuristics}, ilustra a Estratégia Evolucionária 
+$( \mu + \lambda )$.
+
+\begin{algorithm}                      % enter the algorithm environment
+	\caption{Estratégia Evolucionária $( \mu + \lambda )$}          % give the algorithm a caption
+	\label{mu+lambda_es}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                    % enter the algorithmic environment
+		\Procedure{$ \mu+\lambda $\_ES}{$ \mu, \lambda $}
+		\State $P \gets \{\} $
+		\For{$1 ... \lambda$}
+			\State $p \gets$ \{novo indivíduo gerado de forma arbitrária\}
+			\State CalculaAptidão($p$)
+			\State $P \gets P \ \cup $ \{$p$\} 
+		\EndFor
+			\State $Melhor \gets$ nulo
+		\Repeat
+			\State Ordena($P$) \Comment{Ordena a população de acordo com a aptidão}
+			\State $Q \gets P_{1...\mu}$ \Comment{Inicia $Q$ com os $\mu$ indivíduos mais aptos}
+			\State $P \gets Q$ \Comment{A diferença está aqui}
+			\For{$Q_{j} \in Q$}
+				\For{$1... \lambda / \mu$}
+					\State $P \gets P \ \cup $ \{Aplica-Mutação($Q_{j}$)\}
+				\EndFor
+			\EndFor
+			\For{$P_{i} \in P$}
+				\State CalculaAptidão($P_{i}$)
+				\If{$Melhor = $ nulo \textbf{ou} Aptidão($P_{i}$) > Aptidão($Melhor$)}
+					\State $Melhor \gets P_{i}$
+				\EndIf
+			\EndFor
+		\Until{não termos mais tempo}
+		\State \textbf{return} $Melhor$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+É importante notar que as Estratégias Evolucionárias não utilizam a recombinação 
+para gerar novos indivíduos. Para isso, elas utilizam apenas a Mutação cuja 
+implementação depende do tipo de dados envolvido no problema que está sendo 
+estudado. No próximo capítulo, serão propostos alguns operadores de Mutação para 
+a \ac{tmap}, que irão agir sobre caminhos e ciclos de um grafo. Também será 
+tratado, no próximo capítulo, como foram implementadas as funções de gerar 
+indivíduos e calcular suas aptidões dentro do contexto da \ac{tmap}.
+
+\section{Algoritmos Genéticos}
+
+Os Algoritmos Genéticos são similares às \acp{es}: o seu \textit{loop} principal 
+consiste em selecionar indivíduos da polução de acordo com as respectivas 
+aptidões, reproduzir os indivíduos selecionados e iterar sobre a nova população 
+para calcular as novas aptidões \citep{Luke2013Metaheuristics}.
+
+No entanto, eles são diferentes na forma como selecionam e reproduzem os 
+indivíduos. Enquanto que nas Estratégias Evolucionárias, todos os pais são 
+selecionados simultaneamente e passam por mutação em seguida, os Algoritmos 
+Genéticos selecionam os pais e geram filhos ao poucos até que se tenha uma 
+população de filhos suficiente. A reprodução em si também é bem diferente das 
+\acp{es}: nos Algoritmos Genéticos, inicia-se com uma população de filhos vazia. 
+O Algoritmo então seleciona dois pais de forma arbitrária, recombina esses pais 
+em dois novos indivíduos filhos e então faz a mutação deles. Esses dois novos 
+indivíduos são adicionados à população. Esse processo se repete até que a 
+população de filhos esteja completamente preenchida 
+\citep{Luke2013Metaheuristics}.
+
+O pseudocódigo~\ref{GenAlg}, adaptado de \citep{Luke2013Metaheuristics}, deve 
+ajudar o leitor a compreender o algoritmo.
+
+\begin{algorithm}                      % enter the algorithm environment
+	\caption{Algoritmo Genético}          % give the algorithm a caption
+	\label{GenAlg}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                    % enter the algorithmic environment
+		\Procedure{AlgoritmoGenetico}{$tamanhoPopulação$}
+		\State $P \gets \{\} $
+		\For{$1 ...\ tamanhoPopulação$}
+			\State $p \gets$ \{novo indivíduo gerado de forma arbitrária\}
+			\State CalculaAptidão($p$)
+			\State $P \gets P \ \cup $ \{$p$\} 
+		\EndFor
+		\State $Melhor \gets$ nulo
+		\Repeat
+			\State $Q \gets \{\}$
+			\For{$1 ...\ tamanhoPopulação / 2$}
+				\State $Pai_{a} \gets $ Seleciona($P$)
+				\State $Pai_{b} \gets $ Seleciona($P$)
+				\State $Filho_{a},\ Filho_{b} \gets $ Recombina($Pai_{a}$, $Pai_{b}$)
+				\State $Q \gets Q\ \cup $ \{Aplica-Mutação($Filho_{a}$), Aplica-Mutação($Filho_{b}$)\}
+			\EndFor
+			\State $P \gets Q$
+			\For{$P_{i} \in P$}
+				\State CalculaAptidão($P_{i}$)
+				\If{$Melhor = $ nulo \textbf{ou} Aptidão($P_{i}$) > Aptidão($Melhor$)}
+					\State $Melhor \gets P_{i}$
+				\EndIf
+			\EndFor
+		\Until{não termos mais tempo}
+		\State \textbf{return} $Melhor$
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
