@@ -262,3 +262,92 @@ ajudar o leitor a compreender o algoritmo.
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
+
+Esta é a forma tradicional como o Algoritmo Genético é apresentado nos livros 
+textos \citep{Luke2013Metaheuristics}, também conhecido como Algoritmo Genético 
+Geracional. No entanto, existem outras variações, como por exemplo, o Algoritmo 
+Genético de Estado Estável, do inglês, \textit{Steady State Genetic Algorithm}.
+O \ac{ga} Geracional é assim conhecido pois nele a população é completamente 
+atualizada de uma vez. O \ac{ga} de Estado Estável, por sua vez, introduz um 
+ou dois filhos, obtidos através de recombinação e mutação, diretamente na 
+população de indivíduos (matando outros indivíduos para abrir espaço) e segue 
+para a próxima geração.
+
+Dessa forma, assim como a \ac{es} $( \mu + \lambda )$, os indivíduos pais se 
+mantém na população e disputam com os filhos nas gerações seguintes. Por isso, 
+este algoritmo pode sofrer do mesmo problema e ficar "preso" a ótimos locais ao 
+redor dos pais \citep{Luke2013Metaheuristics}.
+
+O pseudocódigo~\ref{GenAlgSteady}, adaptado de \citep{Luke2013Metaheuristics}, detalha 
+as características do Algoritmo Genético de Estado Estável.
+
+\begin{algorithm}                      % enter the algorithm environment
+	\caption{Algoritmo Genético de Estado Estável}          % give the algorithm a caption
+	\label{GenAlgSteady}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                   % enter the algorithmic environment
+		\Procedure{AlgoritmoGeneticoEstadoEstavel}{$tamanhoPopulação$}
+		\State $P \gets \{\} $
+		\For{$1 ...\ tamanhoPopulação$}
+			\State $P \gets P \ \cup $ \{novo indivíduo gerado de forma arbitrária\} 
+		\EndFor
+		\For{$P_{i} \in P$}
+			\State CalculaAptidão($P_{i}$)
+			\If{$Melhor = $ nulo \textbf{ou} Aptidão($P_{i}$) > Aptidão($Melhor$)}
+				\State $Melhor \gets P_{i}$
+			\EndIf
+		\EndFor
+		\Repeat
+			\State $Pai_{a} \gets $ Seleciona($P$)
+			\State $Pai_{b} \gets $ Seleciona($P$)
+			\State $Filho_{a},\ Filho_{b} \gets $ Recombina($Pai_{a}$, $Pai_{b}$)
+			\State $Filho_{a} \gets $ Aplica-Mutação($Filho_{a}$)
+			\State $Filho_{b} \gets $ Aplica-Mutação($Filho_{b}$)
+			\State CalculaAptidão($Filho_{a}$)
+			\If{Aptidão($Filho_{a}$) > Aptidão($Melhor$)}
+				\State $Melhor \gets Filho_{a}$
+			\EndIf
+			\State CalculaAptidão($Filho_{b}$)
+			\If{Aptidão($Filho_{b}$) > Aptidão($Melhor$)}
+				\State $Melhor \gets Filho_{b}$
+			\EndIf
+			\State $p_{c} \gets $ SelecionaParaMorrer($P$) \Comment{Seleciona um indivíduo para remover da população}
+			\State $p_{d} \gets $ SelecionaParaMorrer($P$) \Comment{$p_{c} \neq p_{d}$}
+			\State $P \gets P\ -\ \{p_{c},p_{d}\}$
+			\State $P \gets P\ \cup\ \{Filho_{a},\ Filho_{b}\}$
+		\Until{não termos mais tempo}
+		\State \textbf{return} $Melhor$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+No próximo capítulo, serão explorados as aplicações dos algoritmos acima 
+apresentados para a \ac{tmap}. Serão propostos operadores de mutação e de 
+recombinação que possam ser aplicados ao modelo utilizado, além de um método 
+para calcular a aptidão de um indivíduo. No entanto, pode-se, ainda neste 
+capítulo, tratar de um operador utilizado nos algoritmos genéticos que é 
+definido sem interferência do problema ou da estrutura de dados no qual ele 
+está modelado. Os operadores de Seleção podem ser descritos para uma população 
+qualquer de indivíduos modelados de forma arbitrária.
+
+Na presente pesquisa, foi utilizado o operador de mutação comumente chamado de 
+Torneio (do inglês, \textit{Tournament}) \citep{Luke2013Metaheuristics}. Ele 
+consiste em coletar, da população, $t$ indivíduos de forma aleatória. Destes, 
+o algoritmo retorna apenas o indivíduo mais apto. Segue o pseudocódigo para 
+ilustrar esse operador \citep{Luke2013Metaheuristics}.
+
+\begin{algorithm}                      % enter the algorithm environment
+	\caption{Torneio}          % give the algorithm a caption
+	\label{torneio}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                    % enter the algorithmic environment
+		\Procedure{Torneiro}{$P, t$}
+		\State $Melhor \gets $ indivíduo escolhido aleatoriamente de $P$ \Comment{De forma que não possa ser escolhido uma segunda vez}
+		\For{$i$ de $2 ... t$}
+			\State $Proximo \gets $ indivíduo escolhido aleatoriamente de $P$
+			\If{Aptidão($Proximo$) $>$ Aptidão($Melhor$)}
+				\State $Melhor \gets Proximo$
+			\EndIf
+		\EndFor
+		\State \textbf{return} $Melhor$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
