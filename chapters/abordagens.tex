@@ -16,12 +16,14 @@ indivíduos foi dividida em três etapas. A primeira é o cálculo de $r$ centro
 onde $r$ é o número de agentes, ao redor dos quais os agentes deverão patrulhar. 
 A segunda tarefa é a escolha dos nós, ao redor do centro, que comporão cada 
 partição. Por fim, falta o cálculo de um ciclo, para cada partição, que passe 
-por todos os seus nós. Essas tarefas foram chamadas respectivamente de 
+por todos os seus vértices. Essas tarefas foram chamadas respectivamente de 
 \textit{centering}, \textit{partitioning} e \textit{path building}.
 
 Nas subseções seguintes, cada uma dessas três tarefas serão tratadas 
 separadamente, mas é importante notar que uma tarefa depende da resposta dada 
-pela sua antecessora.
+pela sua antecessora. Serão apresentadas mais de um operador que executa cada 
+tarefa, assim ao montar um algoritmo evolucionário, o leitor pode construir 
+seus indivíduos com qualquer combinação deles.
 
 \subsection{\textit{Centering}}
 
@@ -32,6 +34,7 @@ grafo para ser os centros. Veja o Pseudocódigo~\ref{centering_random} abaixo.
 \begin{algorithm}                  % enter the algorithm environment
 	\caption{\textit{Random Centering}}          % give the algorithm a caption
 	\label{centering_random}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
 	\begin{algorithmic}                    % enter the algorithmic environment
 		\Procedure{RANDOM-CENTERING}{$V, r$}
 		\newline
@@ -62,6 +65,7 @@ operador.
 \begin{algorithm}                  % enter the algorithm environment
 	\caption{\textit{Approximated Maximum Distance Centering}}          % give the algorithm a caption
 	\label{centering_maximum}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
 	\begin{algorithmic}                    % enter the algorithmic environment
 		\Procedure{APPROXIMATED-MAXIMUM-DISTANCE-CENTERING}{$G(V,E), r$}
 		\newline
@@ -101,6 +105,7 @@ exemplifica como isso pode ser implementado.
 \begin{algorithm}                   % enter the algorithm environment
 	\caption{\textit{Random Partitioning}}          % give the algorithm a caption
 	\label{partitioning_random}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
 	\begin{algorithmic}                    % enter the algorithmic environment
 		\Procedure{RANDOM-PARTITIONING}{$centros, G(V,E)$}
 		\newline
@@ -133,9 +138,10 @@ Como o outro operador de particionamento do grafo é mais complexo, primeiro
 será apresentado o pseudocódigo ao leitor, e então será feita uma discussão 
 de suas propriedades. Observe o pseudocódigo~\ref{partitioning_fungal}.
 
-\begin{algorithm}                   % enter the algorithm environment
+\begin{algorithm}                  % enter the algorithm environment
 	\caption{\textit{Heuristic Graph Partitioning}}          % give the algorithm a caption
 	\label{partitioning_fungal}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
 	\begin{algorithmic}[1]                    % enter the algorithmic environment
 		\Procedure{GRAPH-PARTITIONING}{$centros, G(V,E)$}
 		\newline
@@ -209,3 +215,116 @@ vértices necessários para serem conectadas. E essa é a diferença entre as li
 $ParticaoPorVertice$ e $ParticaoDoCentro$.
 
 \subsection{\textit{Path Building}}
+
+Uma vez de posse dos centros e das partições, falta construir um caminho, mais 
+especificamente um ciclo, que permita ao agente caminhar por todos os nós de 
+sua partição. A primeira abordagem a ser apresentada para tal finalidade, segue 
+o mesmo princípio de ter uma opção totalmente aleatória, e é chamada de 
+\textit{Random Path Building}. Observe o pseudocódigo~\ref{path_random}. Este 
+procedimento deve ser executado para cada uma das partições calculadas na etapa 
+de \textit{Partitioning}.
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Random Path Building}}          % give the algorithm a caption
+	\label{path_random}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                   % enter the algorithmic environment
+		\Procedure{RANDOM-PATH-BUILDING}{$G(V,E), particao$}
+		\newline
+		\Comment{$G$ é o o grafo, $particao$ é a lista de vértices que formam a partição de um agente}
+		\State $G^{\prime} \gets $ subgrafo de $G$ induzido por $particao$
+		\State $particao \gets $ EMBARALHA($particao$) \Comment{Embaralha a lista de vértices aleatoriamente}
+		\State $Q \gets $ LISTA-CICLICA($particao$)
+		\State $P \gets $ \{\} \Comment{$P$ é o caminho resultante}
+		\For{$i = 1$ até $|Q|$}
+			\If{existe aresta em $G^{\prime}$ entre $Q[i]$ e $Q[i+1]$}
+				\State ADICIONA-AO-CAMINHO($P$, $Q[i]$)
+				\State ADICIONA-AO-CAMINHO($P$, $Q[i+1]$)
+			\Else
+				\State $p \gets $ menor caminho entre $Q[i]$ e $Q[i+1]$
+				\For{$v \in p$}
+					\State ADICIONA-AO-CAMINHO($P$, $v$)
+				\EndFor
+			\EndIf
+		\EndFor
+		\State \textbf{Retorne} $P$
+		\EndProcedure
+		\Procedure{ADICIONA-AO-CAMINHO}{$P$, $v$}
+		\State $ultimo \gets $ PEEK-LAST($P$) \Comment{Retorna o último elemento de P sem removê-lo}
+		\If{$ultimo \neq nulo$ \textbf{e} $ultimo = v$}
+			\State \textbf{Retorne}
+		\Else
+			\State $P \gets P\ \cup $ \{$v$\}
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Perceba que, como $Q$ é uma lista cíclica, na última iteração do \textit{loop} 
+da linha 6, $Q[i+1]$ será o primeiro elemento de $Q$. Assim, o menor caminho 
+entre o último e o primeiro elemento de $Q$ será adicionado ao caminho final 
+$P$. Isto fará com que $P$ seja um ciclo, já que ele irá começar e terminar no 
+primeiro elemento de $Q$.
+
+\section{Mutação}
+
+Uma vez que os operadores para criação arbitrária de indivíduos estejam 
+apresentados, fica faltando os operadores de mutação e recombinação para que 
+se possa executar um algoritmo evolucionário completo no contexto da \ac{tmap}.
+Nesta seção, por tanto, serão apresentados três operadores diferentes para 
+aplicar mutação em indivíduos.
+
+\section{Recombinação}
+
+Por fim, será apresentado um operador para aplicar recombinação em dois 
+indivíduos pais gerando dois indivíduos filhos. Esse operador é chamado de 
+\textit{Simple Random Crossover}, ou Recombinação Aleatória Simples, e está 
+ilustrado no pseudocódigo~\ref{recombinacao}. O operador consiste em tentar 
+trocar um agente de um indivíduo por um agente do outro indivíduo selecionado 
+para recombinação.
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Simple Random Crossover}}          % give the algorithm a caption
+	\label{recombinacao}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                   % enter the algorithmic environment
+		\Procedure{SIMPLE-RANDOM-CROSSOVER}{$Solucao_{a}, Solucao_{b}, r$}
+		\newline
+		\Comment{Os parâmetros são dois indivíduos e $r$, o número de agentes}
+		\State $r_{i} \gets $ escolhe um número aleatório entre $1\ ...\ r$
+		\State $C_{a} \gets $ Cópia($Solucao_{a}$) \Comment{Este é o filho do indivíduo $a$}
+		\State $C_{b} \gets $ Cópia($Solucao_{b}$) \Comment{Este é o filho do indivíduo $b$}
+		\State $Agente_{a} \gets $ RETORNA-AGENTE($C_{a}$, $r_{i}$)
+		\State $Agente_{b} \gets $ RETORNA-AGENTE($C_{b}$, $r_{i}$)
+		\If{o centro do $Agente_{a}$ for igual ao centro do $Agente_{b}$}
+			\State CONFIGURA-AGENTE($C_{a}$, $r_{i}$, $Agente_{b}$)
+			\State CONFIGURA-AGENTE($C_{b}$, $r_{i}$, $Agente_{a}$)
+			\State \textbf{Retorne} $C_{a}$, $C_{b}$
+		\Else
+			\For{$j \in 1\ ...\ r$}
+				$agente \gets $ RETORNA-AGENTE($C_{b}$, $j$)
+				\If{o centro do $Agente_{a}$ está no caminho do $agente$}
+					\State $Agente_{b} \gets agente$
+					\State CONFIGURA-AGENTE($C_{a}$, $r_{i}$, $Agente_{b}$)
+					\State CONFIGURA-AGENTE($C_{b}$, $j$, $Agente_{a}$)
+					\State \textbf{Retorne} $C_{a}$, $C_{b}$
+				\EndIf
+			\EndFor
+			\State CONFIGURA-AGENTE($C_{a}$, $r_{i}$, $Agente_{b}$)
+			\State CONFIGURA-AGENTE($C_{b}$, $r_{i}$, $Agente_{a}$)
+			\State \textbf{Retorne} $C_{a}$, $C_{b}$
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+O operador começa escolhendo um índice, $r_{i}$ de um agente aleatoriamente. 
+Depois, uma cópia dos indivíduos é atribuída a dois novos indivíduos filhos. 
+A seguir, o operador verifica se os agentes no índice $r_{i}$ possuem o mesmo 
+vértice como centro. Em caso positivo, o operador imediatamente troca um agente 
+pelo outro entre os dois indivíduos filhos. Em caso negativo, o operador tenta 
+encontrar o agente do indivíduo $b$ cujo caminho passe pelo centro do agente 
+posicionado no índice $r_{i}$ do indivíduo $a$. Encontrando este agente, o 
+operador faz a troca. Caso não seja encontrado nenhum agente, o operador vai 
+simplesmente trocar os agentes que estão no mesmo índice, $r_{i}$, em seus 
+respectivos indivíduos.

@@ -64,7 +64,7 @@
 %%          Example: See \chapref{chap:introduction}. It will produce 
 %%                   'See Chapter 1', in case of English language.
 
-\documentclass[pt,twoside,onehalfspacing,bsc]{risethesis}
+\documentclass[pt,oneside,onehalfspacing,bsc]{risethesis}
 
 \usepackage[portuguese]{babel}
 \usepackage{colortbl}
@@ -82,9 +82,22 @@
 \usepackage{acronym}
 \usepackage{amsfonts}
 \usepackage{tabularx}
+\usepackage{etoolbox}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \makeatletter
+
+\AfterEndEnvironment{algorithm}{\let\@algcomment\relax}
+\AtEndEnvironment{algorithm}{\kern2pt\hrule\relax\vskip3pt\@algcomment}
+\let\@algcomment\relax
+\newcommand\algcomment[1]{\def\@algcomment{\footnotesize#1}}
+
+\renewcommand\fs@ruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+	\def\@fs@pre{\hrule height.8pt depth0pt \kern2pt}%
+	\def\@fs@post{}%
+	\def\@fs@mid{\kern2pt\hrule\kern2pt}%
+	\let\@fs@iftopcapt\iftrue}
+
 \renewcommand{\ALG@name}{Pseudocódigo}
 \renewcommand{\listalgorithmname}{Lista de \ALG@name s}
 \algrenewcommand\algorithmicprocedure{\textbf{Procedimento}}
@@ -94,6 +107,7 @@
 \algrenewcommand\algorithmicwhile{\textbf{Enquanto}}
 \algrenewcommand\algorithmicdo{\textbf{Faça}}
 \algrenewcommand\algorithmicif{\textbf{Se}}
+\algrenewcommand\algorithmicelse{\textbf{Senão}}
 \algrenewcommand\algorithmicthen{\textbf{Então}}
 \algrenewtext{EndProcedure}{\textbf{Fim}}
 \algrenewtext{EndIf}{\textbf{Fim}}
@@ -146,12 +160,12 @@
 
 \frontpage
 
-\presentationpage
-
 \begin{fichacatalografica}
 	\FakeFichaCatalografica % Comment this line when you have the correct file
-%     \includepdf{fig_ficha_catalografica.pdf} % Uncomment this
+	%     \includepdf{fig_ficha_catalografica.pdf} % Uncomment this
 \end{fichacatalografica}
+
+\presentationpage
 
 \banca
 
