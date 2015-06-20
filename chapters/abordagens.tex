@@ -1,0 +1,146 @@
+\chapter{Abordagens Evolucionárias para a TMAP}
+
+No último capítulo, foram apresentados os algoritmos evolucionários usados nesta 
+pesquisa. No entanto, algumas lacunas ficaram abertas: não foram apresentadas 
+formas de gerar indivíduos, isto é, soluções para a \ac{tmap}, de forma 
+arbitrária para a primeira população, além de como aplicar 
+recombinação e mutação neles. Dessa forma, neste capítulo, serão propostos 
+operadores para construção de indivíduos, bem como para mutação e recombinação.
+
+\section{Criação de Indivíduos}
+
+Assim como em \citep{Pippin:2013:PBT:2480362.2480378} e \citep{4630897}, as 
+soluções resultantes das abordagens evolucionárias aqui propostas são baseadas 
+em particionamento (vide \secref{sec:classifytmap}). Dessa forma, a criação de 
+indivíduos foi dividida em três etapas. A primeira é o cálculo de $r$ centros, 
+onde $r$ é o número de agentes, ao redor dos quais os agentes deverão patrulhar. 
+A segunda tarefa é a escolha dos nós, ao redor do centro, que comporão cada 
+partição. Por fim, falta o cálculo de um ciclo, para cada partição, que passe 
+por todos os seus nós. Essas tarefas foram chamadas respectivamente de 
+\textit{centering}, \textit{partitioning} e \textit{path building}.
+
+Nas subseções seguintes, cada uma dessas três tarefas serão tratadas 
+separadamente, mas é importante notar que uma tarefa depende da resposta dada 
+pela sua antecessora.
+
+\subsection{\textit{Centering}}
+
+A primeira forma proposta para se calcular os centros é chamada de 
+\textit{Random Centering}, e consiste em simplesmente escolher nós aleatórios do 
+grafo para ser os centros. Veja o Pseudocódigo~\ref{centering_random} abaixo.
+
+\begin{algorithm}                  % enter the algorithm environment
+	\caption{\textit{Random Centering}}          % give the algorithm a caption
+	\label{centering_random}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                    % enter the algorithmic environment
+		\Procedure{RANDOM-CENTERING}{$V, r$}
+		\newline
+		\Comment{$V$ é o conjunto de vértices do grafo e $r$ é o número de agentes}
+		\State $Vertices \gets $ Cópia($V$)
+		\State $Centros \gets \{\}$
+		\For{$1 ...\ r$}
+			\State $Centros \gets Centros\ \cup$ \{Seleciona-Aleatoriamente-Remove($Vertices$)\}
+		\EndFor
+		\State \textbf{Retorne} $Centros$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Uma outra forma de escolher os centros é tentar encontrar os vértices do grafo 
+que estejam mais distantes uns dos outros. O objetivo neste operador é iniciar 
+indivíduos de forma um pouco mais inteligente, para aumentar as chances de 
+serem indivíduos com alta aptidão, mas sem apagar completamente o lado aleatório 
+indicado às inicializações de indivíduos nos algoritmos evolucionários. 
+\citep{Luke2013Metaheuristics} alerta os seus leitores para os perigos de 
+utilizar heurísticas que aparentam gerar melhores indivíduos, mas que podem 
+estar, inadvertidamente, condenando os algoritmos evolucionários a ficarem 
+"presos"\ em mínimos locais.
+
+O pseudocódigo~\ref{centering_maximum} mostra como seria a implementação deste 
+operador.
+
+\begin{algorithm}                  % enter the algorithm environment
+	\caption{\textit{Approximated Maximum Distance Centering}}          % give the algorithm a caption
+	\label{centering_maximum}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                    % enter the algorithmic environment
+		\Procedure{APPROXIMATED-MAXIMUM-DISTANCE-CENTERING}{$G(V,E), r$}
+		\newline
+		\Comment{$G(V,E)$ é o grafo e $r$ é o número de agentes}
+		\State $Vertices \gets $ Cópia($V$)
+		\State $Centros \gets $ RANDOM-CENTERING($V$, $r$)
+		\State $d \gets $ Soma-Distancias($G(V,E)$, $centros$) \Comment{Soma as distâncias entre os vértices}
+		\Repeat
+			\State $centro \gets $ escolhe um vértice aleatório de $centros$
+			\For{$V_{i} \in $ Sucessores($G(V,E)$, $centro$), onde $V_{i} \notin Centros$}
+				\State Substitui($Centros$, $centro$, $V_{i}$) \Comment{Substitui $centro$ por $V_{i}$ em $Centros$}
+				\State $d^{\prime} \gets $ Soma-Distancias($G(V,E)$, $centros$)
+				\If{$d > d^{\prime}$}
+					\State Substitui($Centros$, $V_{i}$, $centro$)
+				\EndIf
+			\EndFor
+		\Until{não tenhamos mais tempo}
+		\State \textbf{Retorne} $Centros$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+O operador começa selecionando $r$ centros aleatoriamente, onde $r$ é o número 
+de agentes. Depois, ele calcula o somatório das distâncias entre todos os $r$ 
+vértices. Então, a cada iteração, um centro é escolhido aleatoriamente. Todos 
+os sucessores do centro escolhido são testados no lugar do centro, se essa troca 
+fizer com que os somatórios das distâncias entre os centros aumente, o sucessor 
+fica no lugar do centro.
+
+\subsection{\textit{Partitioning}}
+
+Seguindo a mesma ideia de ter uma opção completamente aleatória de criar os 
+indivíduos, uma das formas propostas para calcular as partições é chamada de 
+\textit{Random Partitioning}. O pseudocódigo~\ref{partitioning_random} 
+exemplifica como isso pode ser implementado.
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Random Partitioning}}          % give the algorithm a caption
+	\label{partitioning_random}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                    % enter the algorithmic environment
+		\Procedure{RANDOM-PARTITIONING}{$centros, G(V,E)$}
+		\newline
+		\Comment{$G$ é o o grafo e $centros$ é a lista de centros calculados anteriormente}
+		\State $Particoes \gets $ \{\}
+		\State $verticesAdicionados \gets $ \{\}
+		\Repeat
+			\State $centro \gets $ escolhe aleatoriamente um elemento de $centros$
+			\State $candidato \gets $ Seleciona-Aleatoriamente($V$) \Comment{$candidato \notin centros$}
+			\State $caminho \gets $ Menor-Caminho($G$, $centro$, $candidato$)
+			\State $Particoes(centro) \gets Particoes(centro)\ \cup caminho$
+			\State $verticesAdicionados \gets verticesAdicionados\ \cup caminho$
+		\Until{$|verticesAdicionados| = |V|$}
+		\State \textbf{Retorne} $Particoes$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+O \textit{Random Partitioning} consiste em criar uma lista de partições para 
+cada centro. A cada iteração do \textit{loop} principal, um centro é escolhido 
+aleatoriamente. Então, um outro vértice do grafo também é escolhido de forma 
+aleatória (desde que não seja um centro). Depois, é adicionado à partição 
+daquele centro escolhido todo o caminho entre ele mesmo e o vértice escolhido. 
+Finalmente, o \textit{Random Partitioning} para quando todos os nós do grafo 
+estiverem em alguma partição.
+
+Como o outro operador de particionamento do grafo é mais complexo, primeiro 
+será apresentado o pseudocódigo ao leitor, e então será feita uma discussão 
+de suas propriedades. Observe o pseudocódigo~\ref{partitioning_fungal}.
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Heuristic Graph Partitioning}}          % give the algorithm a caption
+	\label{partitioning_fungal}                           % and a label for \ref{} commands later in the document
+	\begin{algorithmic}                    % enter the algorithmic environment
+		\Procedure{GRAPH-PARTITIONING}{$centros, G(V,E)$}
+		\newline
+		\Comment{$G$ é o o grafo e $centros$ é a lista de centros calculados anteriormente}
+		
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{\textit{Path Building}}

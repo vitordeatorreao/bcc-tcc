@@ -53,7 +53,7 @@ evolucionário.
 			\State $P^{\prime} \gets $ Recombina($P$)
 			\State $P^{\prime \prime} \gets $ Aplica-Mutação($P^{\prime}$)
 			\State $P \gets $ Seleciona($P^{\prime \prime}$)
-		\Until{não termos mais tempo}
+		\Until{não tenhamos mais tempo}
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -147,8 +147,8 @@ exemplifica a Estratégia Evolucionária $( \mu, \lambda )$.
 					\State $Melhor \gets P_{i}$
 				\EndIf
 			\EndFor
-		\Until{não termos mais tempo}
-		\State \textbf{return} $Melhor$
+		\Until{não tenhamos mais tempo}
+		\State \textbf{Retorne} $Melhor$
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -194,8 +194,8 @@ $( \mu + \lambda )$.
 					\State $Melhor \gets P_{i}$
 				\EndIf
 			\EndFor
-		\Until{não termos mais tempo}
-		\State \textbf{return} $Melhor$
+		\Until{não tenhamos mais tempo}
+		\State \textbf{Retorne} $Melhor$
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -257,8 +257,8 @@ ajudar o leitor a compreender o algoritmo.
 					\State $Melhor \gets P_{i}$
 				\EndIf
 			\EndFor
-		\Until{não termos mais tempo}
-		\State \textbf{return} $Melhor$
+		\Until{não tenhamos mais tempo}
+		\State \textbf{Retorne} $Melhor$
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -314,8 +314,8 @@ as características do Algoritmo Genético de Estado Estável.
 			\State $p_{d} \gets $ SelecionaParaMorrer($P$) \Comment{$p_{c} \neq p_{d}$}
 			\State $P \gets P\ -\ \{p_{c},p_{d}\}$
 			\State $P \gets P\ \cup\ \{Filho_{a},\ Filho_{b}\}$
-		\Until{não termos mais tempo}
-		\State \textbf{return} $Melhor$
+		\Until{não tenhamos mais tempo}
+		\State \textbf{Retorne} $Melhor$
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -347,7 +347,7 @@ ilustrar esse operador \citep{Luke2013Metaheuristics}.
 				\State $Melhor \gets Proximo$
 			\EndIf
 		\EndFor
-		\State \textbf{return} $Melhor$
+		\State \textbf{Retorne} $Melhor$
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}

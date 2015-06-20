@@ -87,6 +87,16 @@
 \makeatletter
 \renewcommand{\ALG@name}{Pseudocódigo}
 \renewcommand{\listalgorithmname}{Lista de \ALG@name s}
+\algrenewcommand\algorithmicprocedure{\textbf{Procedimento}}
+\algrenewcommand\algorithmicrepeat{\textbf{Repita}}
+\algrenewcommand\algorithmicuntil{\textbf{Até que}}
+\algrenewcommand\algorithmicfor{\textbf{Para}}
+\algrenewcommand\algorithmicdo{\textbf{Faça}}
+\algrenewcommand\algorithmicif{\textbf{Se}}
+\algrenewcommand\algorithmicthen{\textbf{Então}}
+\algrenewtext{EndProcedure}{\textbf{Fim}}
+\algrenewtext{EndIf}{\textbf{Fim}}
+\algrenewtext{EndFor}{\textbf{Fim}}
 \makeatother
 
 \captionsetup[table]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=small}
@@ -185,6 +195,7 @@ Not everything that counts can be counted, and not everything that can be counte
 \include{chapters/introduction}
 \include{chapters/background}
 \include{chapters/desenv}
+\include{chapters/abordagens}
 \include{chapters/conclusion}
 
 % References
