@@ -123,9 +123,11 @@ O \textit{Random Partitioning} consiste em criar uma lista de partições para
 cada centro. A cada iteração do \textit{loop} principal, um centro é escolhido 
 aleatoriamente. Então, um outro vértice do grafo também é escolhido de forma 
 aleatória (desde que não seja um centro). Depois, é adicionado à partição 
-daquele centro escolhido todo o caminho entre ele mesmo e o vértice escolhido. 
-Finalmente, o \textit{Random Partitioning} para quando todos os nós do grafo 
-estiverem em alguma partição.
+daquele centro escolhido todo o menor caminho entre ele mesmo e o vértice 
+escolhido. O menor caminho inteiro é adicionado para que as partições estejam 
+conectadas, isto é, para que seja possível traçar um caminho, dentro do grafo 
+$G$, entre seus vértices. Finalmente, o \textit{Random Partitioning} para quando 
+todos os nós do grafo estiverem em alguma partição.
 
 Como o outro operador de particionamento do grafo é mais complexo, primeiro 
 será apresentado o pseudocódigo ao leitor, e então será feita uma discussão 
@@ -134,13 +136,76 @@ de suas propriedades. Observe o pseudocódigo~\ref{partitioning_fungal}.
 \begin{algorithm}                   % enter the algorithm environment
 	\caption{\textit{Heuristic Graph Partitioning}}          % give the algorithm a caption
 	\label{partitioning_fungal}                           % and a label for \ref{} commands later in the document
-	\begin{algorithmic}                    % enter the algorithmic environment
+	\begin{algorithmic}[1]                    % enter the algorithmic environment
 		\Procedure{GRAPH-PARTITIONING}{$centros, G(V,E)$}
 		\newline
 		\Comment{$G$ é o o grafo e $centros$ é a lista de centros calculados anteriormente}
-		
+		\State $ParticaoPorVertice \gets $ \{\}
+		\State $ListaDeVerticesPorCentro \gets $ \{\}
+		\State $ParticaoDoCentro \gets $ \{\}
+		\For{$i \in 1\ ...\ |V|$}
+			\If{$i \in centros$}
+				\State $ParticaoPorVertice[i] \gets i$
+			\Else
+				\State $ParticaoPorVertice[i] \gets -1$
+			\EndIf
+		\EndFor
+		\For{$centro \in centros$}
+			\State $ListaDeVerticesPorCentro(centro) \gets $ lista dos nós do grafo ordenados pelas suas distâncias ao $centro$
+			\State $ParticaoDoCentro(centro) \gets $ \{\}
+		\EndFor
+		\Repeat
+			\For{$C_{i} \in centros$}
+				\While{$ListaDeVerticesPorCentro(C_{i}) \neq \{\}$}
+					\State $n \gets $ REMOVE-PRIMEIRO($ListaDeVerticesPorCentro(C_{i})$)
+					\If{$ParticaoPorVertice(n) = -1$}
+						\State $ParticaoPorVertice(n) \gets C_{i}$
+						\State \textbf{Pare o Laço Enquanto}
+					\EndIf
+				\EndWhile
+			\EndFor
+		\Until{$-1 \notin ParticaoPorVertice$} \Comment{Até que todo vértice esteja em uma partição}
+		\For{$v \in V$}
+			\State $ParticaoDoCentro(ParticaoPorVertice(v)) \cup $ {o menor caminho entre ParticaoPorVertice(v) e v}
+		\EndFor
+		\State \textbf{Retorne} as partições em $ParticaoDoCentro$
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
+
+O operador começa criando uma lista chamada $ParticaoPorVertice$. Nessa lista, 
+cada índice representa um vértice, $v$, do grafo. O valor armazenado em 
+$ParticaoPorVertice(v)$ corresponde ao centro ao qual o vértice $v$ está 
+associado. No final, todos os vértices associados a um centro formarão uma 
+partição diferente. Na linha seguinte é iniciada uma lista bidimensional. O 
+índice da primeira dimensão representa um centro, $c$, calculado na etapa 
+anterior da construção de indivíduos, e $ListaDeVerticesPorCentro(c)$ representa 
+uma lista de todos os vértices do grafo ordenados pelas suas distâncias a $c$. 
+Na linha 4 é criada outra lista bidimensional, cujos índices também representam 
+cada centro já calculado. $ParticaoDoCentro(c)$ vai guardar uma lista de todos 
+os vértices que foram associados a $c$. Em breve, será mostrado porque é 
+necessário manter ambas as listas $ParticaoDoCentro$ e $ParticaoPorVertice$.
+
+O operador segue para popular a lista $ParticaoPorVertice$ com os elementos 
+triviais. Cada centro, $c$, tem seu valor em $ParticaoPorVertice$ configurado 
+para si mesmo, enquanto que os outros vértices tem o valor configurado para $-1$. 
+Na linha 13 é calculada a lista de vértices do grafo ordenadas pela distância ao 
+centro e na linha 14 é iniciada a lista $ParticaoDoCentro$ para cada um dos 
+centros.
+
+O \textit{loop} iniciado na linha 16 só para quando todos os vértices estiverem 
+associados a algum centro, dentro da lista $ParticaoPorVertice$. A cada iteração 
+deste \textit{loop}, é encontrado, para cada centro, $c$, o primeiro vértice na 
+sua $ListaDeVerticesPorCentro$  que ainda não possui um centro associado a si. 
+Uma vez que esse vértice é encontrado, seu valor em $ParticaoPorVertice$ é 
+configurado para o centro $c$.
+
+Quando todos os vértices possuem um valor diferente de $-1$ em 
+$ParticaoPorVertice$, o operador entra em seu último \textit{loop}. Nele, para 
+cada vértice, $v$, do grafo é concatenada a lista que consiste no menor caminho 
+entre $v$ e o centro, $c$, a ele associado em $ParticaoPorVertice$ com a lista 
+de vértices na partição de $c$. Isso acontece para todas as partições possuam os 
+vértices necessários para serem conectadas. E essa é a diferença entre as listas 
+$ParticaoPorVertice$ e $ParticaoDoCentro$.
 
 \subsection{\textit{Path Building}}
