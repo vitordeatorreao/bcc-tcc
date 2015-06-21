@@ -271,8 +271,152 @@ primeiro elemento de $Q$.
 Uma vez que os operadores para criação arbitrária de indivíduos estejam 
 apresentados, fica faltando os operadores de mutação e recombinação para que 
 se possa executar um algoritmo evolucionário completo no contexto da \ac{tmap}.
-Nesta seção, por tanto, serão apresentados três operadores diferentes para 
+Nesta seção, por tanto, serão apresentados dois operadores diferentes para 
 aplicar mutação em indivíduos.
+
+No entanto, antes de descrever os operadores, será mostrado um procedimento que 
+é utilizado em ambos. Ao final de sua operação, as mutações aqui propostas 
+aplicam um procedimento baseado no \textit{$k-$change} 
+\citep{Marx:2008:SKN:2283963.2284596}, que será chamado de \textit{melhorar}. O 
+\textit{$k-$change} é descrito como uma heurística de busca local que tenta 
+encontrar um caminho de menor custo através de leves alterações em um caminho 
+original. A alteração é a substituição de até $k$ arestas no caminho. Os valores 
+para $k$ mais utilizados são 2, 3 e 4. Como o objetivo do operador de mutação é 
+realizar uma leve mudança no indivíduo \citep{Luke2013Metaheuristics}, esta 
+pesquisa utilizou $k = 2$.
+
+O pseudocódigo~\ref{melhorar} ilustra o procedimento de \textit{melhorar}, que 
+engloba o uso do \textit{2-change}.
+
+\begin{algorithm}                  % enter the algorithm environment
+	\caption{Melhorar (\textit{2-change})}          % give the algorithm a caption
+	\label{melhorar}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                    % enter the algorithmic environment
+		\Procedure{MELHORAR}{$G(V,E), A$}
+		\newline
+		\Comment{$G$ é o grafo e $A$ é o Agente escolhido para sofrer mutação}
+		\Repeat
+			\State $p \gets $ RANDOM-2-CHANGE($G(V,E)$, $A$)
+			\If{CUSTO($p$) < CUSTO($A$)}
+				\State CONFIGURAR-CAMINHO($A$, $p$) \Comment{Substitui o caminho antigo do Agent}	
+			\EndIf
+		\Until{não tenhamos mais tempo}
+		\EndProcedure
+		\Procedure{RANDOM-2-CHANGE}{$G(V,E), A$}
+			\State $edge_{1} \gets 0$
+			\State $edge_{2} \gets 0$
+			\State $p \gets $ caminho do agente $A$
+			\Repeat
+				\State $edge_{1} \gets $ escolhe um número aleatório entre 1 e $|p| -1$
+				\State $edge_{2} \gets $ escolhe um número aleatório entre 1 e $|p| -1$
+				\Comment{$-1$ porque o último e o primeiro elementos são iguais}
+				\If{$edge_{1} > edge_{2}$} \Comment{Forçar que $edge_{1}$ seja o elemento mais a esquerda de $p$}
+					\State $aux \gets edge_{1}$
+					\State $edge_{1} \gets edge_{2}$
+					\State $edge_{2} \gets aux$
+				\EndIf
+			\Until{$edge_{1} \neq edge_{2}$ \textbf{e} $edge_{1} + 1 \neq edge_{2}$}
+			\State \textbf{Retorne} 2-CHANGE($G(V,E)$, $A$, $edge_{1}$, $edge_{2}$) 
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Primeiramente, é importante perceber que o \textit{2-change} não necessariamente 
+irá retornar um caminho de custo menor. Então, o procedimento \textit{melhorar} 
+só vai usar o caminho retornado pelo \textit{2-change} se houver ganho real. O 
+procedimento \textit{RANDOM-2-CHANGE} vai selecionar duas arestas aleatoriamente. 
+Contudo, o caminho do agente, $P$, está representado em uma lista de vértices 
+onde, se $V_{i}$ e $V_{i+1}$ são dois vértices nas posições $i$ e $i+1$ dentro do 
+caminho do agente, então existe uma aresta $(V_{i}, V_{i+1})$ no Grafo onde o 
+agente patrulha. Então, quando o procedimento escolhe um valor $edge_{1}$, esse 
+valor está representando, na verdade, a aresta $(V_{edge_{1}}, V_{edge_{1}+1})$.
+
+Uma vez que o procedimento tem certeza de ter escolhido duas arestas diferentes, 
+ele faz uma chamada para o \textit{2-change} em si, que está descrito no 
+pseudocódigo~\ref{2_change}.
+
+\begin{algorithm}                  % enter the algorithm environment
+	\caption{\textit{2-change}}          % give the algorithm a caption
+	\label{2_change}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                    % enter the algorithmic environment
+		\Procedure{2-CHANGE}{$G(V,E), A, edge_{1}, edge_{2}$}
+		\newline
+		\Comment{$G$ é o grafo e $A$ é o Agente escolhido para sofrer mutação}
+		\State $P \gets $ caminho do agente $A$
+		\State $P^{\prime}  \gets $ \{\} \Comment{Novo caminho}
+		\For{$k \in 1\ ...\ |p|$} \Comment{Lembrando que $edge_{1} < edge_{2}$}
+			\If{$k < edge_{1}$}
+				\State ADICIONA-AO-CAMINHO($P^{\prime}$, $P[k]$) \Comment{Vide pseudocódigo~\ref{path_random}}
+			\ElsIf{$k = edge_{1}$}
+				\State $p \gets $ menor caminho entre $P[edge_{1}]$ e $P[edge_{2}]$
+				\For{cada $p_{i} \in p$}
+					\State ADICIONA-AO-CAMINHO($P^{\prime}$, $p_{i}$)
+				\EndFor
+			\ElsIf{$k < edge_{2}$}
+				\State $v \gets P[edge_{1} + edge_{2} - k]$ \Comment{lembrando que, nesse ponto, $k > edge_{1}$}
+				\State ADICIONA-AO-CAMINHO($P^{\prime}$, $v$)
+			\ElsIf{$k = edge_{2}$}
+				\State $p \gets $ menor caminho entre $P[edge_{1}+1]$ e $P[edge_{2}+1]$
+				\For{cada $p_{i} \in p$}
+					\State ADICIONA-AO-CAMINHO($P^{\prime}$, $p_{i}$)
+				\EndFor
+			\Else
+				\State ADICIONA-AO-CAMINHO($P^{\prime}$, $P[k]$)
+			\EndIf
+		\EndFor
+		\State \textbf{Retorne} $P^{\prime}$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+O procedimento \textit{2-change} funciona da seguinte forma: seja $P$ o conjunto 
+de pares ordenados (já que é uma lista) dos vértices no caminho do agente $A$. 
+$P$ será algo como:
+\begin{multline*}
+\{<V_{1},1>,...,<V_{e_{1}},e_{1}>,<V_{e_{1}+1},e_{1}+1>,..., \\
+<V_{e_{2}-1},e_{2}-1>,<V_{e_{2}},e_{2}>,<V_{e_{2}+1},e_{2}+1>,...,<V_{|P|},|P|>\}
+\end{multline*}
+Onde $e_{1}$ e $e_{2}$ são as duas arestas escolhidas para serem substituídas. 
+Após a execução do \textit{2-change}, o caminho retornado, $P^{\prime}$, deverá 
+ser:
+\begin{multline*}
+\{<V_{1},1>,...,<V_{e_{1}},e_{1}>,...,<V_{e_{2}},e_{2}>,<V_{e_{2}-1},e_{2}-1>,..., \\
+<V_{e_{1}+1},e_{1}+1>,...,<V_{e_{2}+1},e_{2}+1>,...,<V_{|P|},|P|>\}
+\end{multline*}
+
+Veja um exemplo. Suponha que um agente, $A$, que percorre as arestas vermelhas 
+no seu subgrafo induzido ilustrado na \figref{2_change_ex1}. O seu ciclo seria 
+representado pela lista $p = [6,4,5,1,2,3,4,6]$. Suponha agora que esse agente 
+passe pelo \textit{2-change} e que as arestas escolhidas foram $(4,5)$ e $(,)$
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{selected edge} = [draw,line width=2pt,-,red!50]
+
+\begin{figure}
+	\caption{Agente de exemplo para o procedimento \textit{2-change}}
+	\centering
+	\begin{tikzpicture}
+		[scale=.8]
+		\node[vertex] (n6) at (1,10) {6};
+		\node[vertex] (n4) at (4,8)  {4};
+		\node[vertex] (n5) at (8,9)  {5};
+		\node[vertex] (n1) at (11,8) {1};
+		\node[vertex] (n2) at (9,6)  {2};
+		\node[vertex] (n3) at (5,5)  {3};
+	
+		\foreach \from/\to in {n2/n5}
+			\path[edge] (\from) -- (\to);
+		\foreach \source / \dest in {n6/n4,n4/n5,n5/n1,n1/n2,n2/n3,n3/n4}
+			\path[selected edge] (\source) -- (\dest);
+	
+	
+	\end{tikzpicture}
+	\caption*{Fonte: O autor}
+	\label{2_change_ex1}
+\end{figure}
 
 \section{Recombinação}
 
@@ -302,7 +446,7 @@ para recombinação.
 			\State \textbf{Retorne} $C_{a}$, $C_{b}$
 		\Else
 			\For{$j \in 1\ ...\ r$}
-				$agente \gets $ RETORNA-AGENTE($C_{b}$, $j$)
+				\State $agente \gets $ RETORNA-AGENTE($C_{b}$, $j$)
 				\If{o centro do $Agente_{a}$ está no caminho do $agente$}
 					\State $Agente_{b} \gets agente$
 					\State CONFIGURA-AGENTE($C_{a}$, $r_{i}$, $Agente_{b}$)
