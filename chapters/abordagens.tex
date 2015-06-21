@@ -215,6 +215,7 @@ vértices necessários para serem conectadas. E essa é a diferença entre as li
 $ParticaoPorVertice$ e $ParticaoDoCentro$.
 
 \subsection{\textit{Path Building}}
+\label{path_building}
 
 Uma vez de posse dos centros e das partições, falta construir um caminho, mais 
 especificamente um ciclo, que permita ao agente caminhar por todos os nós de 
@@ -388,15 +389,18 @@ ser:
 
 Veja um exemplo. Suponha que um agente, $A$, que percorre as arestas vermelhas 
 no seu subgrafo induzido ilustrado na \figref{2_change_ex1}. O seu ciclo seria 
-representado pela lista $p = [6,4,5,1,2,3,4,6]$. Suponha agora que esse agente 
-passe pelo \textit{2-change} e que as arestas escolhidas foram $(4,5)$ e $(,)$
+representado pela lista $P = [6,4,5,1,2,3,4,6]$. Suponha agora que esse agente 
+passe pelo \textit{2-change} e que as arestas escolhidas foram $(4,5)$ e $(2,3)$, 
+ou seja, $e_{1} = 2$ e $e_{2} = 5$. Então, $P^{\prime}$ será 
+$[6,4,2,1,5,3,4,6]$. E é possível visualizar $P^{\prime}$ na 
+\figref{2_change_ex2}.
 
 \tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
 \tikzstyle{edge} = [draw,thick,-]
 \tikzstyle{selected edge} = [draw,line width=2pt,-,red!50]
 
 \begin{figure}
-	\caption{Agente de exemplo para o procedimento \textit{2-change}}
+	\caption{Caminho original do Agente de exemplo para o procedimento \textit{2-change}}
 	\centering
 	\begin{tikzpicture}
 		[scale=.8]
@@ -407,7 +411,7 @@ passe pelo \textit{2-change} e que as arestas escolhidas foram $(4,5)$ e $(,)$
 		\node[vertex] (n2) at (9,6)  {2};
 		\node[vertex] (n3) at (5,5)  {3};
 	
-		\foreach \from/\to in {n2/n5}
+		\foreach \from/\to in {n2/n5,n3/n5,n4/n2}
 			\path[edge] (\from) -- (\to);
 		\foreach \source / \dest in {n6/n4,n4/n5,n5/n1,n1/n2,n2/n3,n3/n4}
 			\path[selected edge] (\source) -- (\dest);
@@ -417,6 +421,176 @@ passe pelo \textit{2-change} e que as arestas escolhidas foram $(4,5)$ e $(,)$
 	\caption*{Fonte: O autor}
 	\label{2_change_ex1}
 \end{figure}
+
+\begin{figure}
+	\caption{Caminho do Agente de exemplo após o procedimento \textit{2-change}}
+	\centering
+	\begin{tikzpicture}
+	[scale=.8]
+	\node[vertex] (n6) at (1,10) {6};
+	\node[vertex] (n4) at (4,8)  {4};
+	\node[vertex] (n5) at (8,9)  {5};
+	\node[vertex] (n1) at (11,8) {1};
+	\node[vertex] (n2) at (9,6)  {2};
+	\node[vertex] (n3) at (5,5)  {3};
+	
+	\foreach \from/\to in {n2/n5,n4/n5,n2/n3,n4/n2}
+		\path[edge] (\from) -- (\to);
+	\foreach \source / \dest in {n6/n4,n5/n1,n1/n2,n3/n4,n4/n2,n3/n5}
+		\path[selected edge] (\source) -- (\dest);
+	
+	
+	\end{tikzpicture}
+	\caption*{Fonte: O autor}
+	\label{2_change_ex2}
+\end{figure}
+
+Com o operador \textit{Melhorar} devidamente explicado, fica faltando os 
+operadores de mutação em si, que vão fazer uma chamada para o procedimento de 
+\textit{Melhorar}. O primeiro operador de mutação é chamado de 
+\textit{Half Add Half Sub Small Changes}. O nome vem do fato de que existe 
+uma change de $50\%$ do operador adicionar ou subtrair um vértice do caminho do 
+agente selecionado para mutação, sempre de forma a modificar levemente o caminho.
+O pseudocódigo~\ref{small_changes} ilustra o operador.
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Half Add Half Sub Small Changes}}          % give the algorithm a caption
+	\label{small_changes}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                   % enter the algorithmic environment
+		\Procedure{HALF-ADD-HALF-SUB-SMALL-CHANGES}{$Solucao$}
+		\newline
+		\Comment{$Solucao$ é o indivíduo selecionado para mutação}
+		\State $G(V,E) \gets $ o grafo associado à $Solucao$
+		\State $A \gets $ um agente escolhido aleatoriamente
+		\State $d \gets $ um número Real aleatório entre 0 e 1
+		\If{$d \geq 0.5$}
+			\State ADICIONA-COM-POUCAS-MUDANÇAS($G(V,E)$,$A$)
+		\Else
+			\State REMOVE-COM-POUCAS-MUDANÇAS($G(V,E)$,$A$)
+		\EndIf
+		\State MELHORAR($G(V,E)$, $A$)
+		\EndProcedure
+		\Procedure{ADICIONA-COM-POUCAS-MUDANÇAS}{$G(V,E), A$}
+		\State $P \gets $ o caminho do agente $A$
+		\State $v \gets $ um vértice aleatório tal que $v \in V$ e $v \notin P$
+		\State $d \gets \infty$
+		\State $v^{\prime} \gets $ nulo
+		\For{$i \in 1\ ...\ |P|$}
+			$d_{i} \gets $ DISTANCIA($G(V,E)$, $v$, $P[i]$)
+			\If{$v^{\prime} = $ nulo \textbf{ou} $d^{\prime} < d$}
+				$v^{\prime} \gets P[i]$
+				\State $d \gets d_{i}$
+			\EndIf
+		\EndFor
+		\State $P^{\prime} \gets $ menor caminho entre $v^{\prime}$ e $v$
+		\For{$k \in 1\ ...\ (|P^{\prime}| - 1)$}
+			ADICIONA-AO-CAMINHO($P$, $i + k$, $P^{\prime}[k]$)
+			\State ADICIONA-AO-CAMINHO($P$, $i + k$, $P^{\prime}[k]$)
+		\EndFor
+		\State ADICIONA-AO-CAMINHO($P$, $i + k + 1$, $P^{\prime}[k + 1]$)
+		\EndProcedure
+		\Procedure{REMOVE-COM-POUCAS-MUDANÇAS}{$G(V,E), A$}
+		\State $P \gets $ o caminho do agente $A$
+		\State $indice \gets $ um número aleatório entre $1$ e $|P|$
+		\State $P^{\prime} \gets $ \{\}
+		\If{$indice = 1$ \textbf{ou} $indice = |P|$}
+			REMOVE-PRIMEIRO-ELEMENTO($P$)
+			\State REMOVE-ULTIMO-ELEMENTO($P$)
+			\State $P^{\prime} \gets $ menor caminho entre $P[|P|]$ e $P[1]$
+			\State $indice \gets |P|$
+		\ElsIf{$P[indice - 1] = P[indice + 1]$}
+			\State REMOVE-ELEMENTO-NO-INDICE($P$, $indice$)
+			\State REMOVE-ELEMENTO-NO-INDICE($P$, $indice$)
+		\Else
+			$P^{\prime} \gets $ menor caminho entre $P[indice - 1]$ e $P[indice + 1]$
+			\State REMOVE-ELEMENTO-NO-INDICE($P$, $indice$)
+		\EndIf
+		\For{cada $v_{j} \in P^{\prime}$}
+			ADICIONA-AO-CAMINHO($P$, $indice$, $v_{j}$)
+			\State $indice \gets indice + 1$
+		\EndFor
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Quando o operador executa a adição de um vértice, $v$, ele procura pelo vértice, 
+$v^{\prime}$ que já está no caminho do agente com menor distância para $v$. 
+Depois, ele inclui no caminho do agente uma rota que vai do vértice $v$ para o 
+vértice $v^{\prime}$ e volta para $v$. Por isso, há duas operações de adição 
+nas linhas 22 e 23: o operador está adicionando o caminho de ida e de volta ao 
+mesmo tempo. Já para remover um vértice, $v$, do caminho do agente, o operador, 
+primeiro, verifica se o vértice a ser removido é o primeiro (e último, já que é 
+um ciclo). Em caso positivo, o primeiro e último elementos da lista que 
+representa o caminho do agente são removidos e então o menor caminho entre os 
+novos último e primeiro vértices é adicionado ao final do ciclo do agente 
+(linhas 32 a 35). Caso o caminho do agente parta de um vértice $v_{i}$, visite o 
+vértice escolhido e volte para o mesmo vértice $v_{i}$, então o operador 
+simplesmente apaga $v$ e uma das cópias de $v_{i}$ (linhas 36 a 38). Por fim, 
+caso nenhuma dessas condições seja verdadeira, o operador irá remover o vértice 
+escolhido e substituí-lo pelo menor caminho entre seu antecessor e seu sucessor 
+(linhas 39 a 41).
+
+Para concluir os operadores de mutação, falta o operador 
+\textit{Half Add Half Sub Rebuild}. Ele compartilha com o 
+\textit{Half Add Half Sub Small Changes} a chance de 50\% de adicionar ou 
+remover um vértice do caminho do agente. No entanto, este operador tem como 
+objetivo causar alterações mais drásticas no caminho do agente, pois ele o
+reconstrói integralmente. O pseudocódigo~\ref{rebuild} ilustra este operador.
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Half Add Half Sub Rebuild}}          % give the algorithm a caption
+	\label{rebuild}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                   % enter the algorithmic environment
+		\Procedure{HALF-ADD-HALF-SUB-REBUILD}{$Solucao$}
+		\newline
+		\Comment{$Solucao$ é o indivíduo selecionado para mutação}
+		\State $G(V,E) \gets $ o grafo associado à $Solucao$
+		\State $A \gets $ um agente escolhido aleatoriamente
+		\State $d \gets $ um número Real aleatório entre 0 e 1
+		\If{$d \geq 0.5$}
+			\State ADICIONA-E-RECONSTROI($G(V,E)$,$A$)
+		\Else
+			\State REMOVE-E-RECONSTROI($G(V,E)$,$A$)
+		\EndIf
+		\State MELHORAR($G(V,E)$, $A$)
+		\EndProcedure
+		\Procedure{ADICIONA-E-RECONSTROI}{$G(V,E), A$}
+		\State $P \gets $ o caminho do agente $A$
+		\State $v \gets $ um vértice aleatório tal que $v \in V$ e $v \notin P$
+		\State $particao \gets $ a partição por onde patrulha o agente $A$
+		\State $particao \gets particao\ \cup $ \{$v$\}
+		\State $P \gets $ RECONSTRÓI-O-CAMINHO($G(V,E)$, $particao$)
+		\EndProcedure
+		\Procedure{REMOVE-E-RECONSTROI}{$G(V,E), A$}
+		\State $P \gets $ o caminho do agente $A$
+		\State $particao \gets $ a partição por onde patrulha o agente $A$
+		\State $lista \gets $ EMBARALHA($particao$) \Comment{Embaralha de forma aleatória}
+		\For{$v \in lista$}
+			\State $particao^{\prime} \gets particao - \{v\}$
+			\State $G^{\prime} \gets $ subgrafo de $G$ induzido por $particao^{\prime}$
+		\EndFor
+		\State $particao \gets particao^{\prime}$
+		\State RECONSTRÓI-O-CAMINHO($G(V,E)$, $particao$)
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Caso o \textit{Half Add Half Sub Rebuild} opere para adicionar um novo vértice, 
+$v$, à lista de vértices patrulhados pelo agente, $A$, ele irá simplesmente 
+adicionar $v$ à partição associada a $A$. Depois, o caminho que $A$ tem de 
+percorrer é completamente reconstruído usando qualquer um dos operadores 
+apresentados na \secref{path_building}. Por isso, o 
+\textit{Half Add Half Sub Rebuild} deve gerar alterações mais bruscas nos 
+indivíduos quando comparado com o \textit{Half Add Half Sub Small Changes}.
+
+Caso a operação seja de remoção, o operador irá procurar um vértice da partição 
+do agente que possa ser removido sem desconectar o seu subgrafo induzido. Quando 
+este vértice é encontrado ele é removido e um novo caminho é calculado para 
+o agente. De forma análoga à operação de adição, o novo caminho pode ser 
+construído utilizando qualquer um dos operadores de \textit{path building} 
+apresentados neste capítulo.
 
 \section{Recombinação}
 
