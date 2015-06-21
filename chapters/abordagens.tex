@@ -267,6 +267,139 @@ entre o último e o primeiro elemento de $Q$ será adicionado ao caminho final
 $P$. Isto fará com que $P$ seja um ciclo, já que ele irá começar e terminar no 
 primeiro elemento de $Q$.
 
+Já que o objetivo dos operadores de \textit{Path Building} é construir um ciclo 
+para o agente que passe por todos os nós da partição sob sua responsabilidade, 
+é possível argumentar que o ciclo ótimo seria um Ciclo Hamiltoniano de custo 
+mínimo. Dessa forma, os outros dois operadores para construção de caminhos são 
+\textbf{baseados} em heurísticas para o \ac{tsp}. São elas: 
+\textit{Nearest Insertion Method} e \textit{Nearest Neighbor Method} 
+\citep{nilsson2003heuristics}. Assim, os nomes dos operadores são: 
+\textit{Nearest Insertion Path Building} e 
+\textit{Nearest Neighbor Path Building}.
+
+O pseudocódigo~\ref{nearest_neighbor} ilustra o operador 
+\textit{Nearest Neighbor Path Building}. O operador começa por escolher um 
+vértice aleatório da partição. Este será o primeiro elemento do caminho 
+resultante, $T$. Então, até que todos os nós da partição estejam no caminho, ele 
+irá escolher o vértice, $v_{s}$, ainda não adicionado com menor distância para o 
+último ou primeiro elemento do caminho. Como mostram as linhas 27 a 38, o menor 
+caminho entre $v_{s}$ e o primeiro ou último elemento de $T$ será adicionado a 
+$T$. No final, como é necessário que $T$ seja um ciclo, é adicionado o menor 
+caminho entre o último e o primeiro elementos de $T$ (linhas 41 a 44).
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Nearest Neighbor Path Building}}          % give the algorithm a caption
+	\label{nearest_neighbor}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                   % enter the algorithmic environment
+		\Procedure{NEAREST-NEIGHBOR-PATH-BUILDING}{$G(V,E), particao$}
+		\newline
+		\Comment{$G$ é o o grafo, $particao$ é a lista de vértices que formam a partição de um agente}
+		\State $T \gets $ \{\} \Comment{$P$ é o caminho resultante}
+		\State $P \gets $ Cópia($particao$)
+		\State $v \gets $ vértice aleatório de $P$
+		\State $P \gets P - \{v\}$
+		\State $T \gets T\ \cup $ \{v\}
+		\While{$P \neq \{\}$}
+			\State $primeiro \gets T[0]$
+			\State $ultimo \gets T[|T|]$
+			\State $v_{s} \gets $ nulo \Comment{O vértice a ser adicionado}
+			\State $d_{min} \gets \infty$
+			\State $addNoFinal? \gets falso$
+			\For{$j \in 1\ ...\ |P|$}
+				\State $v_{j} \gets P[j]$
+				\State $d_{j,primeiro} \gets $ distância entre o vértice $v_{j}$ e o vértice $primeiro$
+				\State $d_{j,ultimo} \gets $ distância entre o vértice $v_{j}$ e o vértice $ultimo$
+				\If{$d_{j,primeiro} < d_{min}$}
+					\State $d_{min} \gets d_{j,primeiro}$
+					\State $v_{s} \gets v_{j}$
+				\EndIf
+				\If{$d_{j,ultimo} < d_{min}$}
+					\State $d_{min} \gets d_{j,ultimo}$
+					\State $v_{s} \gets v_{j}$
+					\State $addNoFinal? \gets verdadeiro$
+				\EndIf
+			\EndFor
+			\If{$addNoFinal?$}
+				\State $P_{ultimo,s} \gets $ menor caminho entre $ultimo$ e $v_{s}$
+				\For{$v_{p} \in P_{ultimo,s}$}
+					\State $P \gets P - \{v_{p}\}$
+					\State $T \gets T\ \cup\ \{v_{p}\}$
+				\EndFor
+			\Else
+				\State $P_{s,primeiro} \gets $ menor caminho entre $primeiro$ e $v_{s}$
+				\For{$v_{p} \in P_{s,primeiro}$}
+					\State $P \gets P - \{v_{p}\}$
+					\State $T \gets \{v_{p}\}\ \cup\ T$
+				\EndFor
+			\EndIf
+		\EndWhile
+		\State $primeiro \gets T[0]$
+		\State $ultimo \gets T[|T|]$
+		\State $P_{ultimo,primeiro} \gets $ menor caminho entre $ultimo$ e $primeiro$
+		\State $T \gets T\ \cup\ P_{ultimo,primeiro}$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+O pseudocódigo~\ref{nearest_insertion} ilustra uma possível forma de implementar 
+o \textit{Nearest Insertion Method}. O operador começa escolhendo um vértice, 
+$v$, aleatório da partição. Depois, ele encontra outro vértice, $v_{s}$ da 
+partição que tenha a menor distância para $v$ e calcula um caminho que vá de $v$ 
+até $v_{s}$ e volte para $v$. Após essa etapa, o operador entra em 
+\textit{loop}, até que todos os vértices da partição tenham sido adicionados ao 
+caminho, $T$. A cada iteração, o operador encontra o vértice $v_{k}$, com menor 
+distância para o caminho sendo construído. Depois, ele encontra a melhor aresta, 
+$(v_{i}, v_{j})$, de $T$ que possa ser quebrada para que o caminho vá de $v_{i}$ 
+até $v_{k}$ e volte para $v_{j}$. A "melhor" aresta é dada pela equação 
+$\Delta f = d(v_{i}, v_{k}) + d(v_{k}, v_{j}) - d(v_{i}, v_{j})$, onde $d$ é uma 
+função que calcula a menor distância entre dois vértices.  Observe que 
+$\Delta f$ corresponde ao aumento no custo do caminho caso se venha a quebrar a 
+aresta $(v_{i}, v_{j})$ para ir até $v_{k}$ e voltar. Assim, no final, o 
+operador retorna um ciclo que vai de $v$, passa por todos os vértices da 
+partição e volta.
+
+\begin{algorithm}                   % enter the algorithm environment
+	\caption{\textit{Nearest Insertion Path Building}}          % give the algorithm a caption
+	\label{nearest_insertion}                           % and a label for \ref{} commands later in the document
+	\algcomment{\begin{center} Fonte: O Autor \end{center}}
+	\begin{algorithmic}[1]                   % enter the algorithmic environment
+		\Procedure{NEAREST-INSERTION-PATH-BUILDING}{$G(V,E), particao$}
+		\newline
+		\Comment{$G$ é o o grafo, $particao$ é a lista de vértices que formam a partição de um agente}
+		\newline
+		\Comment{Exclusivamente neste pseucódigo, será assumido que listas são indexadas a partir de zero}
+		\State $T \gets $ \{\} \Comment{$P$ é o caminho resultante}
+		\State $P \gets $ Cópia($particao$)
+		\State $v \gets $ vértice aleatório de $P$
+		\State $P \gets P - \{v\}$
+		\State $v_{s} \gets v^{\prime} \in P$ tal que $d(v^{\prime}, v) = $ $\smash{\displaystyle\min_{v_{i} \in P}}\ d(v_{i},v)$ \Comment{A função $d$ retorna a distância entre $v_{i}$ e $v$}
+		\State $P \gets P - \{v_{s}\}$
+		\State $P_{v, v_{s}} \gets $ menor caminho de $v$ para $v_{s}$
+		\State $T \gets P_{v, v_{s}}\ \cup\ P_{v, v_{s}}^{-1}$ \Comment{$T$ é um ciclo que parte de $v$, visita $v_{s}$ e volta a $v$}
+		\While{$P \neq \{\}$}
+			\State $v_{k} \gets v^{\prime} \in P$ tal que $d(v^{\prime}, T) =$ $\smash{\displaystyle\min_{v_{i} \in P}}\ d(v_{i}, T)$ \Comment{$d$ calcula a distância entre um vértice e um caminho}
+			\State $\Delta f_{min} \gets \infty$
+			\State $e \gets $ 0
+			\For{$i \in 0\ ...\ (|T| - 1)$} \Comment{$-1$ porque o primeiro e o último são iguais}
+				\State $v_{i} \gets T[i]$
+				\State $v_{i+1} \gets T[i\ mod\ (|T|-1)]$
+				\State $\Delta f_{i} \gets d(v_{i},v_{k}) + d(v_{k}, v_{i+1}) - d(v_{i}, v_{i+1})$
+				\If{$\Delta f_{i} < \Delta f_{min}$}
+					\State $e \gets i$
+					\State $\Delta f_{min} \gets \Delta f_{i}$
+				\EndIf
+			\EndFor
+			\State $C_{a} \gets $ menor caminho entre $T[e]$ e $v_{k}$
+			\State $C_{b} \gets $ menor caminho entre $v_{k}$ e $T[e+1]$
+			\State Inserir $C_{a}\ \cup\ C_{b}$ em $T$ entre os índices $e$ e $e+1$
+			\State $P \gets P - C_{a}$
+			\State $P \gets P - C_{b}$
+		\EndWhile
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
 \section{Mutação}
 
 Uma vez que os operadores para criação arbitrária de indivíduos estejam 
@@ -278,13 +411,15 @@ aplicar mutação em indivíduos.
 No entanto, antes de descrever os operadores, será mostrado um procedimento que 
 é utilizado em ambos. Ao final de sua operação, as mutações aqui propostas 
 aplicam um procedimento baseado no \textit{$k-$change} 
-\citep{Marx:2008:SKN:2283963.2284596}, que será chamado de \textit{melhorar}. O 
-\textit{$k-$change} é descrito como uma heurística de busca local que tenta 
-encontrar um caminho de menor custo através de leves alterações em um caminho 
-original. A alteração é a substituição de até $k$ arestas no caminho. Os valores 
-para $k$ mais utilizados são 2, 3 e 4. Como o objetivo do operador de mutação é 
-realizar uma leve mudança no indivíduo \citep{Luke2013Metaheuristics}, esta 
-pesquisa utilizou $k = 2$.
+\citep{Marx:2008:SKN:2283963.2284596}, que será chamado de \textit{melhorar}. 
+O \textit{$k-$change}, que também pode ser chamado de \textit{$k-$opt} 
+\citep{nilsson2003heuristics}, é uma heurística utilizada para encontrar o 
+Caminho Hamiltoniano no \ac{tsp}. O \textit{$k-$change} é descrito como uma 
+heurística de busca local que tenta encontrar um caminho de menor custo através 
+de leves alterações em um caminho original. A alteração é a substituição de até 
+$k$ arestas no caminho. Os valores para $k$ mais utilizados são 2, 3 e 4. Como 
+o objetivo do operador de mutação é realizar uma leve mudança no indivíduo 
+\citep{Luke2013Metaheuristics}, esta pesquisa utilizou $k = 2$.
 
 O pseudocódigo~\ref{melhorar} ilustra o procedimento de \textit{melhorar}, que 
 engloba o uso do \textit{2-change}.
