@@ -91,7 +91,7 @@
 \RequirePackage[scaled=0.92]{helvet}
 \RequirePackage{courier}
 \RequirePackage{appendix}
-\RequirePackage[printonlyused,withpage]{acronym}
+\RequirePackage[printonlyused]{acronym}
 \RequirePackage{fancybox}
 \RequirePackage{fancyhdr}
 \RequirePackage{setspace}
