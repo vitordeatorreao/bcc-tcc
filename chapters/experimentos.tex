@@ -142,3 +142,104 @@ Os resultados obtido foram:
 	$(\mu, \lambda)$
 \end{itemize}
 
+Assim como os algoritmos evolucionários, o operador \textit{Melhorar}, utilizado 
+pelos operadores de mutação, também itera um número arbitrário de vezes. Também 
+foram feitos experimentos para identificar qual o número de iterações que seria 
+suficiente para causar melhoras significativas em soluções. O algoritmo 
+evolucionário utilizado para estes testes foi a Estratégia Evolucionária 
+$(\mu + \lambda)$, com $\mu = 18$ e $\lambda = 90$. Os demais parâmetros foram 
+fixados com valores iguais ao experimento do máximo número de avaliações, 
+enquanto que o número de iterações no \textit{loop} do operador 
+\textit{melhorar} variou entre 0 e 100, pois já que o operador leva bastante 
+tempo para calcular uma resposta, valores acima de 100 se mostraram 
+impraticáveis. Os resultados mostraram que a partir de 5 iterações, não havia 
+variação significativa na qualidade dos indivíduos encontrados.
+
+Finalmente, o experimento de \textit{tuning} foi configurado com os parâmetros 
+de número máximo de avaliações, número máximo de iterações no operador 
+\textit{Melhorar} e o tamanho da população fixados (este 
+último por algoritmo) nos valores acima reportados. O número de unidades de 
+tempo em cada simulação foi mantido em 2mil. No entano, os mapas onde os agentes 
+patrulham foram variados entre os três grafos apresentados na \figref{fig:mapas} 
+e o tamanho da sociedade de agentes entre 1, 5, 10 e 15. Para cada um desses 
+foram simuladas cada umas das composições de operadores e algoritmos. No final, 
+seus respectivos valores da Média Quadrática dos Intervalos para o melhor 
+indivíduo encontrado foram registrados.
+
+Para comparar as estratégias, no entanto, foi utilizada a seguinte estratégia 
+proposta por \citep{sampaiophd}. Os valores das médias quadráticas dos 
+intervalos foram normalizadas, para que se tenha um único valor para todas as 
+sociedades de agentes por heurística, por mapa. Esta medida é obtida através da 
+multiplicação da média quadrática dos intervalos pelo tamanho da sociedade de 
+agentes que o obteve (no caso desses experimentos, 1, 5, 10 e 15). Depois, esse 
+valor é somado. Veja a equação abaixo:
+
+$$MQIN = \sum MQI_{S} * |S|$$
+
+Onde $S$ é a sociedade de agentes e $MQI_{S}$ é a Média Quadrática dos 
+Intervalos obtida pela sociedade $S$.
+
+Depois, foi elaborado um \textit{ranking}, para cada mapa, ordenado pela $MQIN$. 
+Por fim, foi retirada uma média dos \textit{rankings} por heurística e as 5 
+melhores estão listadas na \tabref{top5}.
+
+\begin{table}
+	\centering
+	\caption{As 5 melhores heurísticas evolucionárias}
+	\label{top5}
+	\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|}
+		\hline
+		\textbf{Algoritmo Evolucionário} & \textbf{Mutação} & \textbf{\textit{Centering}} & \textbf{\textit{Partitioning}} & \textbf{\textit{Path Building}} & \textbf{$MQIN$} \\
+		\hline
+		Algoritmo Genético & \textit{Half Add Half Sub Small Changes} & \textit{Approximated Maximum Distance Centering} & \textit{Heuristic Graph Partitioning} & \textit{Nearest Neighbor Path Building} &  4,000\\
+		\hline
+		Algoritmo Genético de Estado Estável & \textit{Half Add Half Sub Small Changes} & \textit{Approximated Maximum Distance Centering} & \textit{Heuristic Graph Partitioning} & \textit{Nearest Neighbor Path Building} & 4,000\\
+		\hline
+		Algoritmo Genético de Estado Estável & \textit{Half Add Half Sub Small Changes} & \textit{Random Centering} & \textit{Heuristic Graph Partitioning} & \textit{Nearest Neighbor Path Building} & 5,333\\
+		\hline
+		Algoritmo Genético & \textit{Half Add Half Sub Small Changes} & \textit{Random Centering} & \textit{Heuristic Graph Partitioning} & \textit{Nearest Neighbor Path Building} & 5,666\\
+		\hline
+		Estratégia Evolucionária $(\mu, \lambda)$ & \textit{Half Add Half Sub Small Changes} & \textit{Approximated Maximum Distance Centering} & \textit{Heuristic Graph Partitioning} & \textit{Nearest Neighbor Path Building} & 8,333\\
+		\hline
+		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		%		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
+
+Quatro das heurísticas presentes no \textit{top 5} são Algoritmos Genéticos, que 
+utilizam o operador de recombinação (Estratégias Evolucionárias só utilizam 
+Mutação). Este é um forte indício da eficácia do 
+\textit{Simple Random Crossover} proposto nesta pesquisa.
+
+Outra importante informação da \tabref{top5} é que, com exceção da 3ª e 4ª 
+colocadas, as melhores heurísticas se valem dos operadores propostos no 
+\chapref{chp:abordagens} que não são exclusivamente aleatórios, mas se valem de 
+informações sobre o problema para computar suas respostas. Notoriamente, os 
+operadores \textit{Approximated Maximum Distance Centering}, 
+\textit{Heuristic Graph Partitioning} e \textit{Nearest Neighbor Path Building} 
+obtiveram excelentes resultados.
+
+Com esses resultados, as duas primeiras heurísticas da \tabref{top5} foram 
+selecionadas para comparação com algoritmos propostos por outros autores.
+
+\section{Experimentos de Comparação}
+
+Para verificar a qualidade das heurísticas evolucionárias foram feitos 
+experimentos com comparação com duas estratégias publicadas por outros autores 
+da área. São elas o algoritmo de ciclo único, \textit{Single Cycle}, proposto 
+por \citep{Chevaleyre:2004:TAM:1018411.1019013} e as estratégias gravitacionais 
+propostas por \citep{sampaiophd}.
+
+Como existem 4 parâmetros configuráveis para as estratégias gravitacionais, foi 
+escolhida a instância com os melhores resultados nos experimentos feitos em 
+\citep{sampaiophd}, a chamada $grav(Node,Ar,2,sum)$.
+
+Os experimentos de comparação colocaram cada estratégia para gerar quatro 
+sociedades de agentes que patrulhassem os mapas ilustrados na 
+\figref{fig:mapas}. O tamanho das sociedades variou entre 1, 5, 10 e 15, tal 
+como nos experimentos de \textit{tuning}.
+
+
+
+
