@@ -189,7 +189,7 @@ melhores estão listadas na \tabref{top5}.
 	\label{top5}
 	\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|}
 		\hline
-		\textbf{Algoritmo Evolucionário} & \textbf{Mutação} & \textbf{\textit{Centering}} & \textbf{\textit{Partitioning}} & \textbf{\textit{Path Building}} & \textbf{$MQIN$} \\
+		\textbf{Algoritmo Evolucionário} & \textbf{Mutação} & \textbf{\textit{Centering}} & \textbf{\textit{Partitioning}} & \textbf{\textit{Path Building}} & \textbf{Ranking Médio} \\
 		\hline
 		Algoritmo Genético & \textit{Half Add Half Sub Small Changes} & \textit{Approximated Maximum Distance Centering} & \textit{Heuristic Graph Partitioning} & \textit{Nearest Neighbor Path Building} &  4,000\\
 		\hline
@@ -226,20 +226,174 @@ selecionadas para comparação com algoritmos propostos por outros autores.
 \section{Experimentos de Comparação}
 
 Para verificar a qualidade das heurísticas evolucionárias foram feitos 
-experimentos com comparação com duas estratégias publicadas por outros autores 
-da área. São elas o algoritmo de ciclo único, \textit{Single Cycle}, proposto 
-por \citep{Chevaleyre:2004:TAM:1018411.1019013} e as estratégias gravitacionais 
-propostas por \citep{sampaiophd}.
-
-Como existem 4 parâmetros configuráveis para as estratégias gravitacionais, foi 
-escolhida a instância com os melhores resultados nos experimentos feitos em 
-\citep{sampaiophd}, a chamada $grav(Node,Ar,2,sum)$.
+experimentos comparando com as três melhores estratégias gravitacionais 
+propostas por \citep{sampaiophd}. São elas: $grav(Node,Ar,2,sum)$, 
+$grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$.
 
 Os experimentos de comparação colocaram cada estratégia para gerar quatro 
 sociedades de agentes que patrulhassem os mapas ilustrados na 
 \figref{fig:mapas}. O tamanho das sociedades variou entre 1, 5, 10 e 15, tal 
 como nos experimentos de \textit{tuning}.
 
+A \tabref{result_genetic} mostra os resultados obtidos pela heurística do 
+Algoritmo Genético (1º lugar na \tabref{top5}). Enquanto que a 
+\tabref{result_ssgenetic} mostra os resultados da heurística do Algoritmo 
+Genético de Estado Estável. As tabelas~\ref{result_grav1}, ~\ref{result_grav2} 
+e~\ref{result_grav3} mostram os resultados das estratégias gravitacionais 
+$grav(Node,Ar,2,sum)$, $grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$, respectivamente.
 
+\begin{table}
+	\centering
+	\caption{Resultados do Algoritmo Genético}
+	\label{result_genetic}
+	\begin{tabularx}{\linewidth}{|X|X|X|X|X|}
+		\hline
+		\textbf{Algoritmo Genético} & \textbf{1 Agente} & \textbf{5 Agentes} & \textbf{10 Agentes} & \textbf{15 Agentes} \\
+		\hline
+		Mapa \textit{Cicles Corridor} & 150,007 & 32,834 & 17,445 & 11,561 \\
+		\hline
+		Mapa \textit{Grid} & 208,876 & 44,393 & 23,293 & 15,617 \\
+		\hline
+		Mapa \textit{Islands} & 188,480 & 38,340 & 16,179 & 10,619 \\
+		\hline
+		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		%		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
 
+\begin{table}
+	\centering
+	\caption{Resultados do Algoritmo Genético de Estado Estável}
+	\label{result_ssgenetic}
+	\begin{tabularx}{\linewidth}{|X|X|X|X|X|}
+		\hline
+		\textbf{Algoritmo Genético de Estado Estável} & \textbf{1 Agente} & \textbf{5 Agentes} & \textbf{10 Agentes} & \textbf{15 Agentes} \\
+		\hline
+		Mapa \textit{Cicles Corridor} & 150,007 & 32,802 & 16,664 & 11,797 \\
+		\hline
+		Mapa \textit{Grid} & 208,876 & 44,240 & 23,416 & 15,652 \\
+		\hline
+		Mapa \textit{Islands} & 189,175 & 38,211 & 17,332 & 10,400 \\
+		\hline
+		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		%		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
 
+\begin{table}
+	\centering
+	\caption{Resultados da Estratégia Gravitacional $grav(Node,Ar,2,sum)$}
+	\label{result_grav1}
+	\begin{tabularx}{\linewidth}{|X|X|X|X|X|}
+		\hline
+		\textbf{$grav$($Node$, $Ar$, $2$, $sum$)} & \textbf{1 Agente} & \textbf{5 Agentes} & \textbf{10 Agentes} & \textbf{15 Agentes} \\
+		\hline
+		Mapa \textit{Cicles Corridor} & 150,077 & 33,904 & 16,419 & 10,724 \\
+		\hline
+		Mapa \textit{Grid} & 223,844 & 45,966 & 22,777 & 15,023 \\
+		\hline
+		Mapa \textit{Islands} & 196,727 & 38,356 & 15,232 & 9,8 \\
+		\hline
+		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		%		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
+
+\begin{table}
+	\centering
+	\caption{Resultados da Estratégia Gravitacional $grav(Node,Ar,1,max)$}
+	\label{result_grav2}
+	\begin{tabularx}{\linewidth}{|X|X|X|X|X|}
+		\hline
+		\textbf{$grav$($Node$, $Ar$, $1$, $max$)} & \textbf{1 Agente} & \textbf{5 Agentes} & \textbf{10 Agentes} & \textbf{15 Agentes} \\
+		\hline
+		Mapa \textit{Cicles Corridor} & 150,077 & 35,334 & 16,844 & 10,807 \\
+		\hline
+		Mapa \textit{Grid} & 210,857 & 46,483 & 22,803 & 15,076 \\
+		\hline
+		Mapa \textit{Islands} & 192,774 & 39,645 & 15,76 & 10,468 \\
+		\hline
+		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		%		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
+
+\begin{table}
+	\centering
+	\caption{Resultados da Estratégia Gravitacional $grav(Edge,Ar,1,max)$}
+	\label{result_grav3}
+	\begin{tabularx}{\linewidth}{|X|X|X|X|X|}
+		\hline
+		\textbf{$grav$($Edge$, $Ar$, $1$, $max$)} & \textbf{1 Agente} & \textbf{5 Agentes} & \textbf{10 Agentes} & \textbf{15 Agentes} \\
+		\hline
+		Mapa \textit{Cicles Corridor} & 150,077 & 46,444 & 21,995 & 11,553 \\
+		\hline
+		Mapa \textit{Grid} & 208,516 & 51,816 & 24,084 & 16,073 \\
+		\hline
+		Mapa \textit{Islands} & 187,758 & 56,707 & 15,701 & 10,417 \\
+		\hline
+		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		%		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
+
+Um resultado inesperado foi o baixo desempenho da estratégia \textit{Single Cycle} para um 
+único agente no mapa de \textit{grid}, já que está é tida, na literatura, como 
+a solução mais próxima da ótima, para um único agente com a métrica de Intervalo 
+Máximo. Nesses experimentos, para a métrica de média quadrática dos intervalos a 
+estratégia de ciclo único obteve o pior resultado no mapa de \textit{grid}. No 
+entanto, para o mapa de \textit{Cicles Corridor}, a \textit{Single Cycle} foi 
+melhor em todos os tamanhos de sociedade.
+
+As duas heurísticas evolucionárias tiveram um desempenho muito similar em 
+todos os experimentos, algo que já tinha sido observado quando elas obtiveram 
+o mesmo ranking médio nos experimentos de \textit{tuning}. Elas ficaram muito 
+próximas dos melhores resultados para sociedades de tamanho 1 e 5 em todos os 
+mapas, chegando, inclusive, a superar as estratégias \textit{Single Cycle}, 
+$grav(Node,Ar,2,sum)$ e $grav(Node,Ar,1,max)$ nos mapas de \textit{grid} e 
+\textit{islands}.
+
+Os gráficos das figuras~\ref{fig:graph_agentes1}, ~\ref{fig:graph_agentes2}, 
+~\ref{fig:graph_agentes3} e~\ref{fig:graph_agentes4} abaixo ajudam a 
+compreender melhor os resultados encontrados.
+
+\begin{figure}[b]
+	\caption[Resultado para sociedade de tamanho 1]{Resultado para sociedade 
+		de tamanho 1}
+	\centering
+	\includegraphics[width=\columnwidth]{images/graph_agent1.png}
+	\caption*{Fonte: O Autor}
+	\label{fig:graph_agentes1}
+\end{figure}
+
+\begin{figure}
+	\caption[Resultado para sociedade de tamanho 5]{Resultado para sociedade 
+		de tamanho 5}
+	\centering
+	\includegraphics[width=\columnwidth]{images/graph_agent2.png}
+	\caption*{Fonte: O Autor}
+	\label{fig:graph_agentes2}
+\end{figure}
+
+\begin{figure}
+	\caption[Resultado para sociedade de tamanho 10]{Resultado para sociedade 
+		de tamanho 10}
+	\centering
+	\includegraphics[width=\columnwidth]{images/graph_agent3.png}
+	\caption*{Fonte: O Autor}
+	\label{fig:graph_agentes3}
+\end{figure}
+
+\begin{figure}
+	\caption[Resultado para sociedade de tamanho 15]{Resultado para sociedade 
+		de tamanho 15}
+	\centering
+	\includegraphics[width=\columnwidth]{images/graph_agent4.png}
+	\caption*{Fonte: O Autor}
+	\label{fig:graph_agentes4}
+\end{figure}
