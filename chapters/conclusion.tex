@@ -1,13 +1,56 @@
 \chapter{Conclusão}
 
-\section{Introduction}
+Como mostrado neste documento, a Patrulha Multiagente Temporal tem sido o objeto 
+de estudo de diversas pesquisas, pois trata-se de um problema difícil e 
+desafiador da área de Inteligência Artificial e Sistemas Multiagente com 
+diversas aplicações em cenários reais.
 
-\lipsum[1-4]
+No entanto, também foi verificado, que apesar de ser essencialmente um problema 
+de otimização, não haviam sido estudadas aplicações diretas de algoritmos 
+evolucionários para encontrar soluções para a \ac{tmap}.
 
-\section{Section}
+Assim, após revisar quatro algoritmos bastante utilizados na Computação 
+Evolucionária, a presente pesquisa apresentou dez operadores que podem ser 
+combinados com esses algoritmos de diferentes maneiras para formar dezenas de 
+heurísticas evolucionárias distintas capazes de resolver a \ac{tmap}.
 
-\lipsum[2-4]
+Além disso, foi demonstrado através de experimentos que os operadores aqui 
+apresentados são eficazes em produzir boas soluções. Também foram apontados 
+os operadores e suas combinações que proporcionaram as melhores soluções. 
+E foi mostrado empiricamente que estas heurísticas evolucionárias não deixam 
+a desejar em questão de qualidade das soluções encontradas quando comparadas 
+com outras estratégias já apresentadas na literatura.
 
-\subsection{Subsection}
+\section{Trabalhos Futuros}
 
-\lipsum[2-4]
+Este capítulo conclui o trabalho com algumas atividades que poderiam ter sido 
+desenvolvidas, não fosse o período de tempo curto disponibilizado para sua 
+conclusão.
+
+Foi observado durante os experimentos que os operadores de mutação geravam 
+indivíduos novos diferentes o bastante dos pais para permitir encontrar novas 
+soluções e evoluir a população. No entanto, foi possível perceber ao longo dos 
+experimentos realizados que esses operadores geravam indivíduos muito próximos 
+uns dos outros. Fica como trabalho futuro investigar operadores de mutação mais 
+drásticos, que levem a uma diversidade maior da população, para que a busca no 
+espaço de soluções seja mais global e não fique "presa" ao redor de mínimos 
+locais.
+
+Outra contribuição para o futuro seria investigar o impacto de outros operadores 
+de seleção nos algoritmos genéticos. Principalmente o algoritmo genético de 
+estado estável que utiliza duas seleções distintas: uma para escolher os 
+indivíduos que deverão sofrer recombinação e outra para escolher os indivíduos 
+da geração mais velha que irão "morrer" para dar lugar às novas soluções 
+recém-descobertas por meio da mutação e recombinação. Na presente pesquisa, 
+esta última seleção foi configurada como Seleção da Pior Aptidão, ou seja, os 
+indivíduos menos aptos seriam escolhidos para dar lugar. Uma outra seleção 
+que pudesse eventualmente selecionar indivíduos bastante aptos, poderia fazer 
+com que a busca do algoritmo genético de estado estável escapasse de mínimos 
+locais em volta desses.
+
+Nos experimentos de \textit{tuning}, os operadores puramente aleatórios, como 
+por exemplo, o \textit{Random Centering} e \textit{Random Partitioning}, tiveram 
+um desempenho bem abaixo dos seus concorrentes. Seria de grande valia investigar 
+se, dado mais tempo de execução para os algoritmos evolucionários, os operadores 
+puramente aleatórios poderiam ser vantajosos, proporcionando uma busca mais 
+global para os algoritmos.

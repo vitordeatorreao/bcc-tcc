@@ -228,7 +228,9 @@ selecionadas para comparação com algoritmos propostos por outros autores.
 Para verificar a qualidade das heurísticas evolucionárias foram feitos 
 experimentos comparando com as três melhores estratégias gravitacionais 
 propostas por \citep{sampaiophd}. São elas: $grav(Node,Ar,2,sum)$, 
-$grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$.
+$grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$. Além delas, a estratégia de ciclo 
+único proposta por \citep{Chevaleyre:2004:TAM:1018411.1019013} também será 
+utilizada na comparação.
 
 Os experimentos de comparação colocaram cada estratégia para gerar quatro 
 sociedades de agentes que patrulhassem os mapas ilustrados na 
@@ -240,7 +242,9 @@ Algoritmo Genético (1º lugar na \tabref{top5}). Enquanto que a
 \tabref{result_ssgenetic} mostra os resultados da heurística do Algoritmo 
 Genético de Estado Estável. As tabelas~\ref{result_grav1}, ~\ref{result_grav2} 
 e~\ref{result_grav3} mostram os resultados das estratégias gravitacionais 
-$grav(Node,Ar,2,sum)$, $grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$, respectivamente.
+$grav(Node,Ar,2,sum)$, $grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$, 
+respectivamente. Por fim, a \tabref{result_sc} exibe os resultados obtidos 
+pela estratégia \textit{Single Cycle}.
 
 \begin{table}
 	\centering
@@ -335,6 +339,26 @@ $grav(Node,Ar,2,sum)$, $grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$, respectiva
 		Mapa \textit{Grid} & 208,516 & 51,816 & 24,084 & 16,073 \\
 		\hline
 		Mapa \textit{Islands} & 187,758 & 56,707 & 15,701 & 10,417 \\
+		\hline
+		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		%		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
+
+\begin{table}
+	\centering
+	\caption{Resultados da Estratégia \textit{Single Cycle}}
+	\label{result_sc}
+	\begin{tabularx}{\linewidth}{|X|X|X|X|X|}
+		\hline
+		\textbf{\textit{Single Cycle})} & \textbf{1 Agente} & \textbf{5 Agentes} & \textbf{10 Agentes} & \textbf{15 Agentes} \\
+		\hline
+		Mapa \textit{Cicles Corridor} & 149,932 & 31,386 & 15,739 & 10,583 \\
+		\hline
+		Mapa \textit{Grid} & 229,122 & 46,645 & 23,415 & 15,667 \\
+		\hline
+		Mapa \textit{Islands} & 193,783 & 38,652 & 19,341 & 12,862 \\
 		\hline
 		%		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
 		%		\hline
