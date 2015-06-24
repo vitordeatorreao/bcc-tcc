@@ -6,28 +6,32 @@ a \ac{tmap}, este capítulo tem como finalidade apresentar ao leitor alguns
 conceitos e terminologias da área da Computação Evolucionária, para que ele 
 esteja familiarizado antes do capítulo sobre a aplicação de algoritmos 
 evolucionários no contexto da \ac{tmap}. Este capítulo também vai apresentar os 
-algoritmos que foram utilizados na pesquisa.
+algoritmos que foram utilizados como base para esta pesquisa.
 
-Segundo \citep{Back:1993:OEA:1326623.1326625}, várias pesquisas mostraram, ao 
-longo de três séculos, que modelar o processo de busca de forma similar à evolução 
-pelo qual os seres vivos passaram pode render algoritmos robustos, mesmo que 
-estes modelos sejam apenas representações imperfeitas do verdadeiro processo 
-biológico. O resultado desses modelos são chamados de Algoritmos Evolutivos ou 
-Evolucionários. Essa busca pode ser aplicada para encontrar não apenas uma 
-solução qualquer, mas aquela que minimize ou maximize uma dada métrica. Dessa 
-forma, algoritmos evolucionários podem (e são) utilizados em problemas de 
-otimização.
+Segundo \citep{Back:1993:OEA:1326623.1326625}, várias pesquisas mostraram que 
+modelar o processo de busca de forma similar à evolução pelo qual os seres 
+vivos passaram pode render algoritmos robustos, mesmo que estes modelos sejam 
+apenas representações imperfeitas do verdadeiro processo biológico. O resultado 
+desses modelos são chamados de Algoritmos Evolutivos ou Evolucionários. Essa 
+busca pode ser aplicada para encontrar não apenas uma solução qualquer, mas 
+aquela que minimize ou maximize uma dada métrica. Dessa forma, algoritmos 
+evolucionários podem (e são) utilizados em problemas de otimização.
 
 Tais algoritmos são baseados no processo de aprendizado coletivo pelo qual passa 
-uma população de indivíduos. Cada indivíduo representa uma solução para um 
-problema, ou um ponto no espaço de possíveis soluções. O ambiente fornece 
-informações qualitativas sobre cada indivíduo. Essa informação pode ser 
-interpretada como a aptidão do indivíduo no ambiente determinado. Na 
-analogia com algoritmos, essa é a medida de avaliação de uma solução 
-\citep{Back:1993:OEA:1326623.1326625}.
+uma população de indivíduos. A cada geração, os indivíduos mais aptos passam 
+para os filhos uma combinação das características que os tornam aptos. Então, ao 
+longo das gerações, além dos indivíduos menos aptos serem extintos, novos 
+indivíduos ainda mais aptos que os pais são formados por esse processo de 
+reprodução \citep{Back:1993:OEA:1326623.1326625}.
+
+Na Computação Evolutiva, os indivíduos são as soluções para um determinado 
+problema, ou um ponto no espaço de possíveis soluções. Na \ac{tmap}, por 
+exemplo, um indivíduo seria uma sociedade de agentes e suas estratégias de 
+patrulha. O ambiente seria o problema em si. Então, a aptidão de um indivíduo 
+seria calculada através de uma medida de avaliação adequada ao problema.
 
 Um algoritmo evolucionário funciona, genericamente, da seguinte forma: uma 
-população inicial é arbitrariamente inicializada; esse indivíduos têm sua 
+população inicial é arbitrariamente inicializada; esses indivíduos têm sua 
 adaptação ao ambiente medida; eles são, posteriormente, recombinados para formar 
 uma nova população, podendo também sofrer mutação; finalmente, um subconjunto 
 dessas populações (antiga e nova, pais e filhos) é selecionado de alguma forma 
@@ -64,10 +68,13 @@ A \tabref{tbl:evo_dict} revisa alguns dos termos comumente utilizados nos
 \acp{ea}.
 
 No restante do presente capítulo, serão apresentados os algoritmos utilizados 
-nesta pesquisa, as Estratégias Evolucionárias e os Algoritmos Genéticos. Cada 
-um desses possui duas variações que foram aplicadas na pesquisa: 
-$( \mu,\lambda )$ ou $( \mu + \lambda )$ e Geracional ou Estado Estável 
-(em inglês, \textit{steady state}), respectivamente.
+nesta pesquisa, as Estratégias Evolucionárias e os Algoritmos Genéticos. Este 
+trabalho utilizou duas variações, propostas na literatura, para cada um deles. 
+Estas variações também serão apresentadas nas demais seções.
+%Cada 
+%um desses possui duas variações que foram aplicadas na pesquisa: 
+%$( \mu,\lambda )$ ou $( \mu + \lambda )$ e Geracional ou Estado Estável 
+%(em inglês, \textit{steady state}), respectivamente.
 
 \begin{table}[tp]
 	\centering
@@ -103,21 +110,21 @@ $( \mu,\lambda )$ ou $( \mu + \lambda )$ e Geracional ou Estado Estável
 
 \section{Estratégias Evolucionárias}
 
-As duas estratégias evolucionárias usadas no presente trabalho se diferem pela 
-forma como fazem a composição entre a população de pais e a população de filhos 
-para construir a nova geração, que será utilizada na iteração seguinte do 
+As duas estratégias evolucionárias usadas no presente trabalho diferem entre si 
+pela forma como fazem a composição entre a população de pais e a população de 
+filhos para construir a nova geração, que será utilizada na iteração seguinte do 
 algoritmo.
 
 A primeira \ac{es} é conhecida como $( \mu, \lambda )$. Tipicamente, começa-se 
 com uma população de $\lambda$ indivíduos gerados de forma arbitrária. Nessa 
-\ac{es}, o $\mu$ representa o número de pais cujos filhos serão usados para compor 
-a próxima população que também deve ter $\lambda$ indivíduos no total. Note que 
-$\lambda$ tem que ser um múltiplo de $\mu$. Então, os $\mu$ indivíduos mais 
-aptos são escolhidos, processo chamado de Seleção por Truncamento (em inglês, 
-\textit{Truncate Selection}). Os indivíduos selecionados sofrem mutação para 
-gerar $ \lambda / \mu $ filhos. O que acarretará em uma nova população de 
-$\lambda$ indivíduos que será a geração utilizada na próxima iteração do 
-algoritmo \citep{Luke2013Metaheuristics}.
+\ac{es}, o $\mu$ representa o número de pais cujos filhos serão usados para 
+compor a próxima população que também deve ter $\lambda$ indivíduos no total. 
+Note que $\lambda$ tem que ser um múltiplo de $\mu$. Então, os $\mu$ indivíduos 
+mais aptos são escolhidos, processo chamado de Seleção por Truncamento (em 
+inglês, \textit{Truncate Selection}). Os indivíduos selecionados sofrem mutação 
+para gerar $ \lambda / \mu $ filhos cada . O que acarretará em uma nova 
+população de $\lambda$ indivíduos que será a geração utilizada na próxima 
+iteração do algoritmo \citep{Luke2013Metaheuristics}.
 
 O Pseudocódigo~\ref{mu_lambda_es} exemplifica a Estratégia Evolucionária 
 $( \mu, \lambda )$.
@@ -225,14 +232,14 @@ Genéticos selecionam os pais e geram filhos ao poucos até que se tenha uma
 população de filhos suficiente. A reprodução em si também é bem diferente das 
 \acp{es}: nos Algoritmos Genéticos, inicia-se com uma população de filhos vazia. 
 O Algoritmo então seleciona dois pais de forma arbitrária, recombina esses pais 
-em dois novos indivíduos filhos e então faz a mutação deles. Esses dois novos 
-indivíduos são adicionados à população. Esse processo se repete até que a 
-população de filhos esteja completamente preenchida 
-\citep{Luke2013Metaheuristics}.
+em dois novos indivíduos filhos e então faz a mutação deles (as \acp{ES} só 
+realizam a mutação). Esses dois novos indivíduos são adicionados à população. 
+Esse processo se repete até que a população de filhos esteja completamente 
+preenchida \citep{Luke2013Metaheuristics}.
 
 O pseudocódigo~\ref{GenAlg} deve ajudar o leitor a compreender o algoritmo.
 
-\begin{algorithm}                      % enter the algorithm environment
+\begin{algorithm}[h]                      % enter the algorithm environment
 	\caption{Algoritmo Genético}          % give the algorithm a caption
 	\label{GenAlg}                           % and a label for \ref{} commands later in the document
 	\algcomment{\begin{center} Fonte: Adaptado de \citep{Luke2013Metaheuristics} \end{center}}
@@ -284,7 +291,7 @@ redor dos pais \citep{Luke2013Metaheuristics}.
 O pseudocódigo~\ref{GenAlgSteady} detalha as características do Algoritmo 
 Genético de Estado Estável.
 
-\begin{algorithm}                      % enter the algorithm environment
+\begin{algorithm}[h]                      % enter the algorithm environment
 	\caption{Algoritmo Genético de Estado Estável}          % give the algorithm a caption
 	\label{GenAlgSteady}                           % and a label for \ref{} commands later in the document
 	\algcomment{\begin{center} Fonte: Adaptado de \citep{Luke2013Metaheuristics} \end{center}}
@@ -339,7 +346,7 @@ consiste em coletar, da população, $t$ indivíduos de forma aleatória. Destes
 o algoritmo retorna apenas o indivíduo mais apto. Segue o pseudocódigo para 
 ilustrar esse operador.
 
-\begin{algorithm}                      % enter the algorithm environment
+\begin{algorithm}[h]                      % enter the algorithm environment
 	\caption{Torneio}          % give the algorithm a caption
 	\label{torneio}                           % and a label for \ref{} commands later in the document
 	\algcomment{\begin{center} Fonte: Adaptado de \citep{Luke2013Metaheuristics} \end{center}}
@@ -356,3 +363,14 @@ ilustrar esse operador.
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
+
+Neste capítulo foram revisados quatro algoritmos evolucionários presentes na 
+literatura que foram utilizados nesta pesquisa. Todos esses algoritmos são bases 
+para resolver problemas de otimização discretos ou contínuos. No entanto, eles 
+precisam ser complementados com operadores para: criação de indivíduos, mutação 
+e recombinação. Estes operadores influenciam diretamente na busca realizada por 
+esses algoritmos e podem ser um fator determinante para o sucesso ou fracasso da 
+abordagem evolucionária \citep{Luke2013Metaheuristics}.
+
+Dessa forma, no capítulo seguinte, serão apresentados alguns operadores que 
+podem ser utilizados para mutação, recombinação e criação de indivíduos.
