@@ -65,25 +65,18 @@ pré-condições, um custo de tempo e as alterações que são aplicadas no esta
 após a ação concluir. É preciso também explicitar o intervalo de medição, ou o 
 intervalo de tempo, $I$, em que os agentes terão seu desempenho mensurado. E, 
 por fim, se faz necessário um conjunto de métricas, $M$, para avaliar os 
-agentes.
+agentes. Existem diversas métricas que podem compor este conjunto, como por 
+exemplo o intervalo máximo \citep{Chevaleyre:2004:TAM:1018411.1019013} e 
+a ociosidade média \citep{hernandez2013game}.
 
 \begin{figure}[tp]
 	\caption[Exemplo de ambiente modelado em um grafo]{Exemplo de ambiente 
 		modelado em um grafo}
 	\centering
 	\includegraphics[width=0.75\columnwidth]{images/grafoExemplo.png}
-	\caption*{Fonte: \citep{sampaiophd}}
+	\caption*{Fonte: \citep{machado2002b}}
 	\label{fig:graphexample}
 \end{figure}
-
-Existem diversas métricas que podem compor o conjunto $M$. Um exemplo é o 
-intervalo máximo que é definido como o maior intervalo entre visitas de todos os 
-pontos de interesse \citep{sampaiophd}. Essa métrica é bastante utilizada em 
-vários trabalhos da área \citep{6900280}, \cite{Pippin:2013:PBT:2480362.2480378}, 
-\citep{Chevaleyre:2004:TAM:1018411.1019013}, \citep{6615158}. Outro exemplo, 
-utilizado na literatura \citep{hernandez2013game}, é a ociosidade média, que 
-consiste em calcular a média das ociosidades de cada ponto de interesse e depois 
-tirar a média temporal desses valores.
 
 Sendo assim, é possível concluir que o problema da Patrulha Multiagente é, 
 fundamentalmente, um problema de otimização, onde é preciso escolher as ações 
@@ -94,29 +87,31 @@ A Computação Evolucionária engloba uma classe de algoritmos que realiza uma
 busca no espaço de soluções à procura daquela que seja ótima 
 \citep{Luke2013Metaheuristics}. Esses algoritmos são baseados na Teoria da 
 Evolução das Espécies proposta por Charles Darwin 
-\footnote{http://en.wikipedia.org/wiki/Evolution}. Eles são chamados de \acp{ea}, 
-pois buscam dentro de uma população, o indivíduo melhor adaptado. Numa analogia 
-com a \ac{tmap}, um indivíduo seria uma sociedade de agentes que patrulha um 
-território e as métricas de avaliação determinariam qual seria a solução melhor 
-adaptada . Dessa forma, será mostrado no presente trabalho que \acp{ea} podem 
-ser utilizados para resolver o problema a \ac{tmap}.
+\footnote{http://en.wikipedia.org/wiki/Evolution}. Eles são chamados de 
+Algoritmos Evolucionários (EA)\acused{ea}, pois buscam, dentro de uma população, 
+o indivíduo melhor adaptado através de operadores chamados de mutação, 
+recombinação (também conhecido como cruzamento) e seleção. Dessa forma, será 
+mostrado no presente trabalho que \acp{ea} podem ser utilizados para resolver a 
+\ac{tmap}.
 
 Apesar de possuir diversas soluções com diferentes abordagens para o problema 
 \citep{Chevaleyre:2004:TAM:1018411.1019013}, 
 \citep{Machado:2002:MPE:1765317.1765332}, \citep{Almeida:2004:AAI}, 
-\citep{4209122}, \citep{hernandez2013game}, soluções que utilizam estratégias 
-evolucionárias \citep{Luke2013Metaheuristics} são pouco encontradas na 
+\citep{4209122}, \citep{hernandez2013game}, não existem soluções ótimas ou 
+claramente dominantes para a \ac{tmap}. Embora os algoritmos evolucionários 
+sejam amplamente utilizados em outros problemas de otimização, soluções para a 
+\ac{tmap} que utilizam esses algoritmos são pouco encontradas na 
 literatura \citep{4630897}, \citep{6900280} e, por tanto, serão o objeto de 
 pesquisa do presente trabalho.
 
 \section{Objetivos Gerais}
 
 Motivado pelos problemas descritos acima, este trabalho tem como objetivo geral 
-a proposição e o estudo de soluções para \ac{tmap} utilizando estratégias 
-evolucionárias. Outro objetivo é comprovar a eficácia e avaliar a relevância de 
+a proposição e o estudo de soluções para \ac{tmap} utilizando algoritmos 
+evolucionários. Outro objetivo é comprovar a eficácia e avaliar a relevância de 
 abordagens evolucionárias para o problema da patrulha através de experimentos 
 empíricos e da comparação destas soluções com as obtidas através de abordagens 
-já propostas na literatura e tidas como tradicionais.
+de destaque publicadas na literatura.
 
 \section{Objetivos Específicos}
 
@@ -126,12 +121,11 @@ objetivos específicos:
 \begin{itemize}
 	\item Investigar estratégias evolucionárias e como elas podem ser aplicadas 
 		ao problema da patrulha multiagente temporal;
-	\item Desenvolver um(s) algoritmo(s) baseado(s) em estratégias 
-		evolucionárias para a solução da \ac{tmap};
-	\item Implementar os algoritmos desenvolvidos em um simulador capaz de 
+	\item Desenvolver uma estratégia da \ac{tmap} baseada em algoritmos  
+		evolucionários;
+	\item Implementar as estratégias desenvolvidos em um simulador capaz de 
 		computar diversas métricas para uma dada solução da \ac{tmap}.
-	\item Avaliar o desempenho do algoritmo no simulador e verificar eficácia
-		da abordagem.
-	\item Comparar empiricamente as soluções encontradas com aquelas já 
-		publicadas na literatura.
+	\item Avaliar o desempenho das estratégias no simulador e verificar eficácia
+		da abordagem através de comparações empíricas com algumas estratégias de 
+		destaque publicadas na literatura.
 \end{itemize}

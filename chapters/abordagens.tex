@@ -5,28 +5,85 @@ No último capítulo, foram apresentados os algoritmos evolucionários usados ne
 pesquisa. No entanto, algumas lacunas ficaram abertas: não foram apresentadas 
 formas de gerar indivíduos, isto é, soluções para a \ac{tmap}, de forma 
 arbitrária para a primeira população, além de como aplicar 
-recombinação e mutação neles. Dessa forma, neste capítulo, serão propostos 
-operadores para construção de indivíduos, bem como para mutação e recombinação.
+recombinação e mutação neles. A definição desses operadores passa primeiro pela 
+forma escolhida para representar indivíduos. Tipicamente, na literatura de 
+Algoritmos Evolucionários, indivíduos são representados como um vetor de bits 
+(para problemas de domínio discreto) ou de números reais (para domínios 
+contínuos) \citep{Luke2013Metaheuristics}. No entanto, estas representações não 
+são adequadas para a \ac{tmap}.
 
-Todos os operadores abaixo apresentados foram desenvolvidos pelo autor em 
-conjunto com Diogo Felipe Félix de 
-Melo\footnote{\url{http://lattes.cnpq.br/2213650736070295}} para a disciplina 
-de Tópicos Avançados em Inteligência Artificial no curso de Bacharelado em 
-Ciência da Computação da Universidade Federal Rural de Pernambuco ministrada 
-pelo professor Pablo Azevedo 
-Sampaio\footnote{\url{http://lattes.cnpq.br/8865836949700771}}.
+Considerando estas questões de representação, esta pesquisa adota uma abordagem 
+baseada em particionamento do grafo para resolver a \ac{tmap}, como foi sugerido 
+por \citep{Chevaleyre:2004:TAM:1018411.1019013} e aplicado por 
+\citep{Pippin:2013:PBT:2480362.2480378} e \citep{4630897}.
+
+Cada agente pode ser representado por um ciclo que percorre todos os vértices de 
+uma partição do grafo. Desta forma, uma solução para a \ac{tmap} seria 
+representada (de forma finita) por um conjunto de $r$ ciclos que percorrem $r$ 
+partições do grafo, onde $r$ é o número de agentes. Com isso, é possível trocar 
+agentes entre soluções, que como será mostrado na \secref{sec:recombinacao}, é a 
+base para a recombinação.
+
+A partir deste modelo, foi adicionado o conceito de centro das partições para que 
+a recombinação possa trocar agentes semelhantes. Se duas soluções possuem agentes 
+com os mesmos centros de partição, será possível trocar os agentes que possuam o 
+mesmo centro (o que não quer dizer partições iguais). Além disso, se as 
+partições são construídas a partir de um determinado centro, distanciar esses 
+centros ajudaria a deixar as partições o mais disjuntas possível.
+
+Finalmente, a representação proposta para uma solução da \ac{tmap} é: um conjunto 
+de $r$ agentes, onde cada agente é representado por um ciclo que passa por todos 
+os vértices de uma partição do grafo e um vértice de centro. A 
+\figref{fig:tmap_example}, representa visualmente uma dessas soluções. Nela, 
+dois patrulham o grafo. Cada um ficou sob responsabilidade de uma partição, onde 
+irão percorrer um ciclo indefinidamente. O agente vermelho, ficou com o centro 
+$5$, enquanto que o verde com o centro 3.
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{red vertex}=[circle,fill=red!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{green vertex}=[circle,fill=green!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{green edge} = [draw,line width=2pt,-,green!50]
+\tikzstyle{red edge} = [draw,line width=2pt,-,red!50]
+
+\begin{figure}
+	\caption{Exemplo de solução da \ac{tmap}}
+	\centering
+	\begin{tikzpicture}
+	[scale=.8,auto=left,every node/.style={circle,fill=blue!20}]
+	\node[vertex] (n6) at (1,6)  {6};
+	\node[vertex] (n0) at (4,12) {0};
+	\node[vertex] (n1) at (8,12) {1};
+	\node[vertex] (n2) at (12,6) {2};
+	\node[vertex] (n4) at (2,1)  {4};
+	\node[red vertex] (n5) at (5,9)  {5};
+	\node[vertex] (n7) at (10,1) {7};
+	\node[green vertex] (n3) at (7,9)  {3};
+	
+	\foreach \from/\to in {n0/n6,n6/n4,n4/n5,n5/n0}
+		\path[red edge] (\from) -- (\to);
+	\foreach \source/\dest in {n1/n2,n2/n7,n7/n3,n3/n1}
+		\path[green edge] (\source) -- (\dest);
+	\foreach \de/\para in {n0/n1}
+		\draw (\de) -- (\para);
+	
+	\end{tikzpicture}
+	\caption*{Fonte: O autor}
+	\label{fig:tmap_example}
+\end{figure}
+
+Utilizando esta representação, serão propostos, neste capítulo, operadores 
+para a construção de indivíduos, a mutação e a recombinação.
 
 \section{Criação de Indivíduos}
 
-Assim como em \citep{Pippin:2013:PBT:2480362.2480378} e \citep{4630897}, as 
-soluções resultantes das abordagens evolucionárias aqui propostas são baseadas 
-em particionamento (vide \secref{sec:classifytmap}). Dessa forma, a criação de 
+A criação de 
 indivíduos foi dividida em três etapas. A primeira é o cálculo de $r$ centros, 
 onde $r$ é o número de agentes, ao redor dos quais os agentes deverão patrulhar. 
-A segunda tarefa é a escolha dos nós, ao redor do centro, que comporão cada 
-partição. Por fim, falta o cálculo de um ciclo, para cada partição, que passe 
-por todos os seus vértices. Essas tarefas foram chamadas respectivamente de 
-\textit{centering}, \textit{partitioning} e \textit{path building}.
+A segunda tarefa é a escolha dos vértices que compõem a partição, dentre os 
+quais está o centro definido para ela. Por fim, falta o cálculo de um ciclo, 
+para cada partição, que passe por todos os seus vértices. Essas tarefas foram 
+chamadas respectivamente de \textit{centering}, \textit{partitioning} e 
+\textit{path building}.
 
 Nas subseções seguintes, cada uma dessas três tarefas serão tratadas 
 separadamente, mas é importante notar que uma tarefa depende da resposta dada 
@@ -61,10 +118,10 @@ grafo para ser os centros. Veja o Pseudocódigo~\ref{centering_random} abaixo.
 Uma outra forma de escolher os centros é tentar encontrar os vértices do grafo 
 que estejam mais distantes uns dos outros. O objetivo neste operador é iniciar 
 indivíduos de forma um pouco mais inteligente, para aumentar as chances de 
-serem indivíduos com alta aptidão, mas sem apagar completamente o lado aleatório 
-indicado às inicializações de indivíduos nos algoritmos evolucionários. 
-\citep{Luke2013Metaheuristics} alerta os seus leitores para os perigos de 
-utilizar heurísticas que aparentam gerar melhores indivíduos, mas que podem 
+serem indivíduos com alta aptidão, mas sem perder completamente algum fator de 
+aleatoriedade que considerado importante nas inicializações de indivíduos nos 
+algoritmos evolucionários. \citep{Luke2013Metaheuristics} alerta para os perigos 
+de utilizar heurísticas que aparentam gerar melhores indivíduos, mas que podem 
 estar, inadvertidamente, condenando os algoritmos evolucionários a ficarem 
 "presos"\ em mínimos locais.
 
@@ -89,6 +146,8 @@ operador.
 				\State $d^{\prime} \gets $ Soma-Distancias($G(V,E)$, $centros$)
 				\If{$d > d^{\prime}$}
 					\State Substitui($Centros$, $V_{i}$, $centro$)
+				\Else 
+					\State $d \gets d^{\prime}$
 				\EndIf
 			\EndFor
 		\Until{não tenhamos mais tempo}
@@ -123,7 +182,7 @@ exemplifica como isso pode ser implementado.
 		\State $verticesAdicionados \gets $ \{\}
 		\Repeat
 			\State $centro \gets $ escolhe aleatoriamente um elemento de $centros$
-			\State $candidato \gets $ Seleciona-Aleatoriamente($V$) \Comment{$candidato \notin centros$}
+			\State $candidato \gets $ Seleciona-Aleatoriamente($V - centros$) \Comment{$candidato \notin centros$}
 			\State $caminho \gets $ Menor-Caminho($G$, $centro$, $candidato$)
 			\State $Particoes(centro) \gets Particoes(centro)\ \cup caminho$
 			\State $verticesAdicionados \gets verticesAdicionados\ \cup caminho$
@@ -143,9 +202,10 @@ conectadas, isto é, para que seja possível traçar um caminho, dentro do grafo
 $G$, entre seus vértices. Finalmente, o \textit{Random Partitioning} para quando 
 todos os nós do grafo estiverem em alguma partição.
 
-Como o outro operador de particionamento do grafo é mais complexo, primeiro 
-será apresentado o pseudocódigo ao leitor, e então será feita uma discussão 
-de suas propriedades. Observe o pseudocódigo~\ref{partitioning_fungal}.
+Como o próximo operador de particionamento, o 
+\textit{Heuristic Graph Partitioning} é mais complexo, primeiro será apresentado 
+o pseudocódigo ao leitor, e então será feita uma discussão de suas propriedades. 
+Observe o pseudocódigo~\ref{partitioning_fungal}.
 
 \begin{algorithm}                  % enter the algorithm environment
 	\caption{\textit{Heuristic Graph Partitioning}}          % give the algorithm a caption
@@ -158,7 +218,7 @@ de suas propriedades. Observe o pseudocódigo~\ref{partitioning_fungal}.
 		\State $ParticaoPorVertice \gets $ \{\}
 		\State $ListaDeVerticesPorCentro \gets $ \{\}
 		\State $ParticaoDoCentro \gets $ \{\}
-		\For{$i \in 1\ ...\ |V|$}
+		\For{$i \in V$}
 			\If{$i \in centros$}
 				\State $ParticaoPorVertice[i] \gets i$
 			\Else
@@ -197,9 +257,10 @@ partição diferente. Na linha seguinte é iniciada uma lista bidimensional. O
 anterior da construção de indivíduos, e $ListaDeVerticesPorCentro(c)$ representa 
 uma lista de todos os vértices do grafo ordenados pelas suas distâncias a $c$. 
 Na linha 4 é criada outra lista bidimensional, cujos índices também representam 
-cada centro já calculado. $ParticaoDoCentro(c)$ vai guardar uma lista de todos 
-os vértices que foram associados a $c$. Em breve, será mostrado porque é 
-necessário manter ambas as listas $ParticaoDoCentro$ e $ParticaoPorVertice$.
+cada centro já calculado. $ParticaoDoCentro$ é uma lista de partições por centro, 
+e é a resposta do operador. $ParticaoDoCentro(c)$, então, vai guardar uma lista 
+de todos os vértices que foram associados a $c$. Em breve, será mostrado porque 
+é necessário manter ambas as listas $ParticaoDoCentro$ e $ParticaoPorVertice$.
 
 O operador segue para popular a lista $ParticaoPorVertice$ com os elementos 
 triviais. Cada centro, $c$, tem seu valor em $ParticaoPorVertice$ configurado 
@@ -280,11 +341,17 @@ Já que o objetivo dos operadores de \textit{Path Building} é construir um cicl
 para o agente que passe por todos os nós da partição sob sua responsabilidade, 
 é possível argumentar que o ciclo ótimo seria um Ciclo Hamiltoniano de custo 
 mínimo. Dessa forma, os outros dois operadores para construção de caminhos são 
-\textbf{baseados} em heurísticas para o \ac{tsp}. São elas: 
-\textit{Nearest Insertion Method} e \textit{Nearest Neighbor Method} 
+\textbf{baseados} em heurísticas para o \ac{tspm} \citep{gutin2006traveling}. 
+São elas: \textit{Nearest Insertion Method} e \textit{Nearest Neighbor Method} 
 \citep{nilsson2003heuristics}. Assim, os nomes dos operadores são: 
 \textit{Nearest Insertion Path Building} e 
 \textit{Nearest Neighbor Path Building}.
+
+Algumas adaptações foram necessárias, já que o \ac{tspm} é definido sobre grafos 
+completos. Foram calculados os menores caminhos entre todos os vértices do 
+grafo, de forma que todas as referências às arestas do grafo feitas pelas 
+heurísticas, foram convertidas, nos operadores aqui apresentados, para 
+referências aos menores caminhos.
 
 O pseudocódigo~\ref{nearest_neighbor} ilustra o operador 
 \textit{Nearest Neighbor Path Building}. O operador começa por escolher um 
@@ -422,8 +489,8 @@ No entanto, antes de descrever os operadores, será mostrado um procedimento que
 aplicam um procedimento baseado no \textit{$k-$change} 
 \citep{Marx:2008:SKN:2283963.2284596}, que será chamado de \textit{melhorar}. 
 O \textit{$k-$change}, que também pode ser chamado de \textit{$k-$opt} 
-\citep{nilsson2003heuristics}, é uma heurística utilizada para encontrar o 
-Caminho Hamiltoniano no \ac{tsp}. O \textit{$k-$change} é descrito como uma 
+\citep{nilsson2003heuristics}, é uma heurística utilizada para encontrar uma 
+solução aproximada para o \ac{tsp}. O \textit{$k-$change} é descrito como uma 
 heurística de busca local que tenta encontrar um caminho de menor custo através 
 de leves alterações em um caminho original. A alteração é a substituição de até 
 $k$ arestas no caminho. Os valores para $k$ mais utilizados são 2, 3 e 4. Como 
@@ -438,31 +505,21 @@ engloba o uso do \textit{2-change}.
 	\label{melhorar}                           % and a label for \ref{} commands later in the document
 	\algcomment{\begin{center} Fonte: O Autor \end{center}}
 	\begin{algorithmic}[1]                    % enter the algorithmic environment
-		\Procedure{MELHORAR}{$G(V,E), A$}
+		\Procedure{MELHORAR}{$G(V,E), P$}
 		\newline
-		\Comment{$G$ é o grafo e $A$ é o Agente escolhido para sofrer mutação}
+		\Comment{$G$ é o grafo e $P$ é a partição do Agente escolhido para sofrer mutação}
 		\Repeat
-			\State $p \gets $ RANDOM-2-CHANGE($G(V,E)$, $A$)
-			\If{CUSTO($p$) < CUSTO($A$)}
-				\State CONFIGURAR-CAMINHO($A$, $p$) \Comment{Substitui o caminho antigo do Agent}	
+			\State $p \gets $ RANDOM-2-CHANGE($G(V,E)$, $P$)
+			\If{CUSTO($p$) < CUSTO($P$)}
+				\State $P \gets p$
 			\EndIf
 		\Until{não tenhamos mais tempo}
 		\EndProcedure
-		\Procedure{RANDOM-2-CHANGE}{$G(V,E), A$}
-			\State $edge_{1} \gets 0$
-			\State $edge_{2} \gets 0$
-			\State $p \gets $ caminho do agente $A$
-			\Repeat
-				\State $edge_{1} \gets $ escolhe um número aleatório entre 1 e $|p| -1$
-				\State $edge_{2} \gets $ escolhe um número aleatório entre 1 e $|p| -1$
-				\Comment{$-1$ porque o último e o primeiro elementos são iguais}
-				\If{$edge_{1} > edge_{2}$} \Comment{Forçar que $edge_{1}$ seja o elemento mais a esquerda de $p$}
-					\State $aux \gets edge_{1}$
-					\State $edge_{1} \gets edge_{2}$
-					\State $edge_{2} \gets aux$
-				\EndIf
-			\Until{$edge_{1} \neq edge_{2}$ \textbf{e} $edge_{1} + 1 \neq edge_{2}$}
-			\State \textbf{Retorne} 2-CHANGE($G(V,E)$, $A$, $edge_{1}$, $edge_{2}$) 
+		\Procedure{RANDOM-2-CHANGE}{$G(V,E), P$}
+		\State $edge_{1} \gets 0$
+		\State $edge_{2} \gets 0$
+		\State $edge_{1},\ edge_{2} \gets $ duas arestas aleatórias diferentes e não consecutivas de $P$
+		\State \textbf{Retorne} 2-CHANGE($G(V,E)$, $P$, $edge_{1}$, $edge_{2}$) 
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -486,12 +543,11 @@ pseudocódigo~\ref{2_change}.
 	\label{2_change}                           % and a label for \ref{} commands later in the document
 	\algcomment{\begin{center} Fonte: O Autor \end{center}}
 	\begin{algorithmic}[1]                    % enter the algorithmic environment
-		\Procedure{2-CHANGE}{$G(V,E), A, edge_{1}, edge_{2}$}
+		\Procedure{2-CHANGE}{$G(V,E), P, edge_{1}, edge_{2}$}
 		\newline
-		\Comment{$G$ é o grafo e $A$ é o Agente escolhido para sofrer mutação}
-		\State $P \gets $ caminho do agente $A$
+		\Comment{$G$ é o grafo e $P$ é a partição do Agente escolhido para sofrer mutação}
 		\State $P^{\prime}  \gets $ \{\} \Comment{Novo caminho}
-		\For{$k \in 1\ ...\ |p|$} \Comment{Lembrando que $edge_{1} < edge_{2}$}
+		\For{$k \in 1\ ...\ |P|$} \Comment{Lembrando que $edge_{1} < edge_{2}$}
 			\If{$k < edge_{1}$}
 				\State ADICIONA-AO-CAMINHO($P^{\prime}$, $P[k]$) \Comment{Vide pseudocódigo~\ref{path_random}}
 			\ElsIf{$k = edge_{1}$}
@@ -567,7 +623,7 @@ $[6,4,2,1,5,3,4,6]$. E é possível visualizar $P^{\prime}$ na
 \end{figure}
 
 \begin{figure}
-	\caption{Caminho do Agente de exemplo após o procedimento \textit{2-change}}
+	\caption{Caminho do Agente de exemplo após o procedimento \textit{2-change} aplicado a $(4,5)$ e $(2,3)$}
 	\centering
 	\begin{tikzpicture}
 	[scale=.8]
@@ -613,7 +669,7 @@ O pseudocódigo~\ref{small_changes} ilustra o operador.
 		\Else
 			\State REMOVE-COM-POUCAS-MUDANÇAS($G(V,E)$,$A$)
 		\EndIf
-		\State MELHORAR($G(V,E)$, $A$)
+		\State Configurar caminho do agente $A$ para MELHORAR($G(V,E)$, $A$)
 		\EndProcedure
 		\Procedure{ADICIONA-COM-POUCAS-MUDANÇAS}{$G(V,E), A$}
 		\State $P \gets $ o caminho do agente $A$
@@ -698,7 +754,7 @@ reconstrói integralmente. O pseudocódigo~\ref{rebuild} ilustra este operador.
 		\Else
 			\State REMOVE-E-RECONSTROI($G(V,E)$,$A$)
 		\EndIf
-		\State MELHORAR($G(V,E)$, $A$)
+		\State Configurar caminho do agente $A$ para MELHORAR($G(V,E)$, $A$)
 		\EndProcedure
 		\Procedure{ADICIONA-E-RECONSTROI}{$G(V,E), A$}
 		\State $P \gets $ o caminho do agente $A$
@@ -737,6 +793,7 @@ construído utilizando qualquer um dos operadores de \textit{path building}
 apresentados neste capítulo.
 
 \section{Recombinação}
+\label{sec:recombinacao}
 
 Por fim, será apresentado um operador para aplicar recombinação em dois 
 indivíduos pais gerando dois indivíduos filhos. Esse operador é chamado de 
@@ -790,3 +847,60 @@ posicionado no índice $r_{i}$ do indivíduo $a$. Encontrando este agente, o
 operador faz a troca. Caso não seja encontrado nenhum agente, o operador vai 
 simplesmente trocar os agentes que estão no mesmo índice, $r_{i}$, em seus 
 respectivos indivíduos.
+
+\section{Considerações Finais}
+
+Neste capítulo, foram apresentadas e detalhadas formas de modelar a \ac{tmap} 
+que possibilitem a aplicação de Algoritmos Evolucionários tradicionais para 
+encontrar soluções que minimizem uma dada métrica.
+
+Os operadores apresentados ao longo deste capítulo foram desenvolvidos pelo 
+autor em conjunto com Diogo Felipe Félix de 
+Melo\footnote{\url{http://lattes.cnpq.br/2213650736070295}} para a disciplina 
+de Tópicos Avançados em Inteligência Artificial no curso de Bacharelado em 
+Ciência da Computação da Universidade Federal Rural de Pernambuco ministrada 
+pelo professor Pablo Azevedo 
+Sampaio\footnote{\url{http://lattes.cnpq.br/8865836949700771}}.
+
+ A \tabref{tbl:resumo_operadores} resume os operadores propostos, indicando a 
+ operação realizada e se foram baseados em trabalhos já presentes na literatura.
+
+\begin{table}[tp]
+	\centering
+	\caption{Resumo dos operadores apresentados}
+	\label{tbl:resumo_operadores}
+	\begin{tabularx}{\linewidth}{|X|X|X|}
+		\hline
+		\textbf{Operador} & \textbf{Operação} & \textbf{Referência} \\
+		\hline
+		\textit{Random Centering} & Criação de Indivíduos & Proposto neste trabalho \\
+		\hline
+		\textit{Approximated Maximum Distance Centering} & Criação de Indivíduos & Proposto neste trabalho \\
+		\hline
+		\textit{Random Partitioning} & Criação de Indivíduos & Proposto neste trabalho \\
+		\hline
+		\textit{Heuristic Graph Partitioning} & Criação de Indivíduos & Proposto neste trabalho \\
+		\hline
+		\textit{Random Path Building} & Criação de Indivíduos & Proposto neste trabalho \\
+		\hline
+		\textit{Nearest Neighbor Path Building} & Criação de Indivíduos & \citep{nilsson2003heuristics} \\
+		\hline
+		\textit{Nearest Insertion Path Building} & Criação de Indivíduos & \citep{nilsson2003heuristics} \\
+		\hline
+		Melhorar & Mutação & Proposto neste trabalho \\
+		\hline
+		\textit{2-change} & Mutação & \citep{Marx:2008:SKN:2283963.2284596} \\
+		\hline
+		\textit{Half Add Half Sub Small Changes} & Mutação & Proposto neste trabalho \\
+		\hline
+		\textit{Half Add Half Sub Rebuild} & Mutação & Proposto neste trabalho \\
+		\hline
+		\textit{Simple Random Crossover} & Recombinação & Proposto neste trabalho \\
+		\hline
+	\end{tabularx}
+	\caption*{Fonte: O autor}
+\end{table}
+
+No próximo capítulo, será avaliada a efetividade desses operadores, através dos 
+resultados de simulações e comparação com outras abordagens propostas por 
+outros autores.
