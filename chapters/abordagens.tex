@@ -8,9 +8,9 @@ arbitrária para a primeira população, além de como aplicar
 recombinação e mutação neles. A definição desses operadores passa primeiro pela 
 forma escolhida para representar indivíduos. Tipicamente, na literatura de 
 Algoritmos Evolucionários, indivíduos são representados como um vetor de bits 
-(para problemas de domínio discreto) ou de números reais (para domínios 
-contínuos) \citep{Luke2013Metaheuristics}. No entanto, estas representações não 
-são adequadas para a \ac{tmap}.
+ou de números reais \citep{Luke2013Metaheuristics}. No entanto, tal como foi 
+apresentado na \secref{definicoes_tmap}, a \ac{tmap} não é representada por 
+essas estruturas de dados.
 
 Considerando estas questões de representação, esta pesquisa adota uma abordagem 
 baseada em particionamento do grafo para resolver a \ac{tmap}, como foi sugerido 
@@ -27,17 +27,15 @@ base para a recombinação.
 A partir deste modelo, foi adicionado o conceito de centro das partições para que 
 a recombinação possa trocar agentes semelhantes. Se duas soluções possuem agentes 
 com os mesmos centros de partição, será possível trocar os agentes que possuam o 
-mesmo centro (o que não quer dizer partições iguais). Além disso, se as 
-partições são construídas a partir de um determinado centro, distanciar esses 
-centros ajudaria a deixar as partições o mais disjuntas possível.
+mesmo centro (o que não quer dizer partições iguais).
 
 Finalmente, a representação proposta para uma solução da \ac{tmap} é: um conjunto 
 de $r$ agentes, onde cada agente é representado por um ciclo que passa por todos 
 os vértices de uma partição do grafo e um vértice de centro. A 
 \figref{fig:tmap_example}, representa visualmente uma dessas soluções. Nela, 
-dois patrulham o grafo. Cada um ficou sob responsabilidade de uma partição, onde 
-irão percorrer um ciclo indefinidamente. O agente vermelho, ficou com o centro 
-$5$, enquanto que o verde com o centro 3.
+dois agentes patrulham o grafo. Cada um ficou sob responsabilidade de uma 
+partição, onde irão percorrer um ciclo indefinidamente. O agente vermelho, 
+ficou com o centro $5$, enquanto que o verde com o centro 3.
 
 \tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
 \tikzstyle{red vertex}=[circle,fill=red!25,minimum size=20pt,inner sep=0pt]
@@ -72,22 +70,27 @@ $5$, enquanto que o verde com o centro 3.
 \end{figure}
 
 Utilizando esta representação, serão propostos, neste capítulo, operadores 
-para a construção de indivíduos, a mutação e a recombinação.
+para construção de indivíduos, mutação e recombinação.
 
 \section{Criação de Indivíduos}
 
 A criação de 
 indivíduos foi dividida em três etapas. A primeira é o cálculo de $r$ centros, 
-onde $r$ é o número de agentes, ao redor dos quais os agentes deverão patrulhar. 
+onde $r$ é o número de agentes. 
 A segunda tarefa é a escolha dos vértices que compõem a partição, dentre os 
 quais está o centro definido para ela. Por fim, falta o cálculo de um ciclo, 
 para cada partição, que passe por todos os seus vértices. Essas tarefas foram 
 chamadas respectivamente de \textit{centering}, \textit{partitioning} e 
-\textit{path building}.
+\textit{path building}. No final, o resultado será um indivíduo (ou solução 
+para a \ac{tmap}) com $r$ agentes, onde cada agente tem um vértice de centro e 
+um caminho para percorrer durante a patrulha. Estes operadores são utilizados 
+pelos algoritmos evolucionários no momento em que se precisa de um "novo 
+indivíduo gerado de forma aleatória" (vide os pseudocódigos no 
+\chapref{alg_evo}).
 
-Nas subseções seguintes, cada uma dessas três tarefas serão tratadas 
+Nas subseções seguintes, cada uma dessas três tarefas será tratada 
 separadamente, mas é importante notar que uma tarefa depende da resposta dada 
-pela sua antecessora. Serão apresentadas mais de um operador que executa cada 
+pela sua antecessora. Serão apresentados mais de um operador que executa cada 
 tarefa, assim ao montar um algoritmo evolucionário, o leitor pode construir 
 seus indivíduos com qualquer combinação deles.
 
@@ -119,7 +122,7 @@ Uma outra forma de escolher os centros é tentar encontrar os vértices do grafo
 que estejam mais distantes uns dos outros. O objetivo neste operador é iniciar 
 indivíduos de forma um pouco mais inteligente, para aumentar as chances de 
 serem indivíduos com alta aptidão, mas sem perder completamente algum fator de 
-aleatoriedade que considerado importante nas inicializações de indivíduos nos 
+aleatoriedade que é considerado importante nas inicializações de indivíduos nos 
 algoritmos evolucionários. \citep{Luke2013Metaheuristics} alerta para os perigos 
 de utilizar heurísticas que aparentam gerar melhores indivíduos, mas que podem 
 estar, inadvertidamente, condenando os algoritmos evolucionários a ficarem 
@@ -193,10 +196,10 @@ exemplifica como isso pode ser implementado.
 \end{algorithm}
 
 O \textit{Random Partitioning} consiste em criar uma lista de partições para 
-cada centro. A cada iteração do \textit{loop} principal, um centro é escolhido 
-aleatoriamente. Então, um outro vértice do grafo também é escolhido de forma 
+cada centro. A cada iteração do \textit{loop} principal, um centro, $c$, é escolhido 
+aleatoriamente. Então, um outro vértice, $v$, do grafo também é escolhido de forma 
 aleatória (desde que não seja um centro). Depois, é adicionado à partição 
-daquele centro escolhido todo o menor caminho entre ele mesmo e o vértice 
+do centro $c$ todo o menor caminho entre ele mesmo e o vértice $v$ 
 escolhido. O menor caminho inteiro é adicionado para que as partições estejam 
 conectadas, isto é, para que seja possível traçar um caminho, dentro do grafo 
 $G$, entre seus vértices. Finalmente, o \textit{Random Partitioning} para quando 
@@ -420,8 +423,8 @@ caminho entre o último e o primeiro elementos de $T$ (linhas 41 a 44).
 
 O pseudocódigo~\ref{nearest_insertion} ilustra uma possível forma de implementar 
 o \textit{Nearest Insertion Method}. O operador começa escolhendo um vértice, 
-$v$, aleatório da partição. Depois, ele encontra outro vértice, $v_{s}$ da 
-partição que tenha a menor distância para $v$ e calcula um caminho que vá de $v$ 
+$v$, aleatório da partição. Depois, ele encontra outro vértice da partição, 
+$v_{s}$,  que tenha a menor distância para $v$ e calcula um caminho que vá de $v$ 
 até $v_{s}$ e volte para $v$. Após essa etapa, o operador entra em 
 \textit{loop}, até que todos os vértices da partição tenham sido adicionados ao 
 caminho, $T$. A cada iteração, o operador encontra o vértice $v_{k}$, com menor 
@@ -837,16 +840,16 @@ para recombinação.
 	\end{algorithmic}
 \end{algorithm}
 
-O operador começa escolhendo um índice, $r_{i}$ de um agente aleatoriamente. 
+O operador começa escolhendo um índice, $r_{i}$, de um agente aleatoriamente. 
 Depois, uma cópia dos indivíduos é atribuída a dois novos indivíduos filhos. 
-A seguir, o operador verifica se os agentes no índice $r_{i}$ possuem o mesmo 
-vértice como centro. Em caso positivo, o operador imediatamente troca um agente 
-pelo outro entre os dois indivíduos filhos. Em caso negativo, o operador tenta 
-encontrar o agente do indivíduo $b$ cujo caminho passe pelo centro do agente 
-posicionado no índice $r_{i}$ do indivíduo $a$. Encontrando este agente, o 
-operador faz a troca. Caso não seja encontrado nenhum agente, o operador vai 
-simplesmente trocar os agentes que estão no mesmo índice, $r_{i}$, em seus 
-respectivos indivíduos.
+A seguir, o operador verifica se os agentes no índice $r_{i}$ dos indivíduos 
+possuem o mesmo vértice como centro. Em caso positivo, o operador imediatamente 
+troca um agente pelo outro entre os dois indivíduos filhos. Em caso negativo, o 
+operador tenta encontrar o agente do indivíduo $b$ cujo caminho passe pelo 
+centro do agente posicionado no índice $r_{i}$ do indivíduo $a$. Encontrando 
+este agente, o operador faz a troca. Caso não seja encontrado nenhum agente, o 
+operador vai simplesmente trocar os agentes que estão no mesmo índice, $r_{i}$, 
+em seus respectivos indivíduos.
 
 \section{Considerações Finais}
 
@@ -862,7 +865,7 @@ Ciência da Computação da Universidade Federal Rural de Pernambuco ministrada
 pelo professor Pablo Azevedo 
 Sampaio\footnote{\url{http://lattes.cnpq.br/8865836949700771}}.
 
- A \tabref{tbl:resumo_operadores} resume os operadores propostos, indicando a 
+ O \tabref{tbl:resumo_operadores} resume os operadores propostos, indicando a 
  operação realizada e se foram baseados em trabalhos já presentes na literatura.
 
 \begin{table}[tp]
@@ -901,6 +904,18 @@ Sampaio\footnote{\url{http://lattes.cnpq.br/8865836949700771}}.
 	\caption*{Fonte: O autor}
 \end{table}
 
-No próximo capítulo, será avaliada a efetividade desses operadores, através dos 
-resultados de simulações e comparação com outras abordagens propostas por 
-outros autores.
+Os operadores descritos neste trabalho foram implementados na linguagem de 
+programação Java\footnote{\url{http://java.com/pt_BR/}}. A principal razão para 
+a adoção desta linguagem foi o \textit{Simple Patrol}, simulador da \ac{tmap}, 
+desenvolvido pelo grupo de pesquisa sobre Patrulha Multiagente da Universidade 
+Federal Rural de Pernambuco, utilizado para realizar os experimentos desta 
+pesquisa. Os operadores foram desenvolvidos de forma compatível com a biblioteca 
+jMetal\footnote{\url{http://jmetal.sourceforge.net/}} \citep{Durillo2011}, que 
+disponibiliza diversos algoritmos evolucionários facilmente adaptáveis para 
+qualquer problema que possa ser modelado em classes Java.
+
+Os operadores propostos nesta pesquisa podem ser combinados de diferentes 
+formas, construindo diversas heurísticas que podem encontrar soluções distintas 
+para \ac{tmap}. No próximo capítulo, serão descritos experimentos feitos para 
+encontrar as melhores combinações além de compará-las com abordagens propostas 
+na literatura.

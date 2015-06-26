@@ -64,7 +64,7 @@ evolucionário.
 	\end{algorithmic}
 \end{algorithm}
 
-A \tabref{tbl:evo_dict} revisa alguns dos termos comumente utilizados nos 
+O \tabref{tbl:evo_dict} revisa alguns dos termos comumente utilizados nos 
 \acp{ea}.
 
 No restante do presente capítulo, serão apresentados os algoritmos utilizados 
@@ -170,7 +170,7 @@ permanecem para competir com seus $ \lambda$ filhos na iteração seguinte.
 \citep{Luke2013Metaheuristics} aponta que isso geralmente faz com que a 
 estratégia $( \mu + \lambda )$ explore mais os ótimos locais em comparação com 
 a estratégia $( \mu, \lambda )$, já que um pai suficientemente apto pode fazer 
-com que a \ac{es} fique "presa" em seus descendentes imediatos, causando uma 
+com que a \ac{es} fique "presa"\ em seus descendentes imediatos, causando uma 
 convergência das populações para o ótimo local ao redor do pai.
 
 O Pseudocódigo~\ref{mu+lambda_es} ilustra a Estratégia Evolucionária 
@@ -232,7 +232,7 @@ Genéticos selecionam os pais e geram filhos ao poucos até que se tenha uma
 população de filhos suficiente. A reprodução em si também é bem diferente das 
 \acp{es}: nos Algoritmos Genéticos, inicia-se com uma população de filhos vazia. 
 O Algoritmo então seleciona dois pais de forma arbitrária, recombina esses pais 
-em dois novos indivíduos filhos e então faz a mutação deles (as \acp{ES} só 
+em dois novos indivíduos filhos e então faz a mutação deles (as \acp{es} só 
 realizam a mutação). Esses dois novos indivíduos são adicionados à população. 
 Esse processo se repete até que a população de filhos esteja completamente 
 preenchida \citep{Luke2013Metaheuristics}.
@@ -285,7 +285,7 @@ para a próxima geração.
 
 Dessa forma, assim como a \ac{es} $( \mu + \lambda )$, os indivíduos pais se 
 mantém na população e disputam com os filhos nas gerações seguintes. Por isso, 
-este algoritmo pode sofrer do mesmo problema e ficar "preso" a ótimos locais ao 
+este algoritmo pode sofrer do mesmo problema e ficar "preso"\ a ótimos locais ao 
 redor dos pais \citep{Luke2013Metaheuristics}.
 
 O pseudocódigo~\ref{GenAlgSteady} detalha as características do Algoritmo 
@@ -330,6 +330,12 @@ Genético de Estado Estável.
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
+
+O algoritmo genético de estado estável utilizado na presente pesquisa utiliza 
+o operador de seleção chamado Seleção da Pior Aptidão 
+\citep{Luke2013Metaheuristics} para escolher os indivíduos da antiga geração 
+que darão lugar aos novos. Esse operador simplesmente escolhe o indivíduo que 
+possuir a menor aptidão dentro da população.
 
 No próximo capítulo, serão explorados as aplicações dos algoritmos acima 
 apresentados para a \ac{tmap}. Serão propostos operadores de mutação e de 

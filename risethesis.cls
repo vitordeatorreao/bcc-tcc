@@ -150,6 +150,7 @@
 
 % Portuguese
 \if\@language0
+  \renewcommand\tablename{Quadro}
   \gdef\@bachelordissertation{Trabalho de Graduação}
   \gdef\@mastersdissertation{Dissertação de Mestrado}
   \gdef\@phdqualifying{Monografia de Qualificação}
@@ -173,7 +174,7 @@
   \gdef\@corname{Corolário}
   \gdef\@proofname{Prova}
   \gdef\@figurename{Figura}
-  \gdef\@tablename{Tabela}
+  \gdef\@tablename{Quadro}
   \gdef\@equationame{equação}
   \gdef\@chaptername{Capítulo}
   \gdef\@textby{Por}
@@ -184,7 +185,7 @@
   \renewcommand{\bibname}{\bibliographytocname}
   \renewcommand{\appendixtocname}{Apêndice}
   \renewcommand{\appendixpagename}{Apêndice}
-  \gdef\@listoftablesname{Lista de Tabelas}
+  \gdef\@listoftablesname{Lista de Quadros}
   \gdef\@listoffiguresname{Lista de Figuras}
   \gdef\@pagename{página}
   \gdef\@listacronymname{Acrônimos}
@@ -681,13 +682,13 @@ requirements for the degree of \@degree\ in \@majorfielden.
   
   \vspace{\baselineskip}
   -----------------------------------------------------------------------\\
-  Prof. <Nome>\\
-  Centro de Informática/UFPE
+  Prof. Péricles Miranda\\
+  Departamento de Estatística e Informática/UFRPE
   
   \vspace{\baselineskip}
   -----------------------------------------------------------------------\\
   Prof. <Nome>\\
-  Departamento de Ciência da Computação/UFBA
+  Centro de Informática/UFPE
   
   \vspace{\baselineskip}
   %-----------------------------------------------------------------------\\

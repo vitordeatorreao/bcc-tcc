@@ -4,12 +4,13 @@
 Neste capítulo serão revisitados alguns trabalhos realizados sobre a \ac{tmap}. 
 Primeiramente, serão feitas algumas considerações sobre os diferentes nomes,  
 escopos e métricas utilizados para o problema pelos autores. Depois, serão 
-revisadas duas das definições formais para o problema mais utilizadas. Em 
+revisadas duas das definições formais mais utilizadas para o problema. Em 
 seguida, serão apresentadas as classificações para estratégias que visam 
 resolver a \ac{tmap}. Por fim, serão descritas as soluções já presentes na 
 literatura.
 
 \section{Considerações Iniciais}
+\label{sec:consideracoesIniciais}
 
 Um dos grandes obstáculos para o estudo do Problema da Patrulha Multiagente é a 
 falta de concordância, dentre os pesquisadores, sobre nomenclatura, escopo e 
@@ -25,7 +26,7 @@ patrolling), já alguns pesquisadores \citep{Koenig:2001:TCA:375735.376463}
 utilizam o termo “cobertura de terreno” (terrain coverage, em inglês). No 
 entanto, no decorrer do presente trabalho será utilizado o termo “Patrulha 
 Multiagente”, pois ele é considerado mais apropriado por diversos pesquisadores 
-\citep{6900280}, \citep{sampaiophd}, \citep{hernandez2013game} e \citep{6315145}.
+\citep{6900280}, \citep{sampaiophd}, e \citep{6315145}.
 
 O escopo é outro fator que varia entre os trabalhos. \citep{6615158}, por 
 exemplo, faz uma análise do problema da patrulha onde o ambiente é dinâmico. 
@@ -40,8 +41,8 @@ frequência, isso significa que cada nó tem a si designado um valor de frequên
 com a qual o nó \textbf{deve} ser visitado. Outro exemplo seria o trabalho feito 
 em \citep{6495145} e \citep{Poulet:2012:b}, onde é feita uma análise do problema 
 em uma configuração de sistema aberto. Sistemas abertos foram definidos em 
-\citep{6040660} como aqueles agentes podem entrar e sair a qualquer momento da 
-execução.
+\citep{6040660} como aqueles onde agentes podem entrar e sair a qualquer momento 
+da execução.
 
 Na presente pesquisa, será utilizado o escopo para a Patrulha Multiagente 
 doravante referido como "padrão", onde os agentes possuem eficiência idêntica, 
@@ -70,6 +71,7 @@ classificando-as por seu escopo e métricas utilizadas na avaliação dos agente
 \section{Levantamento Bibliográfico}
 
 \subsection{Definições}
+\label{definicoes_tmap}
 
 O problema da Patrulha é tipicamente modelado por um Grafo 
 \citep{Rosen:2002:DMA:579402}. Segundo \citep{Almeida:2004:AAI}, isso se deve 
@@ -109,7 +111,7 @@ $$ \langle E, P, S, s_{0}, A, I, M \rangle $$
 
 O elemento $E$ representa o ambiente (do inglês, \textit{environment} onde estão 
 os pontos de interesse a serem patrulhados, preferencialmente $E$ deve ser um 
-grafo $G(V,E)$. E o elemento $P$ é o conjunto dos pontos de interesse do ambiente. 
+grafo $G(V,E)$. O elemento $P$ é o conjunto dos pontos de interesse do ambiente. 
 No caso de um grafo, $P = V$.
 
 $S$ é um elemento um pouco mais complexo, pois ele 
@@ -119,8 +121,8 @@ ativos, qual a posição atual de cada agente no ambiente $E$, o tempo decorrido
 desde o início da patrulha, orientação e energia de cada agente e 
 características globais do conjunto de agentes. O estado inicial da sociedade é 
 representado em $s_{0}$, ou seja, $s_{0} \in S$. Esta modelagem para o grupo de 
-agentes permite ao modelo de \citep{sampaiophd} englobar diversas extensões para 
-a \ac{tmap}, como por exemplo as citadas no \chapref{chp:introduction}.
+agentes permite ao modelo de \citep{sampaiophd} englobar diversos escopos da 
+\ac{tmap}, como por exemplo os citados na \secref{sec:consideracoesIniciais}.
 
 O quinto elemento da tupla, $A$, é o conjunto de ações que alteram o estado da 
 sociedade, $S$. Essas ações podem ser individuais, de cada agente, ou coletivas, 
@@ -135,6 +137,10 @@ tupla.
 O problema da patrulha multiagente seria, então, definir um conjunto $A$ de 
 ações a serem tomadas pelos agentes, que estão inicialmente no estado $s_{0}$, 
 para minimizar as métricas presentes em $M$ durante o período de patrulha, $I$.
+
+Uma vez que a \ac{tmap} está bem definida, a seção seguinte irá abordar as 
+diferentes formas de classificar soluções para a \ac{tmap}, de forma que ao 
+final, as abordagens a serem propostas neste trabalho podem ser classificadas.
 
 \subsection{Classificações para a \ac{tmap}}
 \label{sec:classifytmap}
@@ -151,8 +157,8 @@ particionamento são aquelas onde o território a ser patrulhado é dividido em
 $r$ regiões, onde $r$ é o número de agentes. Os agentes devem, então, patrulhar 
 dentro de suas respectivas regiões.
 
-Já \citep{Machado:2002:MPE:1765317.1765332} fazem uma extensa classificação das 
-arquiteturas de soluções para a \ac{tmap}. Eles dividem os agentes em: \textbf{
+Já \citep{Machado:2002:MPE:1765317.1765332} faz uma extensa classificação das 
+arquiteturas de soluções para a \ac{tmap}. O trabalho divide os agentes em: \textbf{
 reativo} ou \textbf{cognitivo}; com comunicação \textbf{permitida} ou \textbf{
 proibida}; com coordenação \textbf{central} ou \textbf{descentralizada}; com 
 percepção \textbf{local} ou \textbf{global}; com tomada de decisão \textbf{
@@ -172,6 +178,10 @@ estratégias \textbf{baseadas em particionamento}, com agentes
 \textbf{cognitivos}, de comunicação \textbf{proibida}, com coordenação 
 \textbf{centralizada}, de percepção \textbf{global}, e com tomada de decisão 
 \textbf{orientada a objetivo}.
+
+Com o problema bem descrito, pode-se explorar as soluções que já estão presentes 
+na literatura e verificar se há espaço para a proposição de mais estratégias 
+para a \ac{tmap}.
 
 \subsection{Soluções já propostas}
 
@@ -227,9 +237,7 @@ colônias de formigas \citep{Koenig:2001:TCA:375735.376463},
 agentes não possuem uma visão completa do grafo, mas apenas das suas 
 vizinhanças. A coordenação dos agentes é emergente 
 \citep{Machado:2002:MPE:1765317.1765332}, pois cada agente pode deixar marcações 
-em nós do grafo que podem ser sentidas pelos outros agentes. Ao comparar as 
-soluções centralizadas com as descentralizadas, \citep{Almeida:2004:AAI} 
-encontra resultados melhores nas centralizadas.
+em nós do grafo que podem ser sentidas pelos outros agentes.
 
 Apesar de serem amplamente utilizados na literatura para resolver problemas de 
 otimização, os Algoritmos Evolucionários \citep{Luke2013Metaheuristics} foram 
@@ -251,15 +259,18 @@ demonstração de soluções. É possível também perceber que muitos trabalhos
 utilizam as métricas propostas por \citep{Machado:2002:MPE:1765317.1765332} e 
 \citep{sampaiophd}.
 
-Percebe-se que falta à literatura um trabalho que investigue uma solução para a 
-\ac{tmap} utilizando algoritmos evolucionários, tais como as \acp{es} e os 
-\acp{ga}. Dessa forma, nos próximos capítulos, serão apresentados alguns 
-algoritmos evolucionários que podem ser utilizados para resolver a \ac{tmap}, 
-em seguida, serão propostas formas de aplicar esses algoritmos no contexto do 
-problema e, finalmente, será demonstrada a eficácia dessas estratégias perante 
-as abordagens de destaque propostas por outros autores.
+Os trabalhos comparativos feitos por \citep{Almeida:2004:AAI} e 
+\citep{sampaiophd} mostram que não existem estratégias claramente dominantes 
+ou ótimas para \ac{tmap}. Percebe-se também que falta à literatura um trabalho 
+que investigue uma solução para a \ac{tmap} utilizando algoritmos 
+evolucionários, tais como as \acp{es} e os \acp{ga}. Dessa forma, nos próximos 
+capítulos, serão apresentados alguns algoritmos evolucionários que podem ser 
+utilizados para resolver a \ac{tmap}, em seguida, serão propostas formas de 
+aplicar esses algoritmos no contexto do problema e, finalmente, será 
+demonstrada a eficácia dessas estratégias perante as abordagens de destaque 
+propostas por outros autores.
 
-A \tabref{tbl:comp_background} resume as soluções apresentadas nesta sessão de 
+O \tabref{tbl:comp_background} resume as soluções apresentadas nesta sessão de 
 acordo com o escopo do problema, o método de demonstração das soluções e as 
 métricas utilizadas.
 
