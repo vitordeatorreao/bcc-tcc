@@ -606,7 +606,7 @@ requirements for the degree of \@degree\ in \@majorfielden.
   \\
   \@date
   \end{center}
-  \setcounter{page}{1}
+  \setcounter{page}{2}
 }
 
 
