@@ -1,13 +1,13 @@
 \chapter{Trabalhos Relacionados}
 \label{chp:background}
 
-Neste capítulo serão revisitados alguns trabalhos realizados sobre a \ac{tmap}. 
-Primeiramente, serão feitas algumas considerações sobre os diferentes nomes,  
-escopos e métricas utilizados para o problema pelos autores. Depois, serão 
-revisadas duas das definições formais mais utilizadas para o problema. Em 
-seguida, serão apresentadas as classificações para estratégias que visam 
-resolver a \ac{tmap}. Por fim, serão descritas as soluções já presentes na 
-literatura.
+Neste capítulo foram revisitados alguns trabalhos realizados sobre a \ac{tmap}. 
+Primeiramente, algumas considerações foram feitas sobre os diferentes nomes,  
+escopos e métricas utilizados para a \ac{tmap} pelos autores. Depois, foi 
+realizada uma revisão de duas das definições formais mais utilizadas para o 
+problema. Em seguida, foram apresentadas as classificações para estratégias 
+que visam resolver a \ac{tmap}. Finalmente, as soluções já presentes na 
+literatura foram analisadas.
 
 \section{Considerações Iniciais}
 \label{sec:consideracoesIniciais}
@@ -33,12 +33,12 @@ exemplo, faz uma análise do problema da patrulha onde o ambiente é dinâmico.
 Isto é, o grafo onde os agentes patrulham sofre alterações ao longo da execução 
 do agente. Em um dado momento, o grafo pode ter vértices adicionados ou 
 removidos. Já \citep{6900280} trabalham levando em conta que agentes podem ter 
-velocidades diferentes. Os autores de \citep{Pippin:2013:PBT:2480362.2480378} 
+velocidades diferentes. \citep{Pippin:2013:PBT:2480362.2480378} 
 levam em consideração que agentes podem agir com eficiência abaixo do esperado, 
 isto é, o agente não pode ser confiado para realizar a tarefa que lhe foi 
 passada sem falhas. Em \citep{4209122}, os autores consideram restrições de 
 frequência, isso significa que cada nó tem a si designado um valor de frequência 
-com a qual o nó \textbf{deve} ser visitado. Outro exemplo seria o trabalho feito 
+com a qual o nó deve ser visitado. Outro exemplo seria o trabalho feito 
 em \citep{6495145} e \citep{Poulet:2012:b}, onde é feita uma análise do problema 
 em uma configuração de sistema aberto. Sistemas abertos foram definidos em 
 \citep{6040660} como aqueles onde agentes podem entrar e sair a qualquer momento 
@@ -62,11 +62,9 @@ recentes variam: \citep{6900280} e \citep{Pippin:2013:PBT:2480362.2480378}
 utilizam o intervalo máximo, já \citep{4209122} fazem uso da frequência mínima e 
 \citep{hernandez2013game} compara as frequências mínimas.
 
-Dessa forma, este capítulo visa, através de pesquisa bibliográfica, explorar os 
-trabalhos relacionados para construir a base de conhecimento necessária para 
-formular uma proposta compatível com o objetivo deste projeto. Serão discutidas 
-as soluções para o problema da patrulha presentes na literatura 
-classificando-as por seu escopo e métricas utilizadas na avaliação dos agentes.
+Dessa forma, este capítulo visa apresentar os trabalhos desenvolvidos para o 
+problema da patrulha presentes na literatura classificando-as por seu escopo e 
+métricas utilizadas na avaliação dos agentes.
 
 \section{Levantamento Bibliográfico}
 
@@ -89,9 +87,9 @@ definido da seguinte forma:
 
 O território onde os agentes patrulham é representado por um grafo $G(V,E)$, 
 onde $V$ é o conjunto dos pontos de interesse que precisam ser patrulhados e 
-$E$ representa o conjunto de arestas, $E \in V^{2}$, de $G$. Para toda aresta 
-$(i,j) \in E$, onde $i,j \in V$, corresponde um peso $c_{i,j}$ representando a 
-distância entre o vértices $i$ e $j$ em $G$. 
+$E$ representa o conjunto de arestas, $E \subset V^{2}$, de $G$. Para toda 
+aresta $(i,j) \in E$, onde $i,j \in V$, corresponde um peso $c_{i,j}$ 
+representando a distância entre o vértices $i$ e $j$ em $G$. 
 
 Nesse cenário, uma solução monoagente para o problema seria uma função 
 $ \pi : \mathbb{N} \longrightarrow V$, tal que $ \pi(j)$ 
@@ -101,7 +99,8 @@ uma solução multiagente seria um conjunto $ \Pi = \{ \pi_{1} ... \pi_{r} \}$,
 onde $r$ é o número de agentes.
 
 Dessa forma, o problema seria encontrar o conjunto $ \Pi $ que obtivesse os 
-melhores resultados de acordo com um certo critério de avaliação.
+melhores resultados de acordo com um certo critério de avaliação, como por 
+exemplo, o intervalo máximo das visitas nos pontos de interesse.
 
 Já \citep{sampaiophd} contribuiu com uma definição mais abrangente da \ac{tmap}. 
 Ele aponta que uma instância da \ac{tmap} pode ser completamente definida pela 
@@ -125,10 +124,10 @@ agentes permite ao modelo de \citep{sampaiophd} englobar diversos escopos da
 \ac{tmap}, como por exemplo os citados na \secref{sec:consideracoesIniciais}.
 
 O quinto elemento da tupla, $A$, é o conjunto de ações que alteram o estado da 
-sociedade, $S$. Essas ações podem ser individuais, de cada agente, ou coletivas, 
-da sociedade inteira. O autor afirma que $A$ deve conter, no mínimo, duas ações 
-individuais definidas para cada agente: movimentação entre os pontos de $P$ e 
-visitação aos elementos do conjunto.
+sociedade, $S$. Essas ações podem ser individuais, de cada agente, ou coletivas. 
+O autor afirma que $A$ deve conter, no mínimo, duas ações individuais definidas 
+para cada agente: movimentação entre os pontos de $P$ e visitação aos elementos 
+do conjunto.
 
 $I$ representa o intervalo de medição, dentro do qual o desempenho dos agentes 
 é mensurado através das métricas definidas no conjunto $M$, último elemento da 
@@ -136,7 +135,8 @@ tupla.
 
 O problema da patrulha multiagente seria, então, definir um conjunto $A$ de 
 ações a serem tomadas pelos agentes, que estão inicialmente no estado $s_{0}$, 
-para minimizar as métricas presentes em $M$ durante o período de patrulha, $I$.
+para minimizar (ou maximizar) as métricas presentes em $M$ durante o período de 
+patrulha, $I$.
 
 Uma vez que a \ac{tmap} está bem definida, a seção seguinte irá abordar as 
 diferentes formas de classificar soluções para a \ac{tmap}, de forma que ao 
@@ -146,11 +146,10 @@ final, as abordagens a serem propostas neste trabalho podem ser classificadas.
 \label{sec:classifytmap}
 
 São notórios alguns trabalhos muito citados na literatura que visaram 
-classificar as soluções para a \ac{tmap}.
-
-Em \citep{Chevaleyre:2004:TAM:1018411.1019013}, as abordagens propostas até 
-então foram classificadas em \textbf{cíclicas} (ou de ciclo único) e \textbf{
-baseadas em particionamento}. As soluções de ciclo único são aquelas onde é 
+classificar as soluções para a \ac{tmap}. Em 
+\citep{Chevaleyre:2004:TAM:1018411.1019013}, as abordagens propostas até 
+então foram classificadas em cíclicas (ou de ciclo único) e 
+baseadas em particionamento. As soluções de ciclo único são aquelas onde é 
 calculado um ciclo que cobre todos os vértices do grafo, e então, os agentes são 
 colocados para caminhar nesse ciclo indefinidamente. As abordagens baseadas em 
 particionamento são aquelas onde o território a ser patrulhado é dividido em 
@@ -158,11 +157,11 @@ $r$ regiões, onde $r$ é o número de agentes. Os agentes devem, então, patrul
 dentro de suas respectivas regiões.
 
 Já \citep{Machado:2002:MPE:1765317.1765332} faz uma extensa classificação das 
-arquiteturas de soluções para a \ac{tmap}. O trabalho divide os agentes em: \textbf{
-reativo} ou \textbf{cognitivo}; com comunicação \textbf{permitida} ou \textbf{
-proibida}; com coordenação \textbf{central} ou \textbf{descentralizada}; com 
-percepção \textbf{local} ou \textbf{global}; com tomada de decisão \textbf{
-aleatória} ou \textbf{orientada a objetivo}. Os agentes reativos são aqueles que 
+arquiteturas de soluções para a \ac{tmap}. O trabalho divide os agentes em: 
+reativo ou cognitivo; com comunicação permitida ou 
+proibida; com coordenação central ou descentralizada; com 
+percepção local ou global; com tomada de decisão 
+aleatória ou orientada a objetivo. Os agentes reativos são aqueles que 
 agem baseados apenas na sua percepção atual do território, enquanto que os 
 agentes cognitivos podem perseguir um determinado objetivo. Enquanto os agentes 
 cognitivos tem uma visão do grafo completo, os reativos só podem enxergar os nós 
@@ -174,10 +173,10 @@ nó-objetivo de cada agente, enquanto que no esquema descentralizado, a
 coordenação emerge da interação entre os agentes.
 
 As abordagens propostas na presente pesquisa podem ser classificadas como 
-estratégias \textbf{baseadas em particionamento}, com agentes 
-\textbf{cognitivos}, de comunicação \textbf{proibida}, com coordenação 
-\textbf{centralizada}, de percepção \textbf{global}, e com tomada de decisão 
-\textbf{orientada a objetivo}.
+estratégias baseadas em particionamento, com agentes 
+cognitivos, de comunicação proibida, com coordenação 
+centralizada, de percepção global, e com tomada de decisão 
+orientada a objetivo.
 
 Com o problema bem descrito, pode-se explorar as soluções que já estão presentes 
 na literatura e verificar se há espaço para a proposição de mais estratégias 
@@ -248,22 +247,25 @@ utiliza \ac{aco} para calcular partições no grafo por onde os agentes irão
 patrulhar durante a execução. Dessa forma, pode-se constatar que o algoritmo 
 evolucionário não está sendo usado para resolver o problema da patrulha em si, 
 mas para encontrar os $r$ nós mais distantes uns dos outros dentro do grafo, 
-onde $r$ é o número de agentes.
+onde $r$ é o número de agentes. Depois, \citep{6900280} utiliza a mesma 
+abordagem híbrida num escopo onde os agente se movem com velocidades distintas e 
+os nós possuem prioridades diferentes, além de apresentar uma variação 
+\textit{multicore} da solução.
 
 \section{Considerações Finais}
 
 Uma vez apresentados, neste capítulo, os conceitos básicos dos trabalhos 
 relacionados, é possível fazer algumas observações sobre tendências dentre as 
 publicações. Há uma predileção pela Simulação como método de comparação e de 
-demonstração de soluções. É possível também perceber que muitos trabalhos 
-utilizam as métricas propostas por \citep{Machado:2002:MPE:1765317.1765332} e 
-\citep{sampaiophd}.
+demonstração da relevância das soluções. É possível também perceber que muitos 
+trabalhos utilizam as métricas propostas por 
+\citep{Machado:2002:MPE:1765317.1765332} e \citep{sampaiophd}.
 
 Os trabalhos comparativos feitos por \citep{Almeida:2004:AAI} e 
 \citep{sampaiophd} mostram que não existem estratégias claramente dominantes 
 ou ótimas para \ac{tmap}. Percebe-se também que falta à literatura um trabalho 
 que investigue uma solução para a \ac{tmap} utilizando algoritmos 
-evolucionários, tais como as \acp{es} e os \acp{ga}. Dessa forma, nos próximos 
+evolucionários, tais como as Estratégias Evolucionárias (ES)\acused{es} e os Algoritmos Genéticos\acused{ga}. Dessa forma, nos próximos 
 capítulos, serão apresentados alguns algoritmos evolucionários que podem ser 
 utilizados para resolver a \ac{tmap}, em seguida, serão propostas formas de 
 aplicar esses algoritmos no contexto do problema e, finalmente, será 

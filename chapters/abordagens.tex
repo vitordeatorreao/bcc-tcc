@@ -5,12 +5,12 @@ No último capítulo, foram apresentados os algoritmos evolucionários usados ne
 pesquisa. No entanto, algumas lacunas ficaram abertas: não foram apresentadas 
 formas de gerar indivíduos, isto é, soluções para a \ac{tmap}, de forma 
 arbitrária para a primeira população, além de como aplicar 
-recombinação e mutação neles. A definição desses operadores passa primeiro pela 
-forma escolhida para representar indivíduos. Tipicamente, na literatura de 
-Algoritmos Evolucionários, indivíduos são representados como um vetor de bits 
-ou de números reais \citep{Luke2013Metaheuristics}. No entanto, tal como foi 
-apresentado na \secref{definicoes_tmap}, a \ac{tmap} não é representada por 
-essas estruturas de dados.
+recombinação e mutação neles. A definição desses operadores depende da forma 
+escolhida para representar indivíduos. Tipicamente, na literatura de Algoritmos 
+Evolucionários, indivíduos são representados como um vetor de bits ou de números 
+reais \citep{Luke2013Metaheuristics}. No entanto, tal como foi apresentado na 
+\secref{definicoes_tmap}, a \ac{tmap} não é representada por essas estruturas de 
+dados.
 
 Considerando estas questões de representação, esta pesquisa adota uma abordagem 
 baseada em particionamento do grafo para resolver a \ac{tmap}, como foi sugerido 
@@ -84,8 +84,8 @@ chamadas respectivamente de \textit{centering}, \textit{partitioning} e
 \textit{path building}. No final, o resultado será um indivíduo (ou solução 
 para a \ac{tmap}) com $r$ agentes, onde cada agente tem um vértice de centro e 
 um caminho para percorrer durante a patrulha. Estes operadores são utilizados 
-pelos algoritmos evolucionários no momento em que se precisa de um "novo 
-indivíduo gerado de forma aleatória" (vide os pseudocódigos no 
+pelos algoritmos evolucionários no momento em que se precisa de um novo 
+indivíduo gerado de forma aleatória (vide os pseudocódigos no 
 \chapref{alg_evo}).
 
 Nas subseções seguintes, cada uma dessas três tarefas será tratada 
@@ -98,7 +98,7 @@ seus indivíduos com qualquer combinação deles.
 
 A primeira forma proposta para se calcular os centros é chamada de 
 \textit{Random Centering}, e consiste em simplesmente escolher nós aleatórios do 
-grafo para ser os centros. Veja o Pseudocódigo~\ref{centering_random} abaixo.
+grafo para serem os centros. Veja o Pseudocódigo~\ref{centering_random} abaixo.
 
 \begin{algorithm}                  % enter the algorithm environment
 	\caption{\textit{Random Centering}}          % give the algorithm a caption
@@ -484,7 +484,7 @@ partição e volta.
 Uma vez que os operadores para criação arbitrária de indivíduos estejam 
 apresentados, fica faltando os operadores de mutação e recombinação para que 
 se possa executar um algoritmo evolucionário completo no contexto da \ac{tmap}.
-Nesta seção, por tanto, serão apresentados dois operadores diferentes para 
+Nesta seção, portanto, serão apresentados dois operadores diferentes para 
 aplicar mutação em indivíduos.
 
 No entanto, antes de descrever os operadores, será mostrado um procedimento que 
@@ -496,9 +496,9 @@ O \textit{$k-$change}, que também pode ser chamado de \textit{$k-$opt}
 solução aproximada para o \ac{tsp}. O \textit{$k-$change} é descrito como uma 
 heurística de busca local que tenta encontrar um caminho de menor custo através 
 de leves alterações em um caminho original. A alteração é a substituição de até 
-$k$ arestas no caminho. Os valores para $k$ mais utilizados são 2, 3 e 4. Como 
-o objetivo do operador de mutação é realizar uma leve mudança no indivíduo 
-\citep{Luke2013Metaheuristics}, esta pesquisa utilizou $k = 2$.
+$k$ arestas no caminho. Os valores para $k$ mais utilizados são 2, 3 e 4 
+\citep{Luke2013Metaheuristics}. Como o objetivo do operador de mutação é 
+realizar uma leve mudança no indivíduo, esta pesquisa utilizou $k = 2$.
 
 O pseudocódigo~\ref{melhorar} ilustra o procedimento de \textit{melhorar}, que 
 engloba o uso do \textit{2-change}.
@@ -602,7 +602,7 @@ $[6,4,2,1,5,3,4,6]$. E é possível visualizar $P^{\prime}$ na
 \tikzstyle{edge} = [draw,thick,-]
 \tikzstyle{selected edge} = [draw,line width=2pt,-,red!50]
 
-\begin{figure}
+\begin{figure}[h]
 	\caption{Caminho original do Agente de exemplo para o procedimento \textit{2-change}}
 	\centering
 	\begin{tikzpicture}
@@ -625,7 +625,7 @@ $[6,4,2,1,5,3,4,6]$. E é possível visualizar $P^{\prime}$ na
 	\label{2_change_ex1}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 	\caption{Caminho do Agente de exemplo após o procedimento \textit{2-change} aplicado a $(4,5)$ e $(2,3)$}
 	\centering
 	\begin{tikzpicture}
@@ -652,7 +652,7 @@ Com o operador \textit{Melhorar} devidamente explicado, fica faltando os
 operadores de mutação em si, que vão fazer uma chamada para o procedimento de 
 \textit{Melhorar}. O primeiro operador de mutação é chamado de 
 \textit{Half Add Half Sub Small Changes}. O nome vem do fato de que existe 
-uma change de $50\%$ do operador adicionar ou subtrair um vértice do caminho do 
+uma chance de $50\%$ do operador adicionar ou subtrair um vértice do caminho do 
 agente selecionado para mutação, sempre de forma a modificar levemente o caminho.
 O pseudocódigo~\ref{small_changes} ilustra o operador.
 
@@ -868,7 +868,7 @@ Sampaio\footnote{\url{http://lattes.cnpq.br/8865836949700771}}.
  O \tabref{tbl:resumo_operadores} resume os operadores propostos, indicando a 
  operação realizada e se foram baseados em trabalhos já presentes na literatura.
 
-\begin{table}[tp]
+\begin{table}[bh]
 	\centering
 	\caption{Resumo dos operadores apresentados}
 	\label{tbl:resumo_operadores}

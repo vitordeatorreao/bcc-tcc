@@ -5,19 +5,16 @@ Como mostrado no \chapref{chp:abordagens}, os operadores propostos podem ser
 combinados de diferentes formas, para construir heurísticas distintas para a 
 \ac{tmap}. Assim, este capítulo tem dois objetivos. O primeiro é encontrar as 
 melhores combinações de operadores. O segundo é comparar as heurísticas que 
-obtiveram melhores resultados com abordagens propostas por outros autores.
-
-Uma vez que os operadores estavam implementados e importados no simulador 
-\textit{Simple Patrol}, foram realizados diversos experimentos divididos em dois 
-grupos. O primeiro com o objetivo de encontrar as melhores abordagens 
-evolucionárias para \ac{tmap} e o segundo com a finalidade de comparar estas 
-abordagens com as publicadas por outros autores.
+obtiveram melhores resultados com abordagens propostas por outros autores. 
+Assim, foram realizados diversos experimentos divididos em dois grupos: um para 
+cada uma dessas finalidades.
 
 A Métrica utilizada para avaliar os indivíduos se manteve constante em todos 
 os experimentos. Foi selecionada a média quadrática dos intervalos, pois segundo 
 \citep{sampaiophd} ela reflete o equilíbrio entre as métricas de intervalo 
 médio, intervalo máximo e desvio padrão dos intervalos e, por isso, é uma boa 
-métrica para a \ac{tmap}.
+métrica para a \ac{tmap}. Objetivo seria, então, encontrar soluções que 
+minimizem esta métrica.
 
 Abaixo, estão listados alguns parâmetros que, embora não influenciem diretamente 
 nos algoritmos evolucionários, tem grande impacto nas respostas obtidas.
@@ -25,9 +22,9 @@ nos algoritmos evolucionários, tem grande impacto nas respostas obtidas.
 \begin{itemize}
 	% Número Máximo de Avaliações
 	\item Todos os algoritmos evolucionários descritos no \chapref{alg_evo}, 
-	executam seu \textit{loop} principal até "não haja mais tempo". Esse tempo é 
-	representado pelo parâmetro \textbf{número máximo de avaliações}. Toda vez 
-	que o algoritmo evolucionário avalia a aptidão de um indivíduo, ele 
+	executam seu \textit{loop} principal até um critério de parada. Esse 
+	critério é representado pelo parâmetro \textbf{número máximo de avaliações}. 
+	Toda vez que o algoritmo evolucionário avalia a aptidão de um indivíduo, ele 
 	incrementa o contador do número de avaliações. Quando esse contador chegar 
 	no número máximo de avaliações, o algoritmo evolucionário para.
 	% Número de turnos a cada avaliação
@@ -90,8 +87,8 @@ de inicializar um indivíduo? Existem ao todo doze formas diferentes de compor
 o operador de inicialização de indivíduos de uma heurística evolucionária 
 utilizando os operadores propostos no \chapref{chp:abordagens}. Antes de 
 realizar os experimentos de \textit{tuning} em si, foram feitos alguns testes 
-para os valores de \textbf{número máximo de avaliações}, 
-\textbf{tamanho da população} e \textbf{número de tentativas do operador Melhorar}.
+para os valores de número máximo de avaliações, tamanho da população e número de 
+tentativas do operador Melhorar.
 
 \subsection{Número máximo de avaliações}
 
@@ -200,8 +197,8 @@ proposta por \citep{sampaiophd}. Os valores das médias quadráticas dos
 intervalos foram normalizadas, para que se tenha um único valor para todas as 
 sociedades de agentes por heurística, por mapa. Esta medida é obtida através da 
 multiplicação da média quadrática dos intervalos pelo tamanho da sociedade de 
-agentes que o obteve (no caso desses experimentos, 1, 5, 10 e 15). Depois, esse 
-valor é somado. A equação abaixo mostra como obter a \ac{mqin}:
+agentes que o obteve (no caso desses experimentos, 1, 5, 10 e 15). Depois, esses 
+valores são somados. A equação abaixo mostra como obter a \ac{mqin}:
 
 $$MQIN = \sum MQI_{S} * |S|$$
 
@@ -264,7 +261,7 @@ $grav(Node,Ar,1,max)$ e $grav(Edge,Ar,1,max)$. Além delas, a estratégia de cic
 utilizada na comparação. A estratégia de ciclo único obteve excelentes 
 resultados nos experimentos realizados por \citep{Almeida:2004:AAI}, enquanto 
 que as estratégias gravitacionais também tiveram bons resultados nos estudos 
-conduzidos em \cite{sampaiophd}.
+conduzidos em \citep{sampaiophd}.
 
 A partir daqui, quando o texto mencionar "Algoritmo Genético", estará se 
 referindo ao Algoritmo Genético do pseudocódigo~\ref{GenAlg}, utilizando 

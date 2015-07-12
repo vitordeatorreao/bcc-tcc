@@ -13,13 +13,13 @@ são: patrulhar fronteira de países ou muros de uma área civil, vigiar os
 corredores de um prédio, monitorar frotas marítimas e inspecionar áreas sujeitas 
 a vazamentos de gás ou incêndios \citep{sampaiophd}.
 
-Segundo a publicação \citep{hernandez2013game}, esses sistemas de segurança 
-quando operados por humanos são, em sua maioria, previsíveis e inflexíveis, pois 
-sua performance pode ser influenciada por fatores como o tédio, a distração ou a 
-fadiga. Dessa forma, os autores afirmam que é importante melhorar os elementos 
-de segurança desses sistemas para auxiliar seres humanos e destacam a Patrulha 
-Multiagente \citep{Chevaleyre:2004:TAM:1018411.1019013} como um dos sistemas que 
-pode fazer esse papel.
+Segundo \citep{hernandez2013game}, esses sistemas de segurança quando operados 
+por humanos são, em sua maioria, previsíveis e inflexíveis, pois sua performance 
+pode ser influenciada por fatores como o tédio, a distração ou a fadiga. Dessa 
+forma, os autores afirmam que é importante melhorar os elementos de segurança 
+desses sistemas para auxiliar seres humanos e destacam a Patrulha Multiagente 
+\citep{Chevaleyre:2004:TAM:1018411.1019013} como um dos sistemas que pode fazer 
+esse papel.
 
 A Patrulha Multiagente pode ser definida como a tarefa de um agente que deve 
 perceber uma porção limitada do ambiente e detectar eventos ou anomalias 
@@ -47,7 +47,7 @@ Para estudar o problema, no entanto, esta pesquisa utilizará uma definição ma
 formal, precisa e abrangente do problema, que auxilie o pesquisador a enxergar 
 a patrulha multiagente do ponto de vista matemático e a implementar soluções em 
 aplicações de software. Assim, a definição técnica empregada no decorrer deste 
-trabalho será a proposta por Sampaio \citep{sampaiophd}.
+trabalho será a proposta por \citep{sampaiophd}.
 
 Segundo o autor, uma instância da Patrulha Multiagente Temporal, do inglês 
 \ac{tmap}, é uma 7-tupla, $ \langle E, P, S, s_{0}, A, I, M \rangle $. O 
@@ -81,18 +81,19 @@ a ociosidade média \citep{hernandez2013game}.
 Sendo assim, é possível concluir que o problema da Patrulha Multiagente é, 
 fundamentalmente, um problema de otimização, onde é preciso escolher as ações 
 dos agentes com a finalidade de minimizar (ou maximizar) uma dada métrica 
-\citep{sampaiophd}.
+(ou conjunto de métricas) \citep{sampaiophd}.
 
+Para resolver um problema de otimização, pode-se utilizar um algoritmo de 
+otimização de propósito geral, como por exemplo, os algoritmos evolucionários. 
 A Computação Evolucionária engloba uma classe de algoritmos que realiza uma 
 busca no espaço de soluções à procura daquela que seja ótima 
 \citep{Luke2013Metaheuristics}. Esses algoritmos são baseados na Teoria da 
 Evolução das Espécies proposta por Charles Darwin 
 \footnote{http://en.wikipedia.org/wiki/Evolution}. Eles são chamados de 
 Algoritmos Evolucionários (EA)\acused{ea}, pois buscam, dentro de uma população, 
-o indivíduo melhor adaptado através de operadores chamados de mutação, 
-recombinação (também conhecido como cruzamento) e seleção. Dessa forma, será 
-mostrado no presente trabalho que \acp{ea} podem ser utilizados para resolver a 
-\ac{tmap}.
+o indivíduo melhor adaptado através de operadores de mutação, recombinação 
+(também conhecido como cruzamento) e seleção. Será mostrado no presente trabalho 
+que \acp{ea} podem ser utilizados para resolver a \ac{tmap}.
 
 Apesar de possuir diversas soluções com diferentes abordagens para o problema 
 \citep{Chevaleyre:2004:TAM:1018411.1019013}, 
@@ -101,21 +102,20 @@ Apesar de possuir diversas soluções com diferentes abordagens para o problema
 claramente dominantes para a \ac{tmap}. Embora os algoritmos evolucionários 
 sejam amplamente utilizados em outros problemas de otimização, soluções para a 
 \ac{tmap} que utilizam esses algoritmos são pouco encontradas na 
-literatura \citep{4630897}, \citep{6900280} e, por tanto, serão o objeto de 
+literatura \citep{4630897}, \citep{6900280} e, portanto, serão o objeto de 
 pesquisa do presente trabalho.
 
-\section{Objetivos Gerais}
+\section{Objetivo Geral}
 
 Motivado pelos problemas descritos acima, este trabalho tem como objetivo geral 
 a proposição e o estudo de soluções para \ac{tmap} utilizando algoritmos 
-evolucionários. Outro objetivo é comprovar a eficácia e avaliar a relevância de 
-abordagens evolucionárias para o problema da patrulha através de experimentos 
-empíricos e da comparação destas soluções com as obtidas através de abordagens 
-de destaque publicadas na literatura.
+evolucionários. A eficácia e relevância das abordagens propostas serão avaliadas 
+através de experimentos empíricos e da comparação destas soluções com as obtidas 
+através de abordagens de destaque publicadas na literatura.
 
 \section{Objetivos Específicos}
 
-Tendo em vista tais objetivos gerais, este projeto visa atingir os seguintes 
+Tendo em vista tal objetivo geral, este projeto visa atingir os seguintes 
 objetivos específicos:
 
 \begin{itemize}
@@ -123,9 +123,21 @@ objetivos específicos:
 		ao problema da patrulha multiagente temporal;
 	\item Desenvolver uma estratégia da \ac{tmap} baseada em algoritmos  
 		evolucionários;
-	\item Implementar as estratégias desenvolvidos em um simulador capaz de 
-		computar diversas métricas para uma dada solução da \ac{tmap}.
+	\item Implementar as estratégias em um simulador capaz de computar diversas 
+		métricas para uma dada solução da \ac{tmap}.
 	\item Avaliar o desempenho das estratégias no simulador e verificar eficácia
 		da abordagem através de comparações empíricas com algumas estratégias de 
 		destaque publicadas na literatura.
 \end{itemize}
+
+\section{Estrutura da Monografia}
+
+Esta monografia está estruturada da seguinte forma: no \chapref{chp:background} 
+foi realizada uma revisão da literatura sobre a \ac{tmap}. O \chapref{alg_evo} 
+apresenta ao leitor os algoritmos evolucionários utilizados nesta pesquisa para 
+obter soluções da \ac{tmap}. Em seguida, o \chapref{chp:abordagens} propõe  
+operadores que foram utilizados para possibilitar a implementação dos algoritmos 
+evolucionários no contexto da \ac{tmap}. O \chapref{experimentos} descreve os 
+experimentos realizados para provar a eficácia e relevância das abordagens aqui 
+propostas. Finalmente, o \chapref{conclusao_final} faz uma análise do trabalho 
+mostrando as conclusões que podem ser extraídas.

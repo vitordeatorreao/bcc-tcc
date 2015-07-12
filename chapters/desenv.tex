@@ -1,12 +1,12 @@
 \chapter{Algoritmos Evolucionários}
 \label{alg_evo}
 
-Sendo o objetivo do presente trabalho apresentar abordagens evolucionárias para 
+Sendo o objetivo do presente trabalho aplicar abordagens evolucionárias para 
 a \ac{tmap}, este capítulo tem como finalidade apresentar ao leitor alguns 
-conceitos e terminologias da área da Computação Evolucionária, para que ele 
-esteja familiarizado antes do capítulo sobre a aplicação de algoritmos 
-evolucionários no contexto da \ac{tmap}. Este capítulo também vai apresentar os 
-algoritmos que foram utilizados como base para esta pesquisa.
+conceitos e terminologias da área da Computação Evolucionária, para que se 
+familiarize antes do capítulo sobre a aplicação de algoritmos evolucionários no 
+contexto da \ac{tmap}. Este capítulo também vai apresentar os algoritmos que 
+foram utilizados como base para esta pesquisa.
 
 Segundo \citep{Back:1993:OEA:1326623.1326625}, várias pesquisas mostraram que 
 modelar o processo de busca de forma similar à evolução pelo qual os seres 
@@ -19,10 +19,10 @@ evolucionários podem (e são) utilizados em problemas de otimização.
 
 Tais algoritmos são baseados no processo de aprendizado coletivo pelo qual passa 
 uma população de indivíduos. A cada geração, os indivíduos mais aptos passam 
-para os filhos uma combinação das características que os tornam aptos. Então, ao 
-longo das gerações, além dos indivíduos menos aptos serem extintos, novos 
-indivíduos ainda mais aptos que os pais são formados por esse processo de 
-reprodução \citep{Back:1993:OEA:1326623.1326625}.
+para os filhos uma combinação das características que podem torná-los mais aptos. 
+Então, ao longo das gerações, além dos indivíduos menos aptos serem extintos, 
+novos indivíduos possivelmente mais aptos que os pais são formados por esse 
+processo de reprodução \citep{Back:1993:OEA:1326623.1326625}.
 
 Na Computação Evolutiva, os indivíduos são as soluções para um determinado 
 problema, ou um ponto no espaço de possíveis soluções. Na \ac{tmap}, por 
@@ -38,7 +38,8 @@ dessas populações (antiga e nova, pais e filhos) é selecionado de alguma form
 definida pelo algoritmo e se torna a população da próxima geração. Esse ciclo 
 se repete tipicamente até que parem de surgir melhores indivíduos que aqueles já 
 presentes na população, evento chamado de convergência do algoritmo 
-\citep{Back:1993:OEA:1326623.1326625}.
+\citep{Back:1993:OEA:1326623.1326625} ou até que algum outro critério de parada 
+seja acionado.
 
 A população inicial pode ser criada de forma aleatória, ou pode-se utilizar 
 conhecimentos sobre o problema para inicializar uma população onde os indivíduos 
@@ -56,6 +57,7 @@ evolucionário.
 		\Procedure{EA}{}
 		\State $P \gets $ Constrói-População-Inicial
 		\Repeat
+			\State Avalia($P$)
 			\State $P^{\prime} \gets $ Recombina($P$)
 			\State $P^{\prime \prime} \gets $ Aplica-Mutação($P^{\prime}$)
 			\State $P \gets $ Seleciona($P^{\prime \prime}$)
@@ -69,8 +71,8 @@ O \tabref{tbl:evo_dict} revisa alguns dos termos comumente utilizados nos
 
 No restante do presente capítulo, serão apresentados os algoritmos utilizados 
 nesta pesquisa, as Estratégias Evolucionárias e os Algoritmos Genéticos. Este 
-trabalho utilizou duas variações, propostas na literatura, para cada um deles. 
-Estas variações também serão apresentadas nas demais seções.
+trabalho utilizou duas variações, propostas na literatura, para cada um deles 
+que também serão apresentadas nas demais seções.
 %Cada 
 %um desses possui duas variações que foram aplicadas na pesquisa: 
 %$( \mu,\lambda )$ ou $( \mu + \lambda )$ e Geracional ou Estado Estável 
@@ -280,7 +282,7 @@ Genético de Estado Estável, do inglês, \textit{Steady State Genetic Algorithm
 O \ac{ga} Geracional é assim conhecido pois nele a população é completamente 
 atualizada de uma vez. O \ac{ga} de Estado Estável, por sua vez, introduz um 
 ou dois filhos, obtidos através de recombinação e mutação, diretamente na 
-população de indivíduos (matando outros indivíduos para abrir espaço) e segue 
+população de indivíduos (eliminando outros indivíduos para abrir espaço) e segue 
 para a próxima geração.
 
 Dessa forma, assim como a \ac{es} $( \mu + \lambda )$, os indivíduos pais se 
@@ -346,7 +348,7 @@ definido sem interferência do problema ou da estrutura de dados no qual ele
 está modelado. Os operadores de Seleção podem ser descritos para uma população 
 qualquer de indivíduos modelados de forma arbitrária.
 
-Na presente pesquisa, foi utilizado o operador de mutação comumente chamado de 
+Na presente pesquisa, foi utilizado o operador de seleção comumente chamado de 
 Torneio (do inglês, \textit{Tournament}) \citep{Luke2013Metaheuristics}. Ele 
 consiste em coletar, da população, $t$ indivíduos de forma aleatória. Destes, 
 o algoritmo retorna apenas o indivíduo mais apto. Segue o pseudocódigo para 
