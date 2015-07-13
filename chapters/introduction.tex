@@ -53,20 +53,20 @@ Segundo o autor, uma instância da Patrulha Multiagente Temporal, do inglês
 \ac{tmap}, é uma 7-tupla, $ \langle E, P, S, s_{0}, A, I, M \rangle $. O 
 ambiente que o agente percebe é representado por um grafo 
 \citep{Rosen:2002:DMA:579402}, $E$, onde os vértices representam os pontos de 
-interesse, $P$, a serem visitados e as arestas representam os caminhos entre 
-esses pontos. Na \figref{fig:graphexample}, visualiza-se um exemplo de ambiente 
-para o problema da patrulha modelado como um grafo. O modelo demanda também o 
-conjunto de estados possíveis da sociedade de agentes, $S$, e um estado inicial, 
-$ s_{0} $, tal que $ s_{0} \in S $. É necessário ainda um conjunto de ações 
-possíveis, $A$, que alteram o estado da sociedade de agentes. Essas ações podem 
-tanto ser individuais (realizadas por um dado agente) quanto coletivas 
+interesse, $P$, a serem visitados e as arestas representam as ligações diretas 
+entre esses pontos. Na \figref{fig:graphexample}, visualiza-se um exemplo de 
+ambiente para o problema da patrulha modelado como um grafo. O modelo demanda 
+também o conjunto de estados possíveis da sociedade de agentes, $S$, e um estado 
+inicial, $ s_{0} $, tal que $ s_{0} \in S $. É necessário ainda um conjunto de 
+ações possíveis, $A$, que alteram o estado da sociedade de agentes. Essas ações 
+podem tanto ser individuais (realizadas por um dado agente) quanto coletivas 
 (realizada pela sociedade inteira). Cada ação é descrita segundo uma lista de 
 pré-condições, um custo de tempo e as alterações que são aplicadas no estado 
 após a ação concluir. É preciso também explicitar o intervalo de medição, ou o 
 intervalo de tempo, $I$, em que os agentes terão seu desempenho mensurado. E, 
-por fim, se faz necessário um conjunto de métricas, $M$, para avaliar os 
-agentes. Existem diversas métricas que podem compor este conjunto, como por 
-exemplo o intervalo máximo \citep{Chevaleyre:2004:TAM:1018411.1019013} e 
+por fim, se faz necessário uma métrica, $M$, para avaliar os 
+agentes. Existem diversas métricas que podem ser utilizadas na patrulha, como 
+por exemplo o intervalo máximo \citep{Chevaleyre:2004:TAM:1018411.1019013} e 
 a ociosidade média \citep{hernandez2013game}.
 
 \begin{figure}[tp]

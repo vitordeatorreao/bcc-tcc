@@ -22,6 +22,11 @@ E foi mostrado empiricamente que a qualidade das soluções encontradas por esta
 heurísticas evolucionárias são comparáveis com a de algumas das melhores 
 abordagens apresentadas na literatura.
 
+Já que as soluções propostas visam criar uma sociedade de agentes onde cada um 
+fica responsável por uma partição do grafo, este trabalho corrobora com as 
+conclusões de \citep{1373634}: especializar agentes em sub-regiões do grafo 
+produz bons resultados na \ac{tmap}.
+
 \section{Trabalhos Futuros}
 
 Este capítulo conclui o trabalho com algumas atividades que poderiam ter sido 
@@ -35,7 +40,9 @@ experimentos realizados que esses operadores geravam indivíduos muito próximos
 uns dos outros. Fica como trabalho futuro investigar operadores de mutação mais 
 exploratórios, que levem a uma diversidade maior da população, para que a busca 
 no espaço de soluções seja mais global e não fique estagnada ao redor de mínimos 
-locais.
+locais. Também seria possível adicionar probabilidades para a execução de cada 
+operação envolvida na mutação dos indivíduos: por exemplo, poderia executar o 
+operador \textit{Melhorar} ao final da mutação apenas com uma probabilidade $x$.
 
 Outra contribuição para o futuro seria investigar o impacto de outros operadores 
 de seleção nos algoritmos genéticos. Principalmente o algoritmo genético de 
@@ -54,4 +61,12 @@ por exemplo, o \textit{Random Centering} e \textit{Random Partitioning}, tiveram
 um desempenho bem abaixo dos seus concorrentes. Seria de grande valia investigar 
 se, dado mais tempo de execução para os algoritmos evolucionários, os operadores 
 puramente aleatórios poderiam ser vantajosos, proporcionando uma busca mais 
-global para os algoritmos.
+global para os algoritmos. Seria possível, por exemplo, executar esses 
+algoritmos até que não houvesse melhora nos indivíduos de uma geração para a 
+seguinte.
+
+Seria interessante ainda realizar mais experimentos: utilizar uma quantidade 
+maior e mais diversificada (topologicamente) de grafos, podendo também variar 
+o tamanho da sociedade de agentes em intervalos mais curtos. Uma vez que mais 
+dados seriam gerados, poderiam ser realizada uma análise estatística dos 
+resultados a procura de maiores informações sobre as abordagens evolucionárias.

@@ -59,7 +59,8 @@ nó, ociosidade instantânea do grafo, ociosidade máxima e tempo de exploraçã
 Depois deste trabalho, \citep{sampaiophd} propôs uma nova família de métricas 
 baseadas nos intervalos entre visitas. As métricas utilizadas nos trabalhos mais 
 recentes variam: \citep{6900280} e \citep{Pippin:2013:PBT:2480362.2480378} 
-utilizam o intervalo máximo, já \citep{4209122} fazem uso da frequência mínima e 
+utilizam o intervalo máximo, já \citep{4209122} fazem uso de três métricas de 
+frequência: média, mínima e desvio padrão, enquanto que 
 \citep{hernandez2013game} compara as frequências mínimas.
 
 Dessa forma, este capítulo visa apresentar os trabalhos desenvolvidos para o 
@@ -94,7 +95,7 @@ representando a distância entre o vértices $i$ e $j$ em $G$.
 Nesse cenário, uma solução monoagente para o problema seria uma função 
 $ \pi : \mathbb{N} \longrightarrow V$, tal que $ \pi(j)$ 
 é o $j$-ésimo vértice visitado pelo agente, desde que 
-$ \pi(j+1) = x $ se, e somente se, $ (\pi(j), x) \in E $. Analogamente, 
+$ \pi(j+1) = x $ somente se $ (\pi(j), x) \in E $. Analogamente, 
 uma solução multiagente seria um conjunto $ \Pi = \{ \pi_{1} ... \pi_{r} \}$, 
 onde $r$ é o número de agentes.
 
@@ -113,15 +114,15 @@ os pontos de interesse a serem patrulhados, preferencialmente $E$ deve ser um
 grafo $G(V,E)$. O elemento $P$ é o conjunto dos pontos de interesse do ambiente. 
 No caso de um grafo, $P = V$.
 
-$S$ é um elemento um pouco mais complexo, pois ele 
-representa o conjunto de possíveis estados da sociedade de agentes. Cada estado 
-dentro desse conjunto pode conter informações tais como, quantos agentes estão 
-ativos, qual a posição atual de cada agente no ambiente $E$, o tempo decorrido 
-desde o início da patrulha, orientação e energia de cada agente e 
-características globais do conjunto de agentes. O estado inicial da sociedade é 
-representado em $s_{0}$, ou seja, $s_{0} \in S$. Esta modelagem para o grupo de 
-agentes permite ao modelo de \citep{sampaiophd} englobar diversos escopos da 
-\ac{tmap}, como por exemplo os citados na \secref{sec:consideracoesIniciais}.
+$S$ é um elemento um pouco mais complexo, pois ele representa o conjunto de 
+possíveis estados da sociedade de agentes. Cada estado dentro desse conjunto 
+pode conter informações tais como: quantos agentes estão ativos, qual a posição 
+atual de cada agente no ambiente $E$, o tempo decorrido desde o início da 
+patrulha, orientação e energia de cada agente e características globais do 
+conjunto de agentes. O estado inicial da sociedade é representado em $s_{0}$, ou 
+seja, $s_{0} \in S$. Esta modelagem para o grupo de agentes permite ao modelo de 
+\citep{sampaiophd} englobar diversos escopos da \ac{tmap}, como por exemplo os 
+citados na \secref{sec:consideracoesIniciais}.
 
 O quinto elemento da tupla, $A$, é o conjunto de ações que alteram o estado da 
 sociedade, $S$. Essas ações podem ser individuais, de cada agente, ou coletivas. 
@@ -130,13 +131,13 @@ para cada agente: movimentação entre os pontos de $P$ e visitação aos elemen
 do conjunto.
 
 $I$ representa o intervalo de medição, dentro do qual o desempenho dos agentes 
-é mensurado através das métricas definidas no conjunto $M$, último elemento da 
+é mensurado através da métrica, $M$, último elemento da 
 tupla.
 
 O problema da patrulha multiagente seria, então, definir um conjunto $A$ de 
 ações a serem tomadas pelos agentes, que estão inicialmente no estado $s_{0}$, 
-para minimizar (ou maximizar) as métricas presentes em $M$ durante o período de 
-patrulha, $I$.
+para minimizar (ou maximizar) a métrica, $M$, durante o período de patrulha, 
+$I$.
 
 Uma vez que a \ac{tmap} está bem definida, a seção seguinte irá abordar as 
 diferentes formas de classificar soluções para a \ac{tmap}, de forma que ao 
@@ -197,17 +198,15 @@ propõem uma solução utilizando o algoritmo de Christofides
 \citep{christofides1976worst} para obter uma aproximação do \ac{tsp} em tempo 
 polinomial. A pesquisa ainda aponta que, para o caso multiagente, a solução 
 seria calcular o ciclo, posicionar os agentes com um certo intervalo entre um e 
-outro e colocá-los para percorrer o ciclo indefinidamente. Os autores, no 
-entanto, não estudam a aplicação dessa solução ao problema com outras métricas 
-que não a da ociosidade máxima.
+outro e colocá-los para percorrer o ciclo indefinidamente. Contudo, essa 
+abordagem para o caso multiagente não é ótima. Os autores, no entanto, não 
+estudam a aplicação dessa solução ao problema com outras métricas que não a da 
+ociosidade máxima.
 
 Posteriormente, \citep{Almeida:2004:AAI} realizam um estudo comparativo entre 
-estratégias centralizadas e descentralizadas. Eles concluem que a solução 
-proposta por \citep{Chevaleyre:2004:TAM:1018411.1019013} é a mais eficiente 
-dentre as estudadas por eles. Os autores também chegam à conclusão de que as 
-estratégias centralizadas estudadas, apesar de terem obtido resultados melhores 
-nos experimentos, devem sofrer mais com problemas de escalabilidade a medida 
-que o grafo cresce.
+estratégias centralizadas e descentralizadas. Eles concluem que a solução de 
+ciclo único proposta por \citep{Chevaleyre:2004:TAM:1018411.1019013} é a mais 
+eficiente dentre as estudadas por eles.
 
 A partir das conclusões tiradas nesses estudos, \citep{4209122} propõem uma 
 solução centralizada e cíclica, onde ao invés de utilizar o algoritmo de 
@@ -236,7 +235,7 @@ colônias de formigas \citep{Koenig:2001:TCA:375735.376463},
 agentes não possuem uma visão completa do grafo, mas apenas das suas 
 vizinhanças. A coordenação dos agentes é emergente 
 \citep{Machado:2002:MPE:1765317.1765332}, pois cada agente pode deixar marcações 
-em nós do grafo que podem ser sentidas pelos outros agentes.
+em nós ou arestas do grafo que podem ser sentidas pelos outros agentes.
 
 Apesar de serem amplamente utilizados na literatura para resolver problemas de 
 otimização, os Algoritmos Evolucionários \citep{Luke2013Metaheuristics} foram 
@@ -284,13 +283,13 @@ métricas utilizadas.
 		\hline
 		\textbf{Trabalho} & \textbf{Escopo} & \textbf{Método} & \textbf{Métrica(s)} \\
 		\hline
-		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade instantânea do nó, ociosidade instantânea do grafo, ociosidade do grafo, ociosidade máxima e tempo de exploração \\
+		\citep{Machado:2002:MPE:1765317.1765332} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade do grafo, ociosidade máxima e tempo de exploração \\
 		\hline
 		\citep{Chevaleyre:2004:TAM:1018411.1019013} & Patrulha Multiagente "Padrão" & Análise Matemática & Pior ociosidade (\textit{worst idleness}) \\
 		\hline
 		\citep{Almeida:2004:AAI} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade do grafo, Ociosidade média normalizada e Desvio padrão da ociosidade média \\
 		\hline
-		\citep{4209122} & Patrulha Multiagente com restrição de frequência & Análise Matemática & Frequência máxima uniforme \\
+		\citep{4209122} & Patrulha Multiagente com restrição de frequência & Análise Matemática & Frequência Mínima, Frequência Média e Desvio padrão das frequências das visitas \\
 		\hline
 		\citep{4630897} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade Máxima \\
 		\hline
@@ -300,7 +299,7 @@ métricas utilizadas.
 		\hline
 		\citep{6615158} & Patrulha Multiagente em ambientes dinâmicos & Simulação & Intervalo Máximo entre visitas \\
 		\hline
-		\citep{hernandez2013game} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade total \\
+		\citep{hernandez2013game} & Patrulha Multiagente "Padrão" & Simulação & Ociosidade média \\
 		\hline
 	\end{tabularx}
 	\caption*{Fonte: O autor}

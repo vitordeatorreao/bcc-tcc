@@ -9,8 +9,8 @@ recombinação e mutação neles. A definição desses operadores depende da for
 escolhida para representar indivíduos. Tipicamente, na literatura de Algoritmos 
 Evolucionários, indivíduos são representados como um vetor de bits ou de números 
 reais \citep{Luke2013Metaheuristics}. No entanto, tal como foi apresentado na 
-\secref{definicoes_tmap}, a \ac{tmap} não é representada por essas estruturas de 
-dados.
+\secref{definicoes_tmap}, a \ac{tmap} não é representada naturalmente por essas 
+estruturas de dados.
 
 Considerando estas questões de representação, esta pesquisa adota uma abordagem 
 baseada em particionamento do grafo para resolver a \ac{tmap}, como foi sugerido 
@@ -27,7 +27,10 @@ base para a recombinação.
 A partir deste modelo, foi adicionado o conceito de centro das partições para que 
 a recombinação possa trocar agentes semelhantes. Se duas soluções possuem agentes 
 com os mesmos centros de partição, será possível trocar os agentes que possuam o 
-mesmo centro (o que não quer dizer partições iguais).
+mesmo centro (o que não quer dizer partições iguais). O objetivo é fazer com que 
+a troca envolva agentes que patrulhem regiões similares do grafo, mas caso não 
+seja possível encontrar agentes com o mesmo centro nas duas soluções, a 
+recombinação vai aplicar uma troca mais aleatória.
 
 Finalmente, a representação proposta para uma solução da \ac{tmap} é: um conjunto 
 de $r$ agentes, onde cada agente é representado por um ciclo que passa por todos 

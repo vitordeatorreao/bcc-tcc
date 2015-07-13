@@ -687,7 +687,7 @@ requirements for the degree of \@degree\ in \@majorfielden.
   
   \vspace{\baselineskip}
   -----------------------------------------------------------------------\\
-  Prof. <Nome>\\
+  Prof. Geber Lisboa Ramalho\\
   Centro de Informática/UFPE
   
   \vspace{\baselineskip}
