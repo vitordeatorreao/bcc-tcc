@@ -537,7 +537,7 @@ procedimento \textit{RANDOM-2-CHANGE} vai selecionar duas arestas aleatoriamente
 Contudo, o caminho do agente, $P$, está representado em uma lista de vértices 
 onde, se $V_{i}$ e $V_{i+1}$ são dois vértices nas posições $i$ e $i+1$ dentro do 
 caminho do agente, então existe uma aresta $(V_{i}, V_{i+1})$ no Grafo onde o 
-agente patrulha. Então, quando o procedimento escolhe um valor $edge_{1}$, esse 
+agente patrulha. Assim, quando o procedimento escolhe um valor $edge_{1}$, esse 
 valor está representando, na verdade, a aresta $(V_{edge_{1}}, V_{edge_{1}+1})$.
 
 Uma vez que o procedimento tem certeza de ter escolhido duas arestas diferentes, 
@@ -578,27 +578,34 @@ pseudocódigo~\ref{2_change}.
 	\end{algorithmic}
 \end{algorithm}
 
-O procedimento \textit{2-change} funciona da seguinte forma: seja $P$ o conjunto 
-de pares ordenados (já que é uma lista) dos vértices no caminho do agente $A$. 
+Já que o \textit{2-change} é uma heurística para o \ac{tsp}, ele será explicado 
+no contexto de um grafo completo, $G$, e posteriormente trazido para casos mais 
+gerais. Assim, seja $P$ uma lista dos vértices no caminho do agente $A$. 
 $P$ será algo como:
 \begin{multline*}
-\{<V_{1},1>,...,<V_{e_{1}},e_{1}>,<V_{e_{1}+1},e_{1}+1>,..., \\
-<V_{e_{2}-1},e_{2}-1>,<V_{e_{2}},e_{2}>,<V_{e_{2}+1},e_{2}+1>,...,<V_{|P|},|P|>\}
+\centering
+\{V_{1}, ..., V_{e_{1}}, V_{e_{1}+1}, ..., V_{e_{2}}, V_{e_{2}+1}, ..., V_{|P|}\}
 \end{multline*}
 Onde $e_{1}$ e $e_{2}$ são as duas arestas escolhidas para serem substituídas. 
 Após a execução do \textit{2-change}, o caminho retornado, $P^{\prime}$, deverá 
 ser:
 \begin{multline*}
-\{<V_{1},1>,...,<V_{e_{1}},e_{1}>,...,<V_{e_{2}},e_{2}>,<V_{e_{2}-1},e_{2}-1>,..., \\
-<V_{e_{1}+1},e_{1}+1>,...,<V_{e_{2}+1},e_{2}+1>,...,<V_{|P|},|P|>\}
+\centering
+$$ \{V_{1}, ..., V_{e_{1}}, V_{e_{2}}\} \cup P_{e_{2}, e_{1}+1} \cup \{V_{e_{1}+1}, V_{e_{2}+1}, ..., V_{|P|}\} $$
 \end{multline*}
+
+Onde $P_{e_{2}, e_{1}+1}$ é o subcaminho, de $P$, que vai de $e_{1}+1$ para 
+$e_{2}$ invertido. Para o caso dos grafos utilizados nessa pesquisa, que não 
+necessariamente são completos, utilizou-se este resultado, $P^{\prime}$, mas 
+ao invés de montar o caminho com a aresta que liga quaisquer dois vértices 
+consecutivos nessa lista, utilizou-se sempre o menor caminho entre eles.
 
 Veja um exemplo. Suponha que um agente, $A$, que percorre as arestas vermelhas 
 no seu subgrafo induzido ilustrado na \figref{2_change_ex1}. O seu ciclo seria 
 representado pela lista $P = [6,4,5,1,2,3,4,6]$. Suponha agora que esse agente 
 passe pelo \textit{2-change} e que as arestas escolhidas foram $(4,5)$ e $(2,3)$, 
-ou seja, $e_{1} = 2$ e $e_{2} = 5$. Então, $P^{\prime}$ será 
-$[6,4,2,1,5,3,4,6]$. E é possível visualizar $P^{\prime}$ na 
+ou seja, $e_{1} = 2$ e $e_{2} = 5$ (supondo que os índices começam em $1$). Então, 
+$P^{\prime}$ será $[6,4,2,1,5,3,4,6]$. E é possível visualizar $P^{\prime}$ na 
 \figref{2_change_ex2}.
 
 \tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
@@ -868,8 +875,14 @@ Ciência da Computação da Universidade Federal Rural de Pernambuco ministrada
 pelo professor Pablo Azevedo 
 Sampaio\footnote{\url{http://lattes.cnpq.br/8865836949700771}}.
 
- O \tabref{tbl:resumo_operadores} resume os operadores propostos, indicando a 
- operação realizada e se foram baseados em trabalhos já presentes na literatura.
+As abordagens propostas na presente pesquisa podem, então, ser classificadas 
+(de acordo com a classificação apresentada na \secref{sec:classifytmap}) como 
+estratégias baseadas em particionamento, com agentes cognitivos, de comunicação 
+proibida, com coordenação centralizada, de percepção global, e com tomada de 
+decisão orientada a objetivo.
+
+O \tabref{tbl:resumo_operadores} resume os operadores propostos, indicando a 
+operação realizada e se foram baseados em trabalhos já presentes na literatura.
 
 \begin{table}[bh]
 	\centering
