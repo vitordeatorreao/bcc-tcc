@@ -355,11 +355,11 @@ o algoritmo retorna apenas o indivíduo mais apto. Segue o pseudocódigo para
 ilustrar esse operador.
 
 \begin{algorithm}[h]                      % enter the algorithm environment
-	\caption{Torneio}          % give the algorithm a caption
+	\caption{Seleção por Torneio}          % give the algorithm a caption
 	\label{torneio}                           % and a label for \ref{} commands later in the document
 	\algcomment{\begin{center} Fonte: Adaptado de \citep{Luke2013Metaheuristics} \end{center}}
 	\begin{algorithmic}                    % enter the algorithmic environment
-		\Procedure{Torneiro}{$P, t$}
+		\Procedure{Torneio}{$P, t$}
 		\State $Melhor \gets $ indivíduo escolhido aleatoriamente de $P$ \Comment{De forma que não possa ser escolhido uma segunda vez}
 		\For{$i$ de $2 ... t$}
 			\State $Proximo \gets $ indivíduo escolhido aleatoriamente de $P$

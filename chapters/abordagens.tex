@@ -500,7 +500,7 @@ solução aproximada para o \ac{tsp}. O \textit{$k-$change} é descrito como uma
 heurística de busca local que tenta encontrar um caminho de menor custo através 
 de leves alterações em um caminho original. A alteração é a substituição de até 
 $k$ arestas no caminho. Os valores para $k$ mais utilizados são 2, 3 e 4 
-\citep{Luke2013Metaheuristics}. Como o objetivo do operador de mutação é 
+\citep{nilsson2003heuristics}. Como o objetivo do operador de mutação é 
 realizar uma leve mudança no indivíduo, esta pesquisa utilizou $k = 2$.
 
 O pseudocódigo~\ref{melhorar} ilustra o procedimento de \textit{melhorar}, que 
@@ -584,21 +584,22 @@ gerais. Assim, seja $P$ uma lista dos vértices no caminho do agente $A$.
 $P$ será algo como:
 \begin{multline*}
 \centering
-\{V_{1}, ..., V_{e_{1}}, V_{e_{1}+1}, ..., V_{e_{2}}, V_{e_{2}+1}, ..., V_{|P|}\}
+\langle V_{1}, ..., V_{e_{1}}, V_{e_{1}+1}, ..., V_{e_{2}}, V_{e_{2}+1}, ..., V_{|P|} \rangle
 \end{multline*}
 Onde $e_{1}$ e $e_{2}$ são as duas arestas escolhidas para serem substituídas. 
 Após a execução do \textit{2-change}, o caminho retornado, $P^{\prime}$, deverá 
 ser:
 \begin{multline*}
 \centering
-$$ \{V_{1}, ..., V_{e_{1}}, V_{e_{2}}\} \cup P_{e_{2}, e_{1}+1} \cup \{V_{e_{1}+1}, V_{e_{2}+1}, ..., V_{|P|}\} $$
+$$ \langle V_{1}, ..., V_{e_{1}} \rangle \oplus P_{e_{2}, e_{1}+1} \oplus \langle V_{e_{2}+1}, ..., V_{|P|} \rangle $$
 \end{multline*}
 
-Onde $P_{e_{2}, e_{1}+1}$ é o subcaminho, de $P$, que vai de $e_{1}+1$ para 
-$e_{2}$ invertido. Para o caso dos grafos utilizados nessa pesquisa, que não 
-necessariamente são completos, utilizou-se este resultado, $P^{\prime}$, mas 
-ao invés de montar o caminho com a aresta que liga quaisquer dois vértices 
-consecutivos nessa lista, utilizou-se sempre o menor caminho entre eles.
+Onde $P_{e_{2}, e_{1}+1}$ é o subcaminho de $P$, que vai de $e_{1}+1$ para 
+$e_{2}$, invertido e $\oplus$ representa uma operação de concatenação. Para o 
+caso dos grafos utilizados nessa pesquisa (não necessariamente completos), 
+utilizou-se este resultado, mas ao invés de montar o caminho com a aresta que 
+liga quaisquer dois vértices consecutivos em $P^{\prime}$, utilizou-se sempre 
+o menor caminho entre eles.
 
 Veja um exemplo. Suponha que um agente, $A$, que percorre as arestas vermelhas 
 no seu subgrafo induzido ilustrado na \figref{2_change_ex1}. O seu ciclo seria 

@@ -15,19 +15,22 @@ Evolucionária, a presente pesquisa apresentou dez operadores que podem ser
 combinados com esses algoritmos de diferentes maneiras para formar dezenas de 
 heurísticas evolucionárias distintas capazes de resolver a \ac{tmap}.
 
-Essas soluções são baseadas em dividir o território (modelado como um grafo) em 
-partições e especializar cada agente em regiões (disjuntas ou não) específicas 
-do grafo. O que indica que este trabalho corrobora com as conclusões de 
-\citep{1373634}: especializar agentes em sub-regiões do grafo produz bons 
-resultados na \ac{tmap}. Os algoritmos evolucionários foram aqui empregados para 
-otimizar as trajetórias dos agentes nas suas respectivas partições do grafo dado.
-
 Além disso, foi demonstrado através de experimentos que os operadores aqui 
 apresentados são eficazes em produzir boas soluções. Também foram apontados 
 os operadores e suas combinações que proporcionaram as melhores soluções. 
 E foi mostrado empiricamente que a qualidade das soluções encontradas por estas 
 heurísticas evolucionárias são comparáveis com a de algumas das melhores 
 abordagens apresentadas na literatura.
+
+Considerando que as soluções aqui propostas são baseadas em dividir o território 
+a ser patrulhado entre os agentes e que os os algoritmos evolucionários são 
+utilizados para otimizar o particionamento e as trajetórias dos agentes nas suas 
+respectivas partições, uma possível conclusão mais geral que pode ser tirada 
+deste trabalho é que \textit{especializar agentes em sub-regiões do grafo produz 
+bons resultados}. Há ao menos um trabalho anterior que corrobora com essa 
+conclusão \citep{1373634}, no qual o autor observou que agentes treinados com 
+aprendizagem por reforço, em alguns grafos, se especializaram em diferentes 
+regiões do grafo.
 
 \section{Trabalhos Futuros}
 
@@ -63,7 +66,7 @@ por exemplo, o \textit{Random Centering} e \textit{Random Partitioning}, tiveram
 um desempenho bem abaixo dos seus concorrentes. Seria de grande valia investigar 
 se, dado mais tempo de execução para os algoritmos evolucionários, os operadores 
 puramente aleatórios poderiam ser vantajosos, proporcionando uma busca mais 
-global para os algoritmos. Seria possível, por exemplo, executar esses 
+global no espaço de soluções. Seria possível, por exemplo, executar esses 
 algoritmos até que não houvesse melhora nos indivíduos de uma geração para a 
 seguinte.
 
